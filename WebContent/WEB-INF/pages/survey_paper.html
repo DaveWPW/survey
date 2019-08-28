@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Title</title>
+</head>
+<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+<script language="JavaScript">
+$(function() {
+	$("#search").click(function() {
+		$.ajax({
+			type : "post",
+			url : "paper/findAllById.do",
+			data : $("#pId"),
+			dataType : "json",
+			success : function(result) {
+				if(result.state == 1){
+					var html = "";
+					html += "<td>" + result.data.testId + "</td><td>"
+							+ result.data.testName + "</td><td>"
+							+ result.data.startDate + "</td><td>"
+							+ result.data.endDate + "</td>";
+					$("#paperAll").html(html);
+				}
+			},
+			//null值不会被success回调函数捕获，因此可以通过error来实现该功能
+			error : function() {
+				alert("请输入正确的编号！");
+			}
+		})
+	})
+})
+</script>
+<body>
+	<center>
+		<div style="margin-top: 25px">
+			请输入所要查询的编号:
+			<input type="text" id="pId" name="pId" />
+			<input id="search" style="margin-left: 10px" type="button" value="搜索"><br/>
+		</div>
+		<div style="margin-top: 50px">
+			<table border="1">
+				<tr>
+					<td>测试编号</td>
+					<td>测试名称</td>
+					<td>开始日期</td>
+					<td>结束日期</td>
+				</tr>
+				<tr id="paperAll"></tr>
+			</table>
+		</div>
+	</center>
+</body>
+</html>
