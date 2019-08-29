@@ -107,7 +107,6 @@ function doSetTableBodyRows(data){
 	}
 }
 function doCreateTds(data){
-	console.log(data);
 	var type;
 	if(data.quesType === "01"){
 		type = "单选题";
@@ -199,11 +198,9 @@ function doLoadEditUI(){
 }
 //修改操作
 function getQuesOption(quesId){
-	console.log(quesId);
 	var url = "ques/getQuesOption.do";
 	var params = {"quesId" : quesId}
 	$.getJSON(url, params, function(result){
-		console.log(result.data);
 		$("#mainContentId").data("rowData", result.data);
 		var url;
 		if(result.data.quesType === "01"){

@@ -10,13 +10,11 @@ import com.dave.entity.Option;
 
 public interface OptionDao {
 	
-	List<Option> findOptionByQues(int quesId);
-	
 	int addOption(Option option);
 	
 	@Delete("delete su_option where ques_id = #{quesId}")
 	int deleteOption(@Param("quesId")int quesId);
 	
 	@Select("select * from su_option where ques_id = #{quesId} order by option_content asc")
-	List<Option> selectOptionByQues(@Param("quesId")int quesId);
+	List<Option> selectOptionByQuesId(@Param("quesId")int quesId);
 }

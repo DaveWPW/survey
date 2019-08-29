@@ -72,7 +72,7 @@ public class QuesServiceImpl implements QuesService {
 	@Override
 	public int deleteQues(Integer... quesIds) {
 		int rows = 0;
-		for(int quesId: quesIds) {
+		for(int quesId : quesIds) {
 			rows = optionDao.deleteOption(quesId);
 			rows = quesDao.deleteQues(quesId);
 //			if(rows > 0) {
@@ -107,7 +107,7 @@ public class QuesServiceImpl implements QuesService {
 		quesInfo.setQuesId(ques.getQuesId());
 		quesInfo.setQuesName(ques.getQuesName());
 		quesInfo.setQuesType(ques.getQuesType());
-		List<Option> optionList = optionDao.selectOptionByQues(quesId);
+		List<Option> optionList = optionDao.selectOptionByQuesId(quesId);
 		String[] options = new String[optionList.size()];
 		Integer[] flags = new Integer[optionList.size()];
 		for(int i = 0; i < optionList.size(); i++) {

@@ -7,6 +7,8 @@ public class QuesInfo {
 	private String quesName;
 	/**问题类型*/
 	private String quesType;
+	/**选项ID数组*/
+	private Integer[] optionIds;
 	/**选项内容数组*/
 	private String[] options;
 	/**是否可填空标识数组*/
@@ -29,6 +31,12 @@ public class QuesInfo {
 	}
 	public void setQuesType(String quesType) {
 		this.quesType = quesType;
+	}
+	public Integer[] getOptionIds() {
+		return optionIds;
+	}
+	public void setOptionIds(Integer[] optionIds) {
+		this.optionIds = optionIds;
 	}
 	public String[] getOptions() {
 		return options;

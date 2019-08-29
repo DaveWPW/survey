@@ -1,12 +1,16 @@
 package com.dave.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dave.common.vo.JsonResult;
+import com.dave.entity.QuesInfo;
 import com.dave.service.PaperService;
+import com.dave.service.QuesService;
 
 /**
  * 问卷控制层
@@ -52,8 +56,9 @@ public class PaperController {
     @RequestMapping("doSubmitQues")
     @ResponseBody
     public JsonResult doSubmitQues(Integer... quesIds) {
+    	List<QuesInfo> list = paperService.selectQuesByIds(quesIds);
     	System.out.println("选题后提交");
-    	return new JsonResult();
+    	return new JsonResult(list);
     }
     /**
      * 查找问卷数据
