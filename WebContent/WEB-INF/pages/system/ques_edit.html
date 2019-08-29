@@ -93,28 +93,44 @@ function getQuesData(){
 	}
 	return params;
 }
+//提交校验
+function doValidated(){
+	var valid = true;
+	$(".optionContent").each(function(){
+		if($(this).val() == null || $(this).val() == ""){
+			alert("选项不能为空！！");
+			valid = false;
+		}
+	});
+	if($("#quesName").val() == null || $("#quesName").val() == ""){
+		alert("题目不能为空！！");
+		valid = false;
+	}
+	return valid;
+}
 //添加和修改
 function doAddOrUpdate(){
-	var rowData = $("#mainContentId").data("rowData");
-	var params = getQuesData();
-	console.log(params);
-	var insertUrl = "ques/doAddQues.do";
-	var updateUrl = "ques/doUpdateQues.do";
-	if(rowData){
-		params.quesId = rowData.quesId;
-	}
-	console.log(params);
-	var url = rowData ? updateUrl : insertUrl;
-	$.post(url, params, function(result){
-		if(result.state == 1){
-			alert(result.message);
-			doCancel();
-		}else{
-			alert(result.message);
+	if(doValidated()){
+		var rowData = $("#mainContentId").data("rowData");
+		var params = getQuesData();
+		console.log(params);
+		var insertUrl = "ques/doAddQues.do";
+		var updateUrl = "ques/doUpdateQues.do";
+		if(rowData){
+			params.quesId = rowData.quesId;
 		}
-	})
+		console.log(params);
+		var url = rowData ? updateUrl : insertUrl;
+		$.post(url, params, function(result){
+			if(result.state == 1){
+				alert(result.message);
+				doCancel();
+			}else{
+				alert(result.message);
+			}
+		})
+	}
 }
-
 function doInitFormData(){
 	if($(".box-title").html() === "添加简答题" || $(".box-title").html() === "修改简答题"){
 		$("#addOption").hide();//隐藏添加选项按钮
@@ -125,7 +141,7 @@ function doInitFormData(){
 			|| $(".box-title").html() === "查看简答题"){
 		$("#save").hide();//隐藏保存按钮
 	}else{
-		$("#save").hide();//显示保存按钮
+		$("#save").show();//显示保存按钮
 	}
     var data = $("#mainContentId").data("rowData");
     if(!data){
