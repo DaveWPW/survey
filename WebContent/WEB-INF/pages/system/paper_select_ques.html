@@ -184,7 +184,7 @@ function doSubmitQues() {
 	if(quesIds){
 		ids = ids + "," + quesIds;
 	}
-	alert(ids);
+	//alert(ids);
 	var params = {"quesIds" : ids.toString()}
 	var url = "paper/doSubmitQues.do";
 	$.post(url, params, function(result){

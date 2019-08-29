@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dave.common.vo.PageObject;
-import com.dave.dao.OptionDao;
+import com.dave.dao.QuesOptionDao;
 import com.dave.dao.QuesDao;
-import com.dave.entity.Option;
+import com.dave.entity.QuesOption;
 import com.dave.entity.Ques;
 import com.dave.entity.QuesInfo;
 import com.dave.service.QuesService;
@@ -25,7 +25,7 @@ public class QuesServiceImpl implements QuesService {
 	@Autowired
     private QuesDao quesDao;
 	@Autowired
-    private OptionDao optionDao;
+    private QuesOptionDao optionDao;
 	@Override
 	public PageObject<Ques> findQuesList(int pageCurrent, String quesName){
 		//计算startIndex的值
@@ -56,7 +56,7 @@ public class QuesServiceImpl implements QuesService {
 		if(row == 1) {
 			int quesId = quesDao.selectQuesId();
 			for(int i = 0; i < quesInfo.getOptions().length; i++) {
-				Option option = new Option();
+				QuesOption option = new QuesOption();
 				option.setQuesId(quesId);
 				option.setOptionContent(quesInfo.getOptions()[i]);
 				option.setFlag(quesInfo.getFlags()[i]);
@@ -75,8 +75,6 @@ public class QuesServiceImpl implements QuesService {
 		for(int quesId : quesIds) {
 			rows = optionDao.deleteOption(quesId);
 			rows = quesDao.deleteQues(quesId);
-//			if(rows > 0) {
-//			}
 		}
 		return rows;
 	}
@@ -89,14 +87,12 @@ public class QuesServiceImpl implements QuesService {
 		if(row == 1) {
 			row = optionDao.deleteOption(quesInfo.getQuesId());
 			for(int i = 0; i < quesInfo.getOptions().length; i++) {
-				Option option = new Option();
+				QuesOption option = new QuesOption();
 				option.setQuesId(quesInfo.getQuesId());
 				option.setOptionContent(quesInfo.getOptions()[i]);
 				option.setFlag(quesInfo.getFlags()[i]);
 				row = optionDao.addOption(option);
 			}
-//			if(row > 0) {
-//			}
 		}
 		return row;
 	}
@@ -107,7 +103,7 @@ public class QuesServiceImpl implements QuesService {
 		quesInfo.setQuesId(ques.getQuesId());
 		quesInfo.setQuesName(ques.getQuesName());
 		quesInfo.setQuesType(ques.getQuesType());
-		List<Option> optionList = optionDao.selectOptionByQuesId(quesId);
+		List<QuesOption> optionList = optionDao.selectOptionByQuesId(quesId);
 		String[] options = new String[optionList.size()];
 		Integer[] flags = new Integer[optionList.size()];
 		for(int i = 0; i < optionList.size(); i++) {

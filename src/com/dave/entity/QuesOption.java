@@ -6,7 +6,7 @@ package com.dave.entity;
  * @author Dave2019
  *
  */
-public class Option {
+public class QuesOption {
 	/**选项ID*/
 	private int optionId;
 	/**对应的问题ID*/

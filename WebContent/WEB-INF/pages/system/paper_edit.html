@@ -31,38 +31,71 @@
 $(document).ready(function(){
 	doInitFormData();
 	$(".box-footer")
+		.on("click", ".btn-save", doSave)
 		.on("click", ".btn-cancel", doCancel);
-		//.on("click", ".btn-save", doAddOrUpdate);
+	$("#quesDivs")
+		.on("click", ".btn-delete", doDeleteQues)
+		.on("click", ".btn-shiftup", doShiftUpQues)
+		.on("click", ".btn-shiftdown", doShiftDownQues);
 });
+//跳转选择题目操作
+function doSelectQuesUI(){
+	$("#mainContentId").load("paper/doSelectQuesUI.do");
+	$("#mainContentId").data("title", $(".box-title").html());
+}
 //刷新数据,重定向paper_list.html页面
 function doCancel(){
 	$("#mainContentId").removeData("rowData");
 	$("#mainContentId").removeData("ids");
+	$("#mainContentId").removeData("title");
 	$("#mainContentId").load("paper/doPaperListUI.do");
-}
-//删除问题操作
-function doDeleteQues(btn){
-	btn.parentElement.parentElement.parentElement.remove();
-	autoAddNumber();
-	doInitQuesIds();
 }
 //删除后重置QuesIds
 function doInitQuesIds(){
 	$("#mainContentId").removeData("ids");
 	var ids = [];
-	//console.log($(".quesId").val());
 	$(".quesId").each(function(){
 		if($(this).val() != null){
 			ids.push($(this).val());
 		}
 	});
 	$("#mainContentId").data("ids", ids.toString());
-	//console.log(ids.toString());
-	//alter(ids.toString());
 }
-//跳转选择题目操作
-function doSelectQuesUI(){
-	$("#mainContentId").load("paper/doSelectQuesUI.do");
+//删除问题操作
+function doDeleteQues(){
+	$(this).parent().parent().parent().remove();
+	autoAddNumber();
+	doInitQuesIds();
+}
+//上移操作
+function doShiftUpQues(){
+	var index = $(this).parent().parent().parent().index();
+	if(index === 0){
+		alert("已在最上面");
+		return;
+	}
+	var arr = $("#quesDivs").find(".quesDiv").toArray();
+	var temp;
+    temp = arr[index];
+    arr[index] = arr[index-1];
+    arr[index-1] = temp;
+    $("#quesDivs").html(arr);
+    autoAddNumber();
+}
+//下移操作
+function doShiftDownQues(){
+	var index = $(this).parent().parent().parent().index();
+	var arr = $("#quesDivs").find(".quesDiv").toArray();
+	if(index === arr.length-1){
+		alert("已在最下面");
+		return;
+	}
+	var temp;
+    temp = arr[index];
+    arr[index] = arr[index+1];
+    arr[index+1] = temp;
+    $("#quesDivs").html(arr);
+    autoAddNumber();
 }
 function doAddQuesName(quesId){
 	var quesDivs = $("#quesDivs");
@@ -73,7 +106,9 @@ function doAddQuesName(quesId){
     			"<div class='col-sm-10'>"+
     				"<input class='quesId' value='"+quesId+"' style='display:none;'/>"+
     				"<span class='quesName'></span>"+
-    				"<button type='button' onclick='doDeleteQues(this)'>删除</button>"+
+    				"<button type='button' class='btn-delete'>删除</button>"+
+    				"<button type='button' class='btn-shiftup'>上移</button>"+
+    				"<button type='button' class='btn-shiftdown'>下移</button>"+
     			"</div>"+
     		"</div>"+
     	"</div>";
@@ -112,6 +147,9 @@ function doAddEsay(quesDiv){
 }
 function doInitFormData(){
 	var data = $("#mainContentId").data("rowData");
+	if(!data){
+    	return;
+    }
 	for(var a in data){
 		var quesInfo = data[a];
 		doAddQuesName(quesInfo.quesId);
@@ -125,19 +163,76 @@ function doInitFormData(){
 		}
 	}
 	autoAddNumber();
+	var title = $("#mainContentId").data("title");
+	$(".box-title").html(title);
 }
 //自增序列号
 function autoAddNumber(){
 	function number(){
 	    var index = 0;
     	for(var i = 0;i < $(".numberClass").length; i++){
-			$(".numberClass").get(index).innerHTML = i+1+".";
+			$(".numberClass").get(index).innerHTML = i+1;
 			index++;
     	}
 	}
 	number();
 }
-
+//保存操作
+function doSave(){
+	if(doValidated()){
+		var params = getDataParam();
+		console.log(params);
+		var url = "paper/doAddPaper.do";
+		$.post(url, params, function(result){
+			if(result.state == 1){
+				alert(result.message);
+				doCancel();
+			}else{
+				alert(result.message);
+			}
+		});
+	}
+}
+//获取需要的参数
+function getDataParam(){
+	var quesNum = [];
+	$(".numberClass").each(function(){
+		console.log($(this).html());
+		quesNum.push($(this).html());
+	});
+	var quesIds = [];
+	$(".quesId").each(function(){
+		console.log($(this).val());
+		quesIds.push($(this).val());
+	});
+	var type;
+	if($(".box-title").html() === "创建单张问卷"){
+		type = "01";
+	}
+	var params = {
+		"paperName" : $("#paperName").val(),
+		"paperType" : type,
+		"quesNum" : quesNum.toString(),
+		"quesIds" : quesIds.toString(),
+	}
+	return params;
+}
+//提交前校验
+function doValidated(){
+	var valid = true;
+	if($(".quesId").length == 0){
+		alert("问题不能为空！！");
+		valid = false;
+	}
+	if($("#paperName").val() == null || $("#paperName").val() == ""){
+		alert("问卷标题不能为空！！");
+		valid = false;
+	}
+	return valid;
+}
+//console.log(ids.toString());
+//alter(ids.toString());
+//debugger;
 /* function getQuesData(){
 	var options = [];
 	$(".optionContent").each(function(){
@@ -190,30 +285,5 @@ function doAddOrUpdate(){
 			alert(result.message);
 		}
 	})
-}
-
-function doInitFormData(){
-	if($(".box-title").html() === "添加简答题" || $(".box-title").html() === "修改简答题"){
-		$("#addButton").hide();
-	}else{
-		$("#addButton").show();
-	}
-    var data = $("#mainContentId").data("rowData");
-    if(!data){
-    	return;
-    }
-	console.log("update");
-	//初始化用户信息
-	//$('#quesId').attr('disabled','disabled');
-	$("#quesName").val(data.quesName);
-	for(var i = 0; i < data.options.length; i++){
-		doAddOption();
-		$(".optionContent").eq(i).val(data.options[i]);
-		if(data.flags[i] === 1){
-			$("#addOption input[type='checkbox']").eq(i).prop("checked", true);
-		}else if(data.flags[i] === 0){
-			$("#addOption input[type='checkbox']").eq(i).prop("checked", false);
-		}
-	}
 } */
 </script>

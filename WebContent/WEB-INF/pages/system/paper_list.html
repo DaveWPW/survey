@@ -189,9 +189,10 @@ function doDeletePaper() {
 //添加和修改操作
 //添加操作
 function doLoadEditUI(){
+	//debugger;
 	var title;
 	var url;
-	if($(this).hasClass("btn-add-only")){
+	if($(this).hasClass("btn-create-only")){
 		title = "创建单张问卷";
 	}
 	url = "paper/doPaperEditUI.do"

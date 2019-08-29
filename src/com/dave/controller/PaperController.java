@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dave.common.vo.JsonResult;
+import com.dave.entity.PaperInfo;
 import com.dave.entity.QuesInfo;
 import com.dave.service.PaperService;
 import com.dave.service.QuesService;
@@ -57,8 +58,14 @@ public class PaperController {
     @ResponseBody
     public JsonResult doSubmitQues(Integer... quesIds) {
     	List<QuesInfo> list = paperService.selectQuesByIds(quesIds);
-    	System.out.println("选题后提交");
     	return new JsonResult(list);
+    }
+    @RequestMapping("doAddPaper")
+    @ResponseBody
+    public JsonResult doAddPaper(PaperInfo paperInfo) {
+    	int row = paperService.addPaper(paperInfo);
+    	System.out.println("添加问卷");
+    	return new JsonResult();
     }
     /**
      * 查找问卷数据
