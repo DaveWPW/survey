@@ -3,9 +3,11 @@
 <mapper namespace="com.dave.dao.PaperDao">
 	<insert id="addPaper" parameterType="com.dave.entity.Paper">
      	insert into su_paper
-      	(paper_name, paper_type, status, create_date)
+      	(paper_name, paper_type, paper_language, status, create_date
+      	, paper_title, greet, thank)
       	values
-		(#{paperName}, #{paperType}, #{status}, #{createDate})
+		(#{paperName}, #{paperType}, #{paperLanguage}, #{status}, #{createDate}
+		, #{paperTitle}, #{greet}, #{thank})
 	</insert>
 	<!-- <update id="updateQues" parameterType="com.dave.entity.Ques">
 		update su_ques set ques_name = #{quesName} where ques_id = #{quesId}

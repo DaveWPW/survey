@@ -11,7 +11,6 @@ import com.dave.common.vo.JsonResult;
 import com.dave.entity.PaperInfo;
 import com.dave.entity.QuesInfo;
 import com.dave.service.PaperService;
-import com.dave.service.QuesService;
 
 /**
  * 问卷控制层
@@ -64,8 +63,10 @@ public class PaperController {
     @ResponseBody
     public JsonResult doAddPaper(PaperInfo paperInfo) {
     	int row = paperService.addPaper(paperInfo);
-    	System.out.println("添加问卷");
-    	return new JsonResult();
+    	if(row == 1) {
+    		return new JsonResult("add succeed", row); 		
+    	}
+    	return new JsonResult("add failed");
     }
     /**
      * 查找问卷数据

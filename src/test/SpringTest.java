@@ -6,8 +6,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.dave.dao.QuesOptionDao;
+import com.dave.dao.PaperAllDao;
 import com.dave.dao.QuesDao;
 import com.dave.entity.QuesOption;
+import com.dave.entity.PaperAll;
 import com.dave.entity.Ques;
 
 /**
@@ -21,6 +23,8 @@ public class SpringTest extends SpringTestBase{
 	private QuesDao quesDao;
 	@Autowired
     private QuesOptionDao optionDao;
+	@Autowired
+	private PaperAllDao paperAllDao;
 	@Test
 	public void addQues(){
 		String[] options = {"a.星期一","b.星期三","c.星期五"};
@@ -41,5 +45,25 @@ public class SpringTest extends SpringTestBase{
 				System.out.println(rowOption);
 			}
 		}
+	}
+	@Test
+	public void addPaper(){
+		int row = 0;
+		Integer[] quesNum = {1,2,3};
+		Integer[] quesIds = {31,32,33};
+		Integer[] parentOptionId = null;
+		for(int i = 0; i < quesIds.length; i++) {
+			PaperAll paperAll = new PaperAll();
+			paperAll.setPaperId(3);
+			paperAll.setQuesNum(quesNum[i]);
+			paperAll.setQuesId(quesIds[i]);
+			if("02".equals("01")) {
+				paperAll.setParentOptionId(parentOptionId[i]);
+			} else {
+				paperAll.setParentOptionId(0);
+			}
+			row = paperAllDao.addPaperAll(paperAll);
+		}
+		System.out.println(row);
 	}
 }

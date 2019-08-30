@@ -1,38 +1,42 @@
 <!-- Horizontal Form -->
 <div class="box box-info">
-      <div class="box-header with-border">
-        <h3 class="box-title">问题编辑页面</h3>
+  <div class="box-header with-border">
+    <h3 class="box-title">问题编辑页面</h3>
+    <div class="box-tools">
+	  <div class="input-group input-group-sm" style="width: 100px;">
+		<button type="button" class="btn btn-default btn-add-option">添加问题</button>
+	  </div>
+	</div>
+  </div>
+</div>
+<!-- /.box-header -->
+<!-- form start -->
+<form class="form-horizontal">
+  <div class="box-body">
+    <div class="form-group">
+      <label for="quesName" class="col-sm-2 control-label">题目:</label>
+      <div class="col-sm-10">
+        <textarea id="quesName" style="width: 80%;height: 30%;"></textarea>
       </div>
-      <div>
-        <button id="addOption" style="display:none;" type="button" onclick="doAddOption()">添加选项</button>
-      </div>
-      <!-- /.box-header -->
-      <!-- form start -->
-      <form class="form-horizontal">
-        <div class="box-body">
-          <div class="form-group">
-            <label for="quesName" class="col-sm-2 control-label">题目:</label>
-            <div class="col-sm-10">
-              <textarea id="quesName" style="width: 80%;height: 30%;"></textarea>
-            </div>
-          </div>
-          <div id="optionDiv"></div>
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer">
-          <button type="button" class="btn btn-default btn-cancel">Cancel</button>
-          <button id="save" type="button" style="display:none;" class="btn btn-info pull-right btn-save">Save</button>
-        </div>
-        <!-- /.box-footer -->
-      </form>
     </div>
+    <div id="optionDiv"></div>
+  </div>
+  <!-- /.box-body -->
+  <div class="box-footer">
+    <button type="button" class="btn btn-default btn-cancel">Cancel</button>
+    <button type="button" class="btn btn-info pull-right btn-save">Save</button>
+  </div>
+  <!-- /.box-footer -->
+</form>
 <script type="text/javascript" src="bower_components/layer/layer.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	doInitFormData();
+	$(".box-tools").on("click", ".btn-add-option", doAddOption);
 	$(".box-footer")
 		.on("click", ".btn-cancel", doCancel)
 		.on("click", ".btn-save", doAddOrUpdate);
+	$("#optionDiv").on("click", ".btn-delete-option", doDeleteOption)
 });
 function doAddOption(){
 	var optionDiv = $("#optionDiv");
@@ -42,14 +46,13 @@ function doAddOption(){
 			"<div class='col-sm-10'>"+
 				"<input type='text' class='form-control optionContent' style='width: 80%;'>"+
 				"<input type='checkbox' class='is-blanks' value='1'>可填空"+
-				"<button type='button' style='margin-left: 65%;' onclick='doDeleteOption(this)'>删除</button>"+
+				"<button type='button' style='margin-left: 66%;' class='btn-delete-option'>删除</button>"+
 			"</div>"+
 		"</div>";
 	optionDiv.append(divs);
 }
-function doDeleteOption(btn){
-	console.log("doDeleteOption()");
-	btn.parentElement.parentElement.remove();
+function doDeleteOption(){
+	$(this).parent().parent().remove();
 } 
 //刷新数据,重定向Quesr页面
 function doCancel(){
@@ -132,22 +135,11 @@ function doAddOrUpdate(){
 	}
 }
 function doInitFormData(){
-	if($(".box-title").html() === "添加简答题" || $(".box-title").html() === "修改简答题"){
-		$("#addOption").hide();//隐藏添加选项按钮
-	}else{
-		$("#addOption").show();//显示添加选项按钮
-	}
-	if($(".box-title").html() === "查看单选题" || $(".box-title").html() === "查看多选题" 
-			|| $(".box-title").html() === "查看简答题"){
-		$("#save").hide();//隐藏保存按钮
-	}else{
-		$("#save").show();//显示保存按钮
-	}
     var data = $("#mainContentId").data("rowData");
     if(!data){
+    	doInitButtonStatus();
     	return;
     }
-	console.log("update");
 	$("#quesName").val(data.quesName);
 	for(var i = 0; i < data.options.length; i++){
 		doAddOption();
@@ -157,6 +149,29 @@ function doInitFormData(){
 		}else if(data.flags[i] === 0){
 			$("#optionDiv input[type='checkbox']").eq(i).prop("checked", false);
 		}
+	}
+	doInitButtonStatus();
+}
+function doInitButtonStatus(){
+	if($(".box-title").html() === "添加简答题" 
+			|| $(".box-title").html() === "修改简答题"
+			|| $(".box-title").html() === "查看单选题" 
+			|| $(".box-title").html() === "查看多选题" 
+			|| $(".box-title").html() === "查看简答题"){
+		$(".btn-add-option").hide();//隐藏添加选项按钮
+		if($(".box-title").html() === "查看单选题" 
+				|| $(".box-title").html() === "查看多选题" 
+				|| $(".box-title").html() === "查看简答题"){
+			$(".btn-delete-option").hide();//隐藏选项删除按钮
+			$(".btn-save").hide();//隐藏保存按钮
+		}else{
+			//$(".btn-delete-option").show();//显示选项删除按钮
+			$(".btn-save").show();//显示保存按钮
+		}
+	}else{
+		$(".btn-add-option").show();//显示添加选项按钮
+		$(".btn-delete-option").show();//显示选项删除按钮
+		$(".btn-save").show();//显示保存按钮
 	}
 }
 </script>
