@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dave.dao.QuesOptionDao">
-	<!-- <select id="findOptionByQues" parameterType="int" resultType="com.dave.entity.Option">
-	</select> -->
+<!-- 
+OPTION_ID	NUMBER(10,0)	No		1	
+QUES_ID	NUMBER(10,0)	Yes		2	
+OPTION_CONTENT	VARCHAR2(200 BYTE)	Yes		3	
+FLAG	NUMBER(10,0)	Yes		4	0：不可填空，1：可填空
+ -->
 	<insert id="addOption" parameterType="com.dave.entity.QuesOption">
      	insert into su_ques_option
       	(ques_id, option_content, flag)
