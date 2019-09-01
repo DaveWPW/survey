@@ -13,8 +13,6 @@ public class PaperInfo {
 	private Integer[] quesNum;
 	/**问卷名称*/
 	private Integer[] quesIds;
-	/**问题父级选项ID*/
-	private Integer[] parentOptionId;
 	/**问卷标题*/
 	private String paperTitle;
 	/**欢迎语句*/
@@ -57,12 +55,6 @@ public class PaperInfo {
 	}
 	public void setQuesIds(Integer[] quesIds) {
 		this.quesIds = quesIds;
-	}
-	public Integer[] getParentOptionId() {
-		return parentOptionId;
-	}
-	public void setParentOptionId(Integer[] parentOptionId) {
-		this.parentOptionId = parentOptionId;
 	}
 	public String getPaperTitle() {
 		return paperTitle;
