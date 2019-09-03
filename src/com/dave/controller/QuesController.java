@@ -74,6 +74,17 @@ public class QuesController {
     	return new JsonResult("delete failed");
     }
     /**
+     * 根据问题获取选项
+     * @param quesId
+     * @return
+     */
+    @RequestMapping("getQuesOption")
+    @ResponseBody
+    public JsonResult getQuesOption(int quesId) {
+    	QuesInfo quesInfo = quesService.getQuesOption(quesId);
+    	return new JsonResult(quesInfo);
+    }
+    /**
      * 修改问题
      * @param ques
      * @return
@@ -86,16 +97,5 @@ public class QuesController {
     		return new JsonResult("update succeed", row); 		
     	}
     	return new JsonResult("update failed");
-    }
-    /**
-     * 根据问题获取选项
-     * @param quesId
-     * @return
-     */
-    @RequestMapping("getQuesOption")
-    @ResponseBody
-    public JsonResult getQuesOption(int quesId) {
-    	QuesInfo quesInfo = quesService.getQuesOption(quesId);
-    	return new JsonResult(quesInfo);
     }
 }

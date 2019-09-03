@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dave.dao.QuesDao">
-<!-- 
-QUES_ID	NUMBER(10,0)	No		1	
-QUES_NAME	VARCHAR2(200 BYTE)	Yes		2	
-QUES_TYPE	VARCHAR2(20 BYTE)	Yes		3	01：单选题，02：多选题，03：填空题
-CREATE_DATE	DATE	Yes		4	
- -->
 	<insert id="addQues" parameterType="com.dave.entity.Ques">
      	insert into su_ques
       	(ques_name, ques_type, create_date)

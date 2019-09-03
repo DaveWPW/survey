@@ -12,7 +12,7 @@ public interface QuesOptionDao {
 	
 	int addOption(QuesOption option);
 	
-	@Delete("delete su_ques_option where ques_id = #{quesId}")
+	@Delete("delete from su_ques_option where ques_id = #{quesId}")
 	int deleteOption(@Param("quesId")int quesId);
 	
 	@Select("select * from su_ques_option where ques_id = #{quesId} order by option_content asc")

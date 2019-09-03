@@ -79,6 +79,24 @@ public class QuesServiceImpl implements QuesService {
 		return rows;
 	}
 	@Override
+	public QuesInfo getQuesOption(int quesId) {
+		Ques ques = quesDao.selectQuesById(quesId);
+		QuesInfo quesInfo = new QuesInfo();
+		quesInfo.setQuesId(quesId);
+		quesInfo.setQuesName(ques.getQuesName());
+		quesInfo.setQuesType(ques.getQuesType());
+		List<QuesOption> optionList = optionDao.selectOptionByQuesId(quesId);
+		String[] options = new String[optionList.size()];
+		Integer[] flags = new Integer[optionList.size()];
+		for(int i = 0; i < optionList.size(); i++) {
+			options[i] = optionList.get(i).getOptionContent();
+			flags[i] = optionList.get(i).getFlag();
+		}
+		quesInfo.setOptions(options);
+		quesInfo.setFlags(flags);
+		return quesInfo;
+	}
+	@Override
 	public int updateQues(QuesInfo quesInfo) {
 		Ques ques = new Ques();
 		ques.setQuesId(quesInfo.getQuesId());
@@ -96,23 +114,4 @@ public class QuesServiceImpl implements QuesService {
 		}
 		return row;
 	}
-	@Override
-	public QuesInfo getQuesOption(int quesId) {
-		Ques ques = quesDao.selectQuesById(quesId);
-		QuesInfo quesInfo = new QuesInfo();
-		quesInfo.setQuesId(ques.getQuesId());
-		quesInfo.setQuesName(ques.getQuesName());
-		quesInfo.setQuesType(ques.getQuesType());
-		List<QuesOption> optionList = optionDao.selectOptionByQuesId(quesId);
-		String[] options = new String[optionList.size()];
-		Integer[] flags = new Integer[optionList.size()];
-		for(int i = 0; i < optionList.size(); i++) {
-			options[i] = optionList.get(i).getOptionContent();
-			flags[i] = optionList.get(i).getFlag();
-		}
-		quesInfo.setOptions(options);
-		quesInfo.setFlags(flags);
-		return quesInfo;
-	}
-	
 }

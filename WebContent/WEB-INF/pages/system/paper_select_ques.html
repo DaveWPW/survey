@@ -32,7 +32,6 @@
 	    </table>
 	  </div>
 	  <!-- /.box-body -->
-	 
 	  <div id="pageId" class="box-footer clearfix"></div>
     </div>
     <!-- /.box -->
@@ -62,11 +61,11 @@ function doCancel(){
 		var url = "paper/doSubmitQues.do";
 		$.post(url, params, function(result){
 			//$("#mainContentId").data("ids", ids.toString());
-			$("#mainContentId").data("rowData", result.data);
+			$("#mainContentId").data("quesData", result.data);
 			$("#mainContentId").load("paper/doPaperEditUI.do");
 		});
 	}else{
-		$("#mainContentId").removeData("rowData");
+		$("#mainContentId").removeData("quesData");
 		$("#mainContentId").load("paper/doPaperEditUI.do");
 	}
 }
@@ -106,14 +105,14 @@ function doSetTableBodyRows(data){
 		//2.迭代data内容将数据追加到tbody中
 		for(var i in data){
 			var tr = $("<tr></tr>");
-			tr.data("rowData", data[i]);
+			tr.data("quesData", data[i]);
 			var tds = doCreateTds(data[i]);
 			tr.append(tds);
 			tBody.append(tr);
 		}
 	}else{
 		var tr = $("<tr></tr>");
-		tr.data("rowData", data);
+		tr.data("quesData", data);
 		var tds = doCreateTds(data);
 		tr.append(tds);
 		tBody.append(tr);
@@ -190,7 +189,7 @@ function doSubmitQues() {
 	$.post(url, params, function(result){
 		$("#mainContentId").removeData("ids");
 		$("#mainContentId").data("ids", ids.toString());
-		$("#mainContentId").data("rowData", result.data);
+		$("#mainContentId").data("quesData", result.data);
 		$("#mainContentId").load("paper/doPaperEditUI.do");
 	});
 }
@@ -200,7 +199,7 @@ function getQuesOption(quesId){
 	var url = "ques/getQuesOption.do";
 	var params = {"quesId" : quesId}
 	$.getJSON(url, params, function(result){
-		$("#mainContentId").data("rowData", result.data);
+		$("#mainContentId").data("quesData", result.data);
 		var url;
 		if(result.data.quesType === "01"){
 			title = "查看单选题";

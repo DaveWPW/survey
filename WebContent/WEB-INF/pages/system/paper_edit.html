@@ -54,7 +54,7 @@ $(document).ready(function(){
 	doInitFormData();
 	$(".box-tools").on("click", ".btn-select-ques", doSelectQuesUI);
 	$(".box-footer")
-		.on("click", ".btn-save", doSave)
+		.on("click", ".btn-save", doSaveOrUpdate)
 		.on("click", ".btn-cancel", doCancel);
 	$("#quesDivs")
 		.on("click", ".btn-delete", doDeleteQues)
@@ -68,7 +68,8 @@ function doSelectQuesUI(){
 }
 //刷新数据,重定向paper_list.html页面
 function doCancel(){
-	$("#mainContentId").removeData("rowData");
+	$("#mainContentId").removeData("paperData");
+	$("#mainContentId").removeData("quesData");
 	$("#mainContentId").removeData("ids");
 	$("#mainContentId").removeData("title");
 	$("#mainContentId").load("paper/doPaperListUI.do");
@@ -143,7 +144,7 @@ function doAddOption(options, optionId, type, quesDiv){
 			"<div class='form-group'>"+
 				"<label class='col-sm-2 control-label'></label>"+
 				"<div class='col-sm-10'>"+
-					"<span class='optionContent'>"+options+"</span>"+
+				"<input type='radio' class='optionId' value='"+optionId+"'><span class='optionContent'>"+options+"</span>"+
 				"</div>"+
 			"</div>";
 		quesDiv.append(optionDiv);
@@ -169,17 +170,28 @@ function doAddEsay(quesDiv){
 	quesDiv.append(optionDiv);
 }
 function doInitFormData(){
-	var data = $("#mainContentId").data("rowData");
+	doInitQuesDate();
+	doInitPaperDate();
+}
+function doInitQuesDate(){
+	//创建问卷时获取问题后的Data数据
+	var data = $("#mainContentId").data("quesData");
+	//console.log(data);
 	if(!data){
-    	return;
+		return;
     }
 	for(var a in data){
 		var quesInfo = data[a];
 		doAddQuesName(quesInfo.quesId);
 		$(".quesName").eq(a).html(quesInfo.quesName);
 		var quesDiv = $(".quesDiv").eq(a);
+		debugger;
 		for(var i = 0; i < quesInfo.options.length; i++){
 			doAddOption(quesInfo.options[i], quesInfo.optionIds[i], quesInfo.quesType, quesDiv);
+			if(quesInfo.flags[i] === 1){
+				var input = "<input type='text' class='flag' style='width: 70%;'>";
+				$("#quesDivs").find(".quesDiv").eq(a).find(".form-group").eq(i+1).find("div").eq(0).append(input);
+			}
 		}
 		if(quesInfo.quesType === "03"){
 			doAddEsay(quesDiv);
@@ -200,12 +212,24 @@ function autoAddNumber(){
 	}
 	number();
 }
-//保存操作
-function doSave(){
+//添加文本框
+function addTextBox(){
+	
+}
+//保存和修改操作
+function doSaveOrUpdate(){
+	var data = $("#mainContentId").data("paperData");
+	//console.log(data);
+	//debugger;
 	if(doValidated()){
 		var params = getDataParam();
-		console.log(params);
-		var url = "paper/doAddPaper.do";
+		if(data){
+			params.paperId = data.paperId;
+		}
+		//console.log(params);
+		var insertUrl = "paper/doAddPaper.do";
+		var updateUrl = "paper/doUpdatePaper.do";
+		var url = data ? updateUrl : insertUrl;
 		$.post(url, params, function(result){
 			if(result.state == 1){
 				alert(result.message);
@@ -220,12 +244,10 @@ function doSave(){
 function getDataParam(){
 	var quesNum = [];
 	$(".numberClass").each(function(){
-		console.log($(this).html());
 		quesNum.push($(this).html());
 	});
 	var quesIds = [];
 	$(".quesId").each(function(){
-		console.log($(this).val());
 		quesIds.push($(this).val());
 	});
 	var type;
@@ -276,72 +298,30 @@ function doValidated(){
 	}
 	return valid;
 }
-/* function changeLanguage(){
-	debugger;
-	var state = $(this).prop("checked");
-	var isEng = $("input[name='isEnglish']:checked").prop("checked");
-	var isCh = $("input[name='isChinese']:checked").prop("checked");
-	if(isEng == true){
-		$("#isChinese input[type='checkbox']").prop("checked", false);
-	}else if(isCh == true){
-		$("#isEnglish input[type='checkbox']").prop("checked", false);
+
+function doInitPaperDate(){
+	//修改问卷时根据ID获取问卷的Data数据
+	var data = $("#mainContentId").data("paperData");
+	if(!data){
+		return;
 	}
-	
-} */
+	$("#paperName").val(data.paperName);
+	$("#paperTitle").val(data.paperTitle);
+	$("#greet").val(data.greet);
+	$("#thank").val(data.thank);
+	if(data.paperLanguage === "eng"){
+		$("div input[name='paperLanguage']").eq(0).prop("checked", true);
+	}else if(data.paperLanguage === "ch"){
+		$("div input[name='paperLanguage']").eq(1).prop("checked", true);
+	}
+	var params = {"quesIds" : data.quesIds.toString()}
+	var url = "paper/doSubmitQues.do";
+	$.post(url, params, function(result){
+		$("#mainContentId").data("quesData", result.data);
+		doInitQuesDate();
+	});
+}
 //console.log(ids.toString());
 //alter(ids.toString());
 //debugger;
-/* function getQuesData(){
-	var options = [];
-	$(".optionContent").each(function(){
-		if($(this).val() != null){
-			options.push($(this).val());
-		}
-	});
-	var flags = [];
-	$("#addOption input[type='checkbox").each(function(){
-		if($(this).prop("checked")){
-			flags.push(1);
-		}else{
-			flags.push(0);
-		}
-	});
-	var type;
-	var title = $(".box-title").html();
-	if(title === "添加单选题" || title === "修改单选题"){
-		type = "01";
-	}else if(title === "添加多选题" || title === "修改多选题"){
-		type = "02";
-	}else if(title === "添加简答题" || title === "修改简答题"){
-		type = "03";
-	}
-	var params = {
-		"options" : options.toString(),
-		"flags" : flags.toString(),
-		"quesName" : $("#quesName").val(),
-		"quesType" : type,
-	}
-	return params;
-}
-//添加和修改
-function doAddOrUpdate(){
-	var rowData = $("#mainContentId").data("rowData");
-	var params = getQuesData();
-	console.log(params);
-	var insertUrl = "ques/doAddQues.do";
-	var updateUrl = "ques/doUpdateQues.do";
-	if(rowData){
-		params.quesId = rowData.quesId;
-	}
-	console.log(params);
-	var url = rowData ? updateUrl : insertUrl;
-	$.post(url, params, function(result){
-		if(result.state == 1){
-			alert(result.message);
-			doCancel();
-		}else{
-			alert(result.message);
-		}
-	})
-} */
 </script>

@@ -4,7 +4,7 @@
 	  <div class="box-header">
 	    <h3 class="box-title">问卷管理</h3>
 	    <div class="box-tools">
-		  <div class="input-group input-group-sm" style="width: 600px;">
+		  <div class="input-group input-group-sm" style="width: 400px;">
 		    <input type="text" name="table_search" id="searchNameId"
 				  class="form-control pull-right" placeholder="请输入问卷名称">
 			<div class="input-group-btn">
@@ -17,7 +17,6 @@
 		  </div>
 	    </div>
 	  </div>
-	  
 	  <!-- /.box-header -->
 	  <div class="box-body table-responsive no-padding">
 	    <table class="table table-hover">
@@ -26,7 +25,8 @@
 		      <th><input type="checkbox" id="checkAllId">全选</th>
 			  <th>问卷名称</th>
 			  <th>问题类型</th>
-			  <th>使用状态</th>
+			  <th>问卷语言</th>
+			  <th>当前状态</th>
 			  <th>创建日期</th>
 		    </tr>
 		  </thead>
@@ -34,7 +34,6 @@
 	    </table>
 	  </div>
 	  <!-- /.box-body -->
-	 
 	  <div id="pageId" class="box-footer clearfix"></div>
     </div>
     <!-- /.box -->
@@ -45,16 +44,17 @@
 <script type="text/javascript">
 $(function(){
 	//加载分页组件
-	/* $("#pageId").load("doPageUI.do", function(){
+	$("#pageId").load("doPageUI.do", function(){
 		//加载页面数据
 		doGetObjects();
-	}); */
+	});
 	$("#checkAllId").change(doChangeTBodyCheckBoxState);
 	$("#tbodyId").on("change", ".quesId", doChangeTHeadCheckBoxState);
 	$(".input-group-btn")
 		.on("click",".btn-search", doQueryObjects)
 		.on("click",".btn-create-only", doLoadEditUI)
 		.on("click",".btn-delete", doDeletePaper);
+	$("#tbodyId").on("click", ".btn-status", doUpdateStatus);
 });
 //页面显示数据操作================================================================
 //处理查询按钮事件
@@ -68,7 +68,7 @@ function doGetObjects(){
 	var pageCurrent = $("#pageId").data("pageCurrent");
 	if(!pageCurrent)pageCurrent = 1;
 	var params = {"pageCurrent" : pageCurrent}
-	params.quesName = $("#searchNameId").val().trim();
+	params.paperName = $("#searchNameId").val().trim();
 	$.getJSON(url, params, function(result){
 		doHandleResponseResult(result);
 	});
@@ -106,24 +106,34 @@ function doSetTableBodyRows(data){
 	}
 }
 function doCreateTds(data){
-	console.log(data);
+	//console.log(data);
 	var type;
 	if(data.paperType === "01"){
 		type = "单张方式";
 	}else if(data.paperType === "02"){
-		type = "跳转方式";
+		type = "分支方式";
 	}
+	var showStatus;
 	var status;
-	if(data.status === 0){
-		status = "禁用";
-	}else if(data.status === 1){
+	if(data.status === 9){
+		showStatus = "禁用";
 		status = "使用";
+	}else if(data.status === 1){
+		showStatus = "使用";
+		status = "禁用";
+	}
+	var language;
+	if(data.paperLanguage === "eng"){
+		language = "英文";
+	}else if(data.paperLanguage === "ch"){
+		language = "中文";
 	}
 	var tds=
 		"<td><input type='checkbox' name='paperId' class='paperId' value='"+data.paperId+"'><span class='numberClass'></span></td>"+
-	    "<td align='center'><input type='submit' style='width:500px;' value='"+data.paperName+"' onclick='getPaperAll("+data.paperId+")'></td>"+
+	    "<td align='center'><input type='submit' style='width:300px;' value='"+data.paperName+"' onclick='doGetPaperQues("+data.paperId+")'></td>"+
 	    "<td align='center'>"+type+"</td>"+
-	    "<td align='center'>"+status+"</td>"+
+	    "<td align='center'>"+language+"</td>"+
+	    "<td align='center'>"+showStatus+"：<input type='submit' value='"+status+"' class='btn-status'></td>"+
 	    "<td align='center'>"+data.createDate+"</td>";
     return tds;
 }
@@ -199,29 +209,63 @@ function doLoadEditUI(){
 	doLoadPage(title, url);
 }
 //修改操作
-/* function getQuesOption(quesId){
-	console.log(quesId);
-	var url = "ques/getQuesOption.do";
-	var params = {"quesId" : quesId}
+function doGetPaperQues(paperId){
+	var url = "paper/doGetPaperQues.do";
+	var params = {"paperId" : paperId}
 	$.getJSON(url, params, function(result){
-		console.log(result.data);
-		$("#mainContentId").data("rowData", result.data);
+		$("#mainContentId").data("paperData", result.data);
 		var url;
-		if(result.data.quesType === "01"){
-			title = "修改单选题";
-		}else if(result.data.quesType === "02"){
-			title = "修改多选题";
-		}else if(result.data.quesType === "03"){
-			title = "修改简答题";
+		if(result.data.paperType === "01"){
+			title = "修改单张问卷";
 		}
-		url = "ques/doQuesEditUI.do"
+		url = "paper/doPaperEditUI.do"
         doLoadPage(title, url);
 	});
-} */
+}
 //跳转操作
 function doLoadPage(title, url){
 	$("#mainContentId").load(url, function(){
 		$(".box-title").html(title);
 	}) 
+}
+//问卷状态更新操作
+function doUpdateStatus(){
+	var paperId = $(this).parents('tr').find("td").eq(0).find("input").val();
+	var type = $(this).parents('tr').find("td").eq(2).text();
+	var language = $(this).parents('tr').find("td").eq(3).text();
+	var status = $(this).val();
+	var paperType;
+	if(type === "单张方式"){
+		paperType = "01";
+	}else if(type === "分支方式"){
+		paperType = "02";
+	}
+	var paperLanguage;
+	if(language === "英文"){
+		paperLanguage = "eng";
+	}else if(language === "中文"){
+		paperLanguage = "ch";
+	}
+	var paperStatus;
+	if(status === "禁用"){
+		paperStatus = 9;
+	}else if(status === "使用"){
+		paperStatus = 1;
+	}
+	var params = {
+			"paperId" : paperId,
+			"paperType" : paperType,
+			"paperLanguage" : paperLanguage,
+			"status" : paperStatus,
+			}
+	var url = "paper/doUpdateStatus.do";
+	$.post(url, params, function(result){
+		if(result.state == 1){
+			doGetObjects();//重新页面加载
+			alert(result.message);
+		}else{
+			alert(result.message);
+		}
+	});
 }
 </script>

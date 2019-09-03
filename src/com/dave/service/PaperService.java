@@ -17,4 +17,10 @@ public interface PaperService {
 	
 	int deletePaper(Integer... paperIds);
 	
+	int updateStatus(Paper paper);
+	
+	PaperInfo getPaperQues(int paperId);
+	
+	int updatePaper(PaperInfo paperInfo);
+	
 }

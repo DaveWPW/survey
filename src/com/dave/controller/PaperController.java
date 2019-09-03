@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dave.common.vo.JsonResult;
+import com.dave.common.vo.PageObject;
+import com.dave.entity.Paper;
 import com.dave.entity.PaperInfo;
 import com.dave.entity.QuesInfo;
 import com.dave.service.PaperService;
@@ -41,7 +43,7 @@ public class PaperController {
 	}
     /**
      * 选择问题页面
-     * @return
+     * @return system/paper_select_ques
      */
     @RequestMapping("doSelectQuesUI")
 	public String doSelectQuesUI(){
@@ -49,7 +51,6 @@ public class PaperController {
 	}
     /**
      * 提交选取问题
-     * 
      * @param paperIds
      * @return
      */
@@ -59,6 +60,11 @@ public class PaperController {
     	List<QuesInfo> list = paperService.selectQuesByIds(quesIds);
     	return new JsonResult(list);
     }
+    /**
+     * 添加问卷
+     * @param paperInfo
+     * @return
+     */
     @RequestMapping("doAddPaper")
     @ResponseBody
     public JsonResult doAddPaper(PaperInfo paperInfo) {
@@ -70,12 +76,14 @@ public class PaperController {
     }
     /**
      * 查找问卷数据
+     * @param pageCurrent, paperName
      * @return
      */
     @RequestMapping("doFindPaperList")
     @ResponseBody
     public JsonResult doFindPaperList(int pageCurrent, String paperName) {
-    	return new JsonResult(paperService.findPaperList(pageCurrent, paperName));
+    	PageObject<Paper> paperList = paperService.findPaperList(pageCurrent, paperName);
+    	return new JsonResult(paperList);
     }
     /**
      * 删除问卷
@@ -90,5 +98,44 @@ public class PaperController {
     		return new JsonResult("delete succeed", row); 		
     	}
     	return new JsonResult("delete failed");
+    }
+    /**
+     * 更改问卷状态
+     * @param paper
+     * @return
+     */
+    @RequestMapping("doUpdateStatus")
+    @ResponseBody
+    public JsonResult doUpdateStatus(Paper paper) {
+    	int row = paperService.updateStatus(paper);
+    	if(row > 0) {
+    		return new JsonResult("update succeed", row); 		
+    	}
+    	return new JsonResult("update failed");
+    }
+    /**
+     * 根据问卷获取问题
+     * @param quesId
+     * @return
+     */
+    @RequestMapping("doGetPaperQues")
+    @ResponseBody
+    public JsonResult doGetPaperQues(int paperId) {
+    	PaperInfo paperInfo = paperService.getPaperQues(paperId);
+    	return new JsonResult(paperInfo);
+    }
+    /**
+     * 
+     * @param paperInfo
+     * @return
+     */
+    @RequestMapping("doUpdatePaper")
+    @ResponseBody
+    public JsonResult doUpdatePaper(PaperInfo paperInfo) {
+    	int row = paperService.updatePaper(paperInfo);
+    	if(row == 1) {
+    		return new JsonResult("update succeed", row); 		
+    	}
+    	return new JsonResult("update failed");
     }
 }

@@ -57,12 +57,7 @@ public class SpringTest extends SpringTestBase{
 			paperAll.setPaperId(3);
 			paperAll.setQuesNum(quesNum[i]);
 			paperAll.setQuesId(quesIds[i]);
-			if("02".equals("01")) {
-				paperAll.setParentOptionId(parentOptionId[i]);
-			} else {
-				paperAll.setParentOptionId(0);
-			}
-			row = paperAllDao.addPaperAll(paperAll);
+			row = paperAllDao.addPaperQues(paperAll);
 		}
 		System.out.println(row);
 	}

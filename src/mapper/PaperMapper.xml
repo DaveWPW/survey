@@ -1,17 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dave.dao.PaperDao">
-<!-- 
-PAPER_ID	NUMBER(10,0)	No		1	
-PAPER_NAME	VARCHAR2(200 BYTE)	Yes		2	调查问卷名称
-PAPER_TYPE	VARCHAR2(20 BYTE)	Yes		3	01：整张方式
-PAPER_LANGUAGE	VARCHAR2(20 BYTE)	Yes		4	语言
-STATUS	NUMBER(10,0)	Yes		5	1：使用，9：禁用
-CREATE_DATE	DATE	Yes		6	
-PAPER_TITLE	VARCHAR2(200 BYTE)	Yes		7	调查问卷标题
-GREET	VARCHAR2(200 BYTE)	Yes		8	欢迎语句
-THANK	VARCHAR2(200 BYTE)	Yes		9	感谢语句
- -->
 	<insert id="addPaper" parameterType="com.dave.entity.Paper">
      	insert into su_paper
       	(paper_name, paper_type, paper_language, status, create_date
@@ -20,19 +9,26 @@ THANK	VARCHAR2(200 BYTE)	Yes		9	感谢语句
 		(#{paperName}, #{paperType}, #{paperLanguage}, #{status}, #{createDate}
 		, #{paperTitle}, #{greet}, #{thank})
 	</insert>
-	<!-- <update id="updateQues" parameterType="com.dave.entity.Ques">
-		update su_ques set ques_name = #{quesName} where ques_id = #{quesId}
-	</update> -->
-	<!-- <select id="findQuesList" resultType="com.dave.entity.Ques">
+	<select id="findPaperList" resultType="com.dave.entity.Paper">
 		select * from 
 		(select tt.*, rownum as rowno from 
-		(select * from su_ques 
-		<if test="quesName != null and '' != quesName">
-			where ques_name like concat(concat('%', #{quesName}), '%') 
+		(select * from su_paper 
+		<if test="paperName != null and '' != paperName">
+			where paper_name like concat(concat('%', #{paperName}), '%') 
 		</if>
 		order by create_date desc
 		) tt
 		where rownum <![CDATA[<= ]]> #{pageSize}) 
 		table_alias where table_alias.rowno > #{startIndex}
-	</select> -->
+	</select>
+	<update id="updateAllStatus" parameterType="com.dave.entity.Paper">
+		update su_paper set status = 9 
+		where paper_id in(
+		select paper_id from su_paper where paper_type = #{paperType} and paper_language = #{paperLanguage} and status = #{status})
+	</update>
+	<update id="updatePaper" parameterType="com.dave.entity.Paper">
+		update su_paper set paper_name = #{paperName}, paper_language = #{paperLanguage}
+      	, paper_title = #{paperTitle}, greet = #{greet}, thank = #{thank} 
+		where paper_id = #{paperId}
+	</update>
 </mapper>

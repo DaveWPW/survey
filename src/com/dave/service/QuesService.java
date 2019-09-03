@@ -20,7 +20,7 @@ public interface QuesService {
 	
 	int deleteQues(Integer... quesIds);
 	
-	int updateQues(QuesInfo quesInfo);
-	
 	QuesInfo getQuesOption(int quesId);
+	
+	int updateQues(QuesInfo quesInfo);
 }

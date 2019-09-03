@@ -27,12 +27,12 @@ public interface QuesDao {
 	@Select("select max(ques_id) as ques_id from su_ques")
 	int selectQuesId();
 	
-	@Delete("delete su_ques where ques_id = #{quesId}")
+	@Delete("delete from su_ques where ques_id = #{quesId}")
 	int deleteQues(@Param("quesId")int quesId);
-	
-	int updateQues(Ques ques);
 	
 	@Select("select * from su_ques where ques_id = #{quesId}")
 	Ques selectQuesById(@Param("quesId")int quesId);
+	
+	int updateQues(Ques ques);
 	
 }
