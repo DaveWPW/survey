@@ -1,4 +1,4 @@
-package com.dave.entity;
+package com.dave.entity.vo;
 
 public class PaperInfo {
 	/**问卷ID*/

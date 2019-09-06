@@ -2,7 +2,7 @@ package com.dave.service;
 
 import com.dave.common.vo.PageObject;
 import com.dave.entity.Ques;
-import com.dave.entity.QuesInfo;
+import com.dave.entity.vo.QuesInfo;
 
 /**
  * Ques业务层接口

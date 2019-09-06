@@ -13,11 +13,11 @@ import com.dave.dao.PaperQuesDao;
 import com.dave.dao.PaperDao;
 import com.dave.dao.QuesDao;
 import com.dave.entity.QuesOption;
+import com.dave.entity.vo.PaperInfo;
+import com.dave.entity.vo.QuesInfo;
 import com.dave.entity.Paper;
 import com.dave.entity.PaperQues;
-import com.dave.entity.PaperInfo;
 import com.dave.entity.Ques;
-import com.dave.entity.QuesInfo;
 import com.dave.service.PaperService;
 
 @Service
@@ -55,6 +55,12 @@ public class PaperServiceImpl implements PaperService {
 			quesList.add(quesInfo);
 		}
 		return quesList;
+	}
+	
+	@Override
+	public int checkoutPaperName(String paperName, String paperLanguage) {
+		int row = paperDao.checkoutPaperName(paperName, paperLanguage);
+		return row;
 	}
 	
 	@Override
@@ -114,16 +120,16 @@ public class PaperServiceImpl implements PaperService {
 
 	@Override
 	public int updateStatus(Paper paper) {
-		int row = 0;
-		if(paper.getStatus() == 1){
-			//先把所有同类型的问卷禁用
-			row = paperDao.updateAllStatus(paper);
-			//更新成使用状态
-			row = paperDao.updateStatus(paper);
-		} else {
-			//更新成禁用状态
-			row = paperDao.updateStatus(paper);
-		}
+//		int row = 0;
+//		if(paper.getStatus() == 1){
+//			//先把所有同类型的问卷禁用
+//			row = paperDao.updateAllStatus(paper);
+//			//更新成使用状态
+//			row = paperDao.updateStatus(paper);
+//		} else {
+//			//更新成禁用状态
+//		}
+		int row = paperDao.updateStatus(paper);
 		return row;
 	}
 

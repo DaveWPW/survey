@@ -63,8 +63,24 @@ $(document).ready(function(){
 });
 //跳转选择题目操作
 function doSelectQuesUI(){
-	$("#mainContentId").load("paper/doSelectQuesUI.do");
+	var paperData = $("#mainContentId").data("paperData");
+	var data = {
+		"paperId" : paperData.paperId,
+		"paperName" : $("#paperName").val(),
+		"paperLanguage" : doGetLanguage(),
+		"paperTitle" : $("#paperTitle").val(),
+		"greet" : $("#greet").val(),
+		"thank" : $("#thank").val(),
+	}
+	$("#mainContentId").removeData("paperData");
+	$("#mainContentId").data("paperData", data);
+	var quesIds = [];
+	$(".quesId").each(function(){
+		quesIds.push($(this).val());
+	});
+	$("#mainContentId").data("ids", quesIds);
 	$("#mainContentId").data("title", $(".box-title").html());
+	$("#mainContentId").load("paper/doSelectQuesUI.do");
 }
 //刷新数据,重定向paper_list.html页面
 function doCancel(){
@@ -138,13 +154,14 @@ function doAddQuesName(quesId){
     	"</div>";
     quesDivs.append(quesNameDiv);
 }
-function doAddOption(options, optionId, type, quesDiv){
+function doAddOption(options, optionId, type, quesDiv, quesId, flag){
 	if(type === "01"){
 		var optionDiv = 
 			"<div class='form-group'>"+
 				"<label class='col-sm-2 control-label'></label>"+
 				"<div class='col-sm-10'>"+
-				"<input type='radio' class='optionId' value='"+optionId+"'><span class='optionContent'>"+options+"</span>"+
+					"<input type='radio' class='optionId' name='optionName"+quesId+"' value='"+optionId+"'><span class='optionContent'>"+options+"</span>"+
+					"<input type='text' class='flag' value='"+flag+"' style='width: 30%; display:none;'>"+
 				"</div>"+
 			"</div>";
 		quesDiv.append(optionDiv);
@@ -154,6 +171,7 @@ function doAddOption(options, optionId, type, quesDiv){
 				"<label class='col-sm-2 control-label'></label>"+
 				"<div class='col-sm-10'>"+
 					"<input type='checkbox' class='optionId' value='"+optionId+"'><span class='optionContent'>"+options+"</span>"+
+					"<input type='text' class='flag' value='"+flag+"' style='width: 30%; display:none;'>"+
 				"</div>"+
 			"</div>";
 		quesDiv.append(optionDiv);
@@ -164,7 +182,7 @@ function doAddEsay(quesDiv){
 		"<div class='form-group'>"+
 			"<label class='col-sm-2 control-label'></label>"+
 			"<div class='col-sm-10'>"+
-				"<textarea class='esayResponse' style='width: 50%;height: 30%;'></textarea>"+
+				"<textarea class='esayResult' style='width: 50%;height: 30%;'></textarea>"+
 			"</div>"+
 		"</div>";
 	quesDiv.append(optionDiv);
@@ -185,19 +203,20 @@ function doInitQuesDate(){
 		doAddQuesName(quesInfo.quesId);
 		$(".quesName").eq(a).html(quesInfo.quesName);
 		var quesDiv = $(".quesDiv").eq(a);
-		debugger;
 		for(var i = 0; i < quesInfo.options.length; i++){
-			doAddOption(quesInfo.options[i], quesInfo.optionIds[i], quesInfo.quesType, quesDiv);
-			if(quesInfo.flags[i] === 1){
-				var input = "<input type='text' class='flag' style='width: 70%;'>";
-				$("#quesDivs").find(".quesDiv").eq(a).find(".form-group").eq(i+1).find("div").eq(0).append(input);
-			}
+			doAddOption(quesInfo.options[i], quesInfo.optionIds[i], quesInfo.quesType, quesDiv, quesInfo.quesId, quesInfo.flags[i]);
 		}
 		if(quesInfo.quesType === "03"){
 			doAddEsay(quesDiv);
 		}
 	}
 	autoAddNumber();
+	$(".flag").each(function(){
+		if($(this).val() == 1){
+			$(this).show();//显示
+			$(this).val("");
+		}
+	});
 	var title = $("#mainContentId").data("title");
 	$(".box-title").html(title);
 }
@@ -212,21 +231,14 @@ function autoAddNumber(){
 	}
 	number();
 }
-//添加文本框
-function addTextBox(){
-	
-}
 //保存和修改操作
 function doSaveOrUpdate(){
 	var data = $("#mainContentId").data("paperData");
-	//console.log(data);
-	//debugger;
 	if(doValidated()){
 		var params = getDataParam();
 		if(data){
 			params.paperId = data.paperId;
 		}
-		//console.log(params);
 		var insertUrl = "paper/doAddPaper.do";
 		var updateUrl = "paper/doUpdatePaper.do";
 		var url = data ? updateUrl : insertUrl;
@@ -251,7 +263,7 @@ function getDataParam(){
 		quesIds.push($(this).val());
 	});
 	var type;
-	if($(".box-title").html() === "创建单张问卷"){
+	if($(".box-title").html() === "创建单张问卷" || $(".box-title").html() === "修改单张问卷"){
 		type = "01";
 	}
 	var params = {
@@ -314,6 +326,10 @@ function doInitPaperDate(){
 	}else if(data.paperLanguage === "ch"){
 		$("div input[name='paperLanguage']").eq(1).prop("checked", true);
 	}
+	var ids = $("#mainContentId").data("ids");
+	if(ids){
+		return;
+	}
 	var params = {"quesIds" : data.quesIds.toString()}
 	var url = "paper/doSubmitQues.do";
 	$.post(url, params, function(result){
@@ -321,7 +337,7 @@ function doInitPaperDate(){
 		doInitQuesDate();
 	});
 }
-//console.log(ids.toString());
-//alter(ids.toString());
+//console.log();
+//alert();
 //debugger;
 </script>

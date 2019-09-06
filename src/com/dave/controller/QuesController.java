@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dave.common.vo.JsonResult;
-import com.dave.entity.QuesInfo;
+import com.dave.entity.vo.QuesInfo;
 import com.dave.service.QuesService;
 
 /**

@@ -21,11 +21,11 @@
 		where rownum <![CDATA[<= ]]> #{pageSize}) 
 		table_alias where table_alias.rowno > #{startIndex}
 	</select>
-	<update id="updateAllStatus" parameterType="com.dave.entity.Paper">
+	<!-- <update id="updateAllStatus" parameterType="com.dave.entity.Paper">
 		update su_paper set status = 9 
 		where paper_id in(
 		select paper_id from su_paper where paper_type = #{paperType} and paper_language = #{paperLanguage} and status = #{status})
-	</update>
+	</update> -->
 	<update id="updatePaper" parameterType="com.dave.entity.Paper">
 		update su_paper set paper_name = #{paperName}, paper_language = #{paperLanguage}
       	, paper_title = #{paperTitle}, greet = #{greet}, thank = #{thank} 

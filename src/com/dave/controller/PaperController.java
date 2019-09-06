@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dave.common.vo.JsonResult;
 import com.dave.common.vo.PageObject;
 import com.dave.entity.Paper;
-import com.dave.entity.PaperInfo;
-import com.dave.entity.QuesInfo;
+import com.dave.entity.vo.PaperInfo;
+import com.dave.entity.vo.QuesInfo;
 import com.dave.service.PaperService;
 
 /**
@@ -68,9 +68,16 @@ public class PaperController {
     @RequestMapping("doAddPaper")
     @ResponseBody
     public JsonResult doAddPaper(PaperInfo paperInfo) {
+    	if(paperInfo == null) {
+    		return new JsonResult("参数对象为空");
+    	}
+    	int rowName = paperService.checkoutPaperName(paperInfo.getPaperName(), paperInfo.getPaperLanguage());
+    	if(rowName > 0) {
+    		return new JsonResult("该语言的问卷名称已存在！！");
+    	}
     	int row = paperService.addPaper(paperInfo);
     	if(row == 1) {
-    		return new JsonResult("add succeed", row); 		
+    		return new JsonResult("add succeed", row);
     	}
     	return new JsonResult("add failed");
     }

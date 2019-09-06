@@ -11,6 +11,9 @@ import com.dave.entity.Paper;
 
 public interface PaperDao {
 	
+	@Select("select count(*) from su_paper where paper_name=#{paperName} and paper_language=#{paperLanguage}")
+	int checkoutPaperName(@Param("paperName")String paperName, @Param("paperLanguage")String paperLanguage);
+	
 	int addPaper(Paper paper);
 	
 	@Select("select max(paper_id) as paper_id from su_paper")
@@ -28,10 +31,14 @@ public interface PaperDao {
 	@Update("update su_paper set status = #{status} where paper_id = #{paperId}")
 	int updateStatus(Paper paper);
 	
-	int updateAllStatus(Paper paper);
+//	int updateAllStatus(Paper paper);
 	
 	@Select("select * from su_paper where paper_id = #{paperId}")
 	Paper selectPaperById(@Param("paperId")int paperId);
 	
 	int updatePaper(Paper paper);
+	
+	@Select("select * from su_paper where paper_name=#{paperName} and paper_language=#{paperLanguage} and status = 1")
+	Paper findStartPaper(@Param("paperName")String paperName, @Param("paperLanguage")String paperLanguage);
+	
 }

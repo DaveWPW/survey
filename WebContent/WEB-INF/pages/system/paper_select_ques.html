@@ -57,10 +57,9 @@ $(function(){
 function doCancel(){
 	var ids = $("#mainContentId").data("ids");
 	if(ids){
-		var params = {"quesIds" : ids}
+		var params = {"quesIds" : ids.toString()}
 		var url = "paper/doSubmitQues.do";
 		$.post(url, params, function(result){
-			//$("#mainContentId").data("ids", ids.toString());
 			$("#mainContentId").data("quesData", result.data);
 			$("#mainContentId").load("paper/doPaperEditUI.do");
 		});
@@ -196,10 +195,11 @@ function doSubmitQues() {
 //================================================================
 //点击查看题目操作
 function getQuesOption(quesId){
+	console.log(quesId);
 	var url = "ques/getQuesOption.do";
 	var params = {"quesId" : quesId}
 	$.getJSON(url, params, function(result){
-		$("#mainContentId").data("quesData", result.data);
+		$("#mainContentId").data("rowData", result.data);
 		var url;
 		if(result.data.quesType === "01"){
 			title = "查看单选题";
@@ -218,4 +218,7 @@ function doLoadPage(title, url){
 		$(".box-title").html(title);
 	}) 
 }
+//console.log();
+//alert();
+//debugger;
 </script>

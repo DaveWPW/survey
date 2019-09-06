@@ -1,7 +1,9 @@
 package com.dave.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 /**
  * 匿名页面控制层
  * 
@@ -27,12 +29,11 @@ public class PageController {
 	public String doPageUI(){
 		return "common/page";
 	}
-	/**
-	 * 调查问卷页面
-	 * @return survey_paper
-	 */
-	@RequestMapping("doPaperUI")
-	public String doPagerUI(){
-		return "survey_paper";
+	
+	@RequestMapping("doSurveyUI")
+	public String doSurveyUI(String name, String language, Model model) {
+		model.addAttribute("language", language);
+		model.addAttribute("name", name);
+		return "survey";
 	}
 }

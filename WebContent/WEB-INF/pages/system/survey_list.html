@@ -1,0 +1,32 @@
+<form class="form-horizontal">
+  <!-- <div class="box-body">
+  </div> -->
+  <!-- /.box-body -->
+  <div class="box-footer">
+    <div class="box-body">
+	  <div class="form-group">
+		问卷名称：
+	    <input type="textr" id="paperName" style="width: 30%;" placeholder="请用输入问卷名称">
+	  </div>
+	  <div class="form-group">
+		问卷语言选择：
+	    <input type="radio" name="paperLanguage" value="ch"><span>中文</span>
+		<input type="radio" name="paperLanguage" value="eng"><span>英文</span>
+	  </div>
+    </div>
+    <button type="button" class="btn btn-info pull-right btn-submit">提交</button>
+  </div>
+  <!-- /.box-footer -->
+</form>
+<!-- /.row -->
+<script type="text/javascript">
+$(function(){
+	$(".box-footer").on("click",".btn-submit", doSubmit);
+});
+function doSubmit(){
+	var paperLanguage = $("div input[name='paperLanguage']:checked").val();
+	var paperName = $("#paperName").val();
+	var url = "doSurveyUI.do?name="+paperName+"&language="+paperLanguage;
+	$("#mainContentId").load(url);
+}
+</script>

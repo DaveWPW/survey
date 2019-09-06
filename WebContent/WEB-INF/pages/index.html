@@ -36,6 +36,7 @@
           <ul class="treeview-menu">
             <li><a id="load-ques-id">问题管理</a></li>
             <li><a id="load-paper-id">问卷管理</a></li>
+            <li><a id="load-survey-id">问卷测试</a></li>
           </ul>
         </li>
       </ul>
@@ -64,6 +65,7 @@
 $(function(){
 	doLoadUI("load-ques-id", "ques/doQuesListUI.do");
 	doLoadUI("load-paper-id", "paper/doPaperListUI.do");
+	doLoadUI("load-survey-id", "survey/doSurveyListUI.do");
 })
 function doLoadUI(id, url){
 	$("#"+id).click(function(){
