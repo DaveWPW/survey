@@ -6,7 +6,12 @@
 </head>
 <body>
   <input id="paperLanguage" type="hidden" th:value="${language}"/>
-  <input id="paperName" type="hidden" th:value="${name}"/>
+  <input id="paperName" type="hidden" th:value="${paperName}"/>
+  <input id="mobile" type="hidden" th:value="${mobile}"/>
+  <input id="cli" type="hidden" th:value="${cli}"/>
+  <input id="agentId" type="hidden" th:value="${agentId}"/>
+  <input id="startTime" type="hidden" th:value="${startTime}"/>
+  <input id="url" type="hidden" th:value="${url}"/>
   <div id="paperDiv"></div>
 </body>
 <div class="box-button">
@@ -42,8 +47,9 @@ function doGetObjects(){
 function doInitPaperDate(data){
 	var paperDiv = $("#paperDiv");
 	var paper =
-		"<div id='paperId' style='display: none;' value='"+data.paperId+"'></div>"+
-		"<div id='paperName' style='display: none;' value='"+data.paperName+"'></div>"+
+		"<input id='paperId' style='display: none;' value='"+data.paperId+"'>"+
+		"<input id='paperName' style='display: none;' value='"+data.paperName+"'>"+
+		"<input id='paperType' style='display: none;' value='"+data.paperType+"'>"+
 		"<div id='paperTitle'><h1>"+data.paperTitle+"</h1></div>"+
 		"<div id='greet'><h2>"+data.greet+"</h2></div>"+
 		"<div id='quesDivs'></div>"+
@@ -135,12 +141,13 @@ function buttonStatus(){
 		$(".btn-submit").html("Submit");
 	}
 }
-function doSubmit(){
-	var quesNum = [];
+function getSubmitData(){
+	var params;
+	var valid = true;
+	var quesNums = [];
 	var quesIds = [];
 	var quesTypes = [];
 	var optionCons = [];
-	var valid = true;
 	$(".quesDiv").each(function(){
 		var num = $(this).find(".form-group").eq(0).find("div").eq(0).find(".numberClass").eq(0).html();
 		console.log("num = "+num);
@@ -149,16 +156,14 @@ function doSubmit(){
 		var quesType = $(this).find(".form-group").eq(0).find("div").eq(0).find("input").eq(1).val();
 		if(quesType === "01"){
 			var optionId = $("div input[name='optionName"+quesId+"']:checked").val();
-			//checkoutSubmit(optionId, num);
 			if(optionId == null || optionId == ""){
 				alert("请为第"+num+"题选择！");
 				valid = false;
 				return;
 			}
-			//console.log("optionId = "+optionId);
+			console.log("optionId = "+optionId);
 			var optionCon = $("div input[name='optionName"+quesId+"']:checked").parent().find(".optionContent").html();
 			var flag = $("div input[name='optionName"+quesId+"']:checked").parent().find(".flag").val();
-			//checkoutSubmit(flag, num);
 			if(flag == null || flag == ""){
 				alert("请为第"+num+"题选项填写内容！");
 				valid = false;
@@ -167,25 +172,21 @@ function doSubmit(){
 			if(flag != 0){
 				optionCon = optionCon + flag;
 			}
-			//console.log("optionCon = "+optionCon);
-			quesNum.push(num);
+			console.log("optionCon = "+optionCon);
+			quesNums.push(num);
 			quesIds.push(quesId);
 			quesTypes.push(quesType);
 			optionCons.push(optionCon);
 		}else if(quesType === "02"){
+			if($("div input[type='checkbox']:checked").length == 0){
+				alert("请为第"+num+"题选择！");
+				valid = false;
+				return;
+			}
 			$("div input[type='checkbox']").each(function(){
 				if($(this).prop("checked")){
-					var optionId = $(this).val();
-					//checkoutSubmit(optionId, num);
-					if(optionId == null || optionId == ""){
-						alert("请为第"+num+"题选择！");
-						valid = false;
-						return;
-					}
-					//console.log("optionId = "+optionId);
 					var optionCon = $(this).parent().find(".optionContent").html();
 					var flag = $(this).parent().find(".flag").val();
-					//checkoutSubmit(flag, num);
 					if(flag == null || flag == ""){
 						alert("请为第"+num+"题选项填写内容！");
 						valid = false;
@@ -194,8 +195,8 @@ function doSubmit(){
 					if(flag != 0){
 						optionCon = optionCon + flag;
 					}
-					//console.log("optionCon = "+optionCon);
-					quesNum.push(num);
+					console.log("optionCon = "+optionCon);
+					quesNums.push(num);
 					quesIds.push(quesId);
 					quesTypes.push(quesType);
 					optionCons.push(optionCon);
@@ -203,27 +204,49 @@ function doSubmit(){
 			});
 		}else if(quesType === "03"){
 			var esayCon = $(this).find(".esayResult").val();
-			//console.log("esay = "+esayCon);
-			//checkoutSubmit(esayCon, num);
+			console.log("esay = "+esayCon);
 			if(esayCon == null || esayCon == ""){
 				alert("请为第"+num+"题填写内容！");
 				valid = false;
 				return;
 			}
-			quesNum.push(num);
+			quesNums.push(num);
 			quesIds.push(quesId);
 			quesTypes.push(quesType);
 			optionCons.push(esayCon);
 		}
 	});
 	if(valid){
-		console.log("quesNum[] = "+quesNum);
-		console.log("quesIds[] = "+quesIds);
-		console.log("quesTypes[] = "+quesTypes);
-		console.log("optionCons[] = "+optionCons);
+		params = {
+			"mobileNum" : $("#mobile").val(),
+			"cli" : $("#cli").val(),
+			"agentId" : $("#agentId").val(),
+			"paperId" : $("#paperId").val(),
+			"paperType" : $("#paperType").val(),
+			"paperLanguage" : $("#paperLanguage").val(),
+			"startTime" : $("#startTime").val(),
+			"quesNums" : quesNums.toString(),
+			"quesIds" : quesIds.toString(),
+			"quesTypes" : quesTypes.toString(),
+			"optionCons" : optionCons.toString(),
+			"url" : $("#url").val(),
+		}
 	}
+	return params;
 }
-function checkoutSubmit(){
+function doSubmit(){
+	debugger;
+	var params = getSubmitData();
+	if(params){
+		var url = "survey/doSubmitSurveyResult.do";
+		$.post(url, params, function(result){
+			if(result.state == 1){
+				alert(result.message);
+			}else{
+				alert(result.message);
+			}
+		})
+	}
 }
 //console.log();
 //alert();

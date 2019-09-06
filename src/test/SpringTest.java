@@ -1,5 +1,7 @@
 package test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.junit.Test;
@@ -60,5 +62,12 @@ public class SpringTest extends SpringTestBase{
 			row = paperAllDao.addPaperQues(paperAll);
 		}
 		System.out.println(row);
+	}
+	@Test
+	public void addResult() throws ParseException {
+		String time = "20190906111111";
+		SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
+		Date date = simpleDateFormat.parse(time);
+        System.out.println(date);
 	}
 }

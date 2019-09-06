@@ -1,10 +1,6 @@
-package com.dave.entity;
+package com.dave.entity.vo;
 
-import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-public class Result {
+public class ResultInfo {
 	private Integer resultId;
 	private Long mobileNum;
 	private Long cli;
@@ -12,10 +8,11 @@ public class Result {
 	private Integer paperId;
 	private String paperType;
 	private String paperLanguage;
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-	private Date startTime;
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-	private Date endTime;
+	private String startTime;
+	private Integer[] quesNums;
+	private Integer[] quesIds;
+	private String[] quesTypes;
+	private String[] optionCons;
 	private String url;
 	
 	public Integer getResultId() {
@@ -60,17 +57,35 @@ public class Result {
 	public void setPaperLanguage(String paperLanguage) {
 		this.paperLanguage = paperLanguage;
 	}
-	public Date getStartTime() {
+	public String getStartTime() {
 		return startTime;
 	}
-	public void setStartTime(Date startTime) {
+	public void setStartTime(String startTime) {
 		this.startTime = startTime;
 	}
-	public Date getEndTime() {
-		return endTime;
+	public Integer[] getQuesNums() {
+		return quesNums;
 	}
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
+	public void setQuesNums(Integer[] quesNums) {
+		this.quesNums = quesNums;
+	}
+	public Integer[] getQuesIds() {
+		return quesIds;
+	}
+	public void setQuesIds(Integer[] quesIds) {
+		this.quesIds = quesIds;
+	}
+	public String[] getQuesTypes() {
+		return quesTypes;
+	}
+	public void setQuesTypes(String[] quesTypes) {
+		this.quesTypes = quesTypes;
+	}
+	public String[] getOptionCons() {
+		return optionCons;
+	}
+	public void setOptionCons(String[] optionCons) {
+		this.optionCons = optionCons;
 	}
 	public String getUrl() {
 		return url;
