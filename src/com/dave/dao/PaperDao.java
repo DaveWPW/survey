@@ -9,6 +9,12 @@ import org.apache.ibatis.annotations.Update;
 
 import com.dave.entity.Paper;
 
+/**
+ * Paper持久层接口
+ * 
+ * @author Dave20190828
+ *
+ */
 public interface PaperDao {
 	
 	@Select("select count(*) from su_paper where paper_name=#{paperName} and paper_language=#{paperLanguage}")
@@ -40,5 +46,4 @@ public interface PaperDao {
 	
 	@Select("select * from su_paper where paper_name=#{paperName} and paper_language=#{paperLanguage} and status = 1")
 	Paper findStartPaper(@Param("paperName")String paperName, @Param("paperLanguage")String paperLanguage);
-	
 }

@@ -7,6 +7,12 @@ import com.dave.entity.Paper;
 import com.dave.entity.vo.PaperInfo;
 import com.dave.entity.vo.QuesInfo;
 
+/**
+ * Paper业务层接口
+ * 
+ * @author Dave20190828
+ *
+ */
 public interface PaperService {
 	
 	List<QuesInfo> selectQuesByIds(Integer... quesIds);
@@ -24,5 +30,4 @@ public interface PaperService {
 	PaperInfo getPaperQues(int paperId);
 	
 	int updatePaper(PaperInfo paperInfo);
-	
 }

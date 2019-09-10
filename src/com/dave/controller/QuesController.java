@@ -10,9 +10,9 @@ import com.dave.entity.vo.QuesInfo;
 import com.dave.service.QuesService;
 
 /**
- * 问题控制层
+ * 调查问题Controller
  * 
- * @author Dave2019
+ * @author Dave20190826
  *
  */
 @Controller

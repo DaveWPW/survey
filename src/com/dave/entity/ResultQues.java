@@ -1,5 +1,11 @@
 package com.dave.entity;
 
+/**
+ * 调查结果问题PO
+ * 
+ * @author Dave20190904
+ *
+ */
 public class ResultQues {
 	private Integer resultQuesId;
 	private Integer resultId;

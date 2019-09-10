@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * JSON处理类
  * 
- * @author Dave2019
+ * @author Dave20190823
  *
  */
 public class JsonResult implements Serializable{

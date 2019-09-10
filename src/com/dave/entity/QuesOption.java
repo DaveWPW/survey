@@ -1,9 +1,9 @@
 package com.dave.entity;
 
 /**
- * 选项实体类
+ * 调查问题选项PO
  * 
- * @author Dave2019
+ * @author Dave20190827
  *
  */
 public class QuesOption {

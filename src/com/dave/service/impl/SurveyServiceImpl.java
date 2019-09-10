@@ -20,6 +20,12 @@ import com.dave.entity.vo.PaperInfo;
 import com.dave.entity.vo.ResultInfo;
 import com.dave.service.SurveyService;
 
+/**
+ * Survey业务层接口实现类
+ * 
+ * @author Dave20190902
+ *
+ */
 @Service
 public class SurveyServiceImpl implements SurveyService{
 	@Autowired
@@ -69,7 +75,6 @@ public class SurveyServiceImpl implements SurveyService{
 			Date startTime = simpleDateFormat.parse(resultInfo.getStartTime());
 			result.setStartTime(startTime);
 			result.setEndTime(new Date());
-			result.setUrl(resultInfo.getUrl());
 			int row = resultDao.addResult(result);
 			if(row == 1) {
 				int resultId = resultDao.selectResultId();

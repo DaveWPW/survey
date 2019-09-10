@@ -1,5 +1,11 @@
 package com.dave.entity.vo;
 
+/**
+ * 调查问题VO
+ * 
+ * @author Dave20190826
+ *
+ */
 public class QuesInfo {
 	/**问题ID*/
 	private Integer quesId; 
@@ -7,6 +13,8 @@ public class QuesInfo {
 	private String quesName;
 	/**问题类型*/
 	private String quesType;
+	/**问题作答*/
+	private Integer must;
 	/**选项ID数组*/
 	private Integer[] optionIds;
 	/**选项内容数组*/
@@ -31,6 +39,12 @@ public class QuesInfo {
 	}
 	public void setQuesType(String quesType) {
 		this.quesType = quesType;
+	}
+	public Integer getMust() {
+		return must;
+	}
+	public void setMust(Integer must) {
+		this.must = must;
 	}
 	public Integer[] getOptionIds() {
 		return optionIds;

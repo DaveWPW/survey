@@ -5,9 +5,9 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
- * 问卷实体类
+ * 调查问卷PO
  * 
- * @author Dave2019
+ * @author Dave20190828
  *
  */
 public class Paper {

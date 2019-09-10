@@ -11,7 +11,7 @@ import com.dave.entity.Ques;
 /**
  * Ques持久层接口
  * 
- * @author Dave2019
+ * @author Dave20190826
  *
  */
 public interface QuesDao {

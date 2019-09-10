@@ -10,6 +10,12 @@ import com.dave.entity.vo.PaperInfo;
 import com.dave.entity.vo.ResultInfo;
 import com.dave.service.SurveyService;
 
+/**
+ * 调查问卷(用户使用)Controller
+ * 
+ * @author Dave20190902
+ *
+ */
 @Controller
 @RequestMapping("/survey/")
 public class SurveyController {
@@ -26,7 +32,7 @@ public class SurveyController {
 	public JsonResult doStartSurvey(String paperName, String paperLanguage) {
 		PaperInfo paperInfo = surveyService.findStartPaper(paperName, paperLanguage);
 		if(paperInfo == null) {
-			return new JsonResult("没有你想要的问卷！！");
+			return new JsonResult("没有你想要的调查问卷！！");
 		}
 		return new JsonResult(paperInfo);
 	}

@@ -1,5 +1,11 @@
 package com.dave.entity.vo;
 
+/**
+ * 调查问卷VO
+ * 
+ * @author davewpw
+ *
+ */
 public class PaperInfo {
 	/**问卷ID*/
 	private Integer paperId;

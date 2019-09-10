@@ -4,10 +4,10 @@
 	<insert id="addResult" parameterType="com.dave.entity.Result">
      	insert into su_result
       	(mobile_num, cli, agent_id, paper_id, paper_type, paper_language, 
-      	start_time, end_time, url)
+      	start_time, end_time)
       	values
 		(#{mobileNum}, #{cli}, #{agentId}, #{paperId}, #{paperType}, 
-		#{paperLanguage}, #{startTime}, #{endTime}, #{url})
+		#{paperLanguage}, #{startTime}, #{endTime})
 	</insert>
 	
 </mapper>

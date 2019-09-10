@@ -20,6 +20,12 @@ import com.dave.entity.PaperQues;
 import com.dave.entity.Ques;
 import com.dave.service.PaperService;
 
+/**
+ * Paper业务层接口实现类
+ * 
+ * @author Dave20190828
+ *
+ */
 @Service
 public class PaperServiceImpl implements PaperService {
 	@Autowired
@@ -40,6 +46,7 @@ public class PaperServiceImpl implements PaperService {
 			quesInfo.setQuesId(ques.getQuesId());
 			quesInfo.setQuesName(ques.getQuesName());
 			quesInfo.setQuesType(ques.getQuesType());
+			quesInfo.setMust(ques.getMust());
 			List<QuesOption> optionList = optionDao.selectOptionByQuesId(quesId);
 			Integer[] optionIds = new Integer[optionList.size()];
 			String[] options = new String[optionList.size()];

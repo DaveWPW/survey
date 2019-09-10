@@ -15,9 +15,9 @@ import com.dave.entity.vo.QuesInfo;
 import com.dave.service.PaperService;
 
 /**
- * 问卷控制层
+ * 调查问卷Controller
  * 
- * @author Dave2019
+ * @author Dave20190828
  *
  */
 @Controller

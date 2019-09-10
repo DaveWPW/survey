@@ -144,6 +144,7 @@ function doAddQuesName(quesId){
 			"<div class='form-group'>"+
     			"<label class='col-sm-2 control-label numberClass'></label>"+
     			"<div class='col-sm-10'>"+
+    				"<span style='color:red;' class='is-must'>*</span>"+
     				"<input class='quesId' value='"+quesId+"' style='display:none;'/>"+
     				"<span class='quesName'></span>"+
     				"<button type='button' class='btn-delete'>删除</button>"+
@@ -161,7 +162,7 @@ function doAddOption(options, optionId, type, quesDiv, quesId, flag){
 				"<label class='col-sm-2 control-label'></label>"+
 				"<div class='col-sm-10'>"+
 					"<input type='radio' class='optionId' name='optionName"+quesId+"' value='"+optionId+"'><span class='optionContent'>"+options+"</span>"+
-					"<input type='text' class='flag' value='"+flag+"' style='width: 30%; display:none;'>"+
+					"<input type='text' class='flag' value='"+flag+"' style='width: 30%; display:none;' placeholder='请注明'>"+
 				"</div>"+
 			"</div>";
 		quesDiv.append(optionDiv);
@@ -171,7 +172,7 @@ function doAddOption(options, optionId, type, quesDiv, quesId, flag){
 				"<label class='col-sm-2 control-label'></label>"+
 				"<div class='col-sm-10'>"+
 					"<input type='checkbox' class='optionId' value='"+optionId+"'><span class='optionContent'>"+options+"</span>"+
-					"<input type='text' class='flag' value='"+flag+"' style='width: 30%; display:none;'>"+
+					"<input type='text' class='flag' value='"+flag+"' style='width: 30%; display:none;' placeholder='请注明'>"+
 				"</div>"+
 			"</div>";
 		quesDiv.append(optionDiv);
@@ -208,6 +209,10 @@ function doInitQuesDate(){
 		}
 		if(quesInfo.quesType === "03"){
 			doAddEsay(quesDiv);
+		}
+		if(quesInfo.must == 0){
+			$(".is-must").eq(a).hide();//隐藏必作答标识
+			console.log($(".is-must").eq(a).val());
 		}
 	}
 	autoAddNumber();

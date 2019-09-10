@@ -1,5 +1,11 @@
 package com.dave.entity.vo;
 
+/**
+ * 调查结果VO
+ * 
+ * @author Dave20190904
+ *
+ */
 public class ResultInfo {
 	private Integer resultId;
 	private Long mobileNum;
@@ -13,7 +19,6 @@ public class ResultInfo {
 	private Integer[] quesIds;
 	private String[] quesTypes;
 	private String[] optionCons;
-	private String url;
 	
 	public Integer getResultId() {
 		return resultId;
@@ -86,11 +91,5 @@ public class ResultInfo {
 	}
 	public void setOptionCons(String[] optionCons) {
 		this.optionCons = optionCons;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
 	}
 }

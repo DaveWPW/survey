@@ -17,6 +17,8 @@
       <label for="quesName" class="col-sm-2 control-label">题目:</label>
       <div class="col-sm-10">
         <textarea id="quesName" style="width: 80%;height: 30%;"></textarea>
+        <br/>
+      	<input type='checkbox' name='is-must' value='1'>必须作答
       </div>
     </div>
     <div id="optionDiv"></div>
@@ -93,6 +95,7 @@ function getQuesData(){
 		"flags" : flags.toString(),
 		"quesName" : $("#quesName").val(),
 		"quesType" : type,
+		"must" : $("input[name='is-must']:checked").val()==null ? 0:1,
 	}
 	return params;
 }
@@ -116,13 +119,13 @@ function doAddOrUpdate(){
 	if(doValidated()){
 		var rowData = $("#mainContentId").data("rowData");
 		var params = getQuesData();
-		console.log(params);
-		var insertUrl = "ques/doAddQues.do";
-		var updateUrl = "ques/doUpdateQues.do";
 		if(rowData){
 			params.quesId = rowData.quesId;
 		}
+		alert(params);
 		console.log(params);
+		var insertUrl = "ques/doAddQues.do";
+		var updateUrl = "ques/doUpdateQues.do";
 		var url = rowData ? updateUrl : insertUrl;
 		$.post(url, params, function(result){
 			if(result.state == 1){
@@ -141,6 +144,9 @@ function doInitFormData(){
     	return;
     }
 	$("#quesName").val(data.quesName);
+	if(data.must == 1){
+		$("input[name='is-must']").prop("checked", true);
+	}
 	for(var i = 0; i < data.options.length; i++){
 		doAddOption();
 		$(".optionContent").eq(i).val(data.options[i]);
@@ -174,4 +180,7 @@ function doInitButtonStatus(){
 		$(".btn-save").show();//显示保存按钮
 	}
 }
+//console.log();
+//alert();
+//debugger;
 </script>

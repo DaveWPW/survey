@@ -1,18 +1,25 @@
 package com.dave.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.dave.entity.vo.PaperInfo;
+import com.dave.service.SurveyService;
+
 /**
- * 匿名页面控制层
+ * 匿名页面Controller
  * 
- * @author Dave2019
+ * @author Dave20190823
  * 
  */
 @Controller
 @RequestMapping("/")
 public class PageController {
+	@Autowired
+    private SurveyService surveyService;
 	/**
 	 * 主页
 	 * @return index
@@ -33,16 +40,21 @@ public class PageController {
 	@RequestMapping("doSurveyUI")
 	public String doSurveyUI(Model model, 
 			long mobile, String language, long cli, int agentId, String startTime, String paperName) {
-		System.out.println("doSurveyUI.do?mobile="+mobile+"&language="+language+"&cli="+cli+"&agentId="+agentId+"&startTime="+startTime+"&paperName="+paperName);
-		String url = "/survey/doSurveyUI.do?mobile="+mobile+"&language="+language+"&cli="+cli+"&agentId="+agentId+"&startTime="+startTime+"&paperName="+paperName;
-		//doSurveyUI.do?mobile=88888888888&language=ch&cli=0&agentId=8888&startTime=20190906111111&paperName=test20190902
-		model.addAttribute("language", language);
-		model.addAttribute("paperName", paperName);
-		model.addAttribute("mobile", mobile);
-		model.addAttribute("cli", cli);
-		model.addAttribute("agentId", agentId);
-		model.addAttribute("startTime", startTime);
-		model.addAttribute("url", url);
-		return "survey";
+		System.out.println("/survey/doSurveyUI.do?mobile="+mobile+"&language="+language+"&cli="+cli+"&agentId="+agentId+"&startTime="+startTime+"&paperName="+paperName);
+		//String url = "/survey/doSurveyUI.do?mobile="+mobile+"&language="+language+"&cli="+cli+"&agentId="+agentId+"&startTime="+startTime+"&paperName="+paperName;
+		///survey/doSurveyUI.do?mobile=88888888888&language=ch&cli=0&agentId=8888&startTime=20190906111111&paperName=test20190902
+		PaperInfo paperInfo = surveyService.findStartPaper(paperName, language);
+		if(!(paperInfo == null || StringUtils.isEmpty(paperInfo))) {
+			if("01".equals(paperInfo.getPaperType())) {
+				model.addAttribute("language", language);
+				model.addAttribute("paperName", paperName);
+				model.addAttribute("mobile", mobile);
+				model.addAttribute("cli", cli);
+				model.addAttribute("agentId", agentId);
+				model.addAttribute("startTime", startTime);
+				return "survey01";
+			}	
+		}
+		return "404";
 	}
 }

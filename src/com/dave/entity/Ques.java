@@ -5,9 +5,9 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
- * 问题实体类
+ * 调查问题PO
  * 
- * @author Dave2019
+ * @author Dave20190826
  *
  */
 public class Ques {
@@ -17,6 +17,8 @@ public class Ques {
 	private String quesName;
 	/**问题类型*/
 	private String quesType;
+	/**问题作答*/
+	private Integer must;
 	/**创建日期*/
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	private Date createDate;
@@ -38,6 +40,12 @@ public class Ques {
 	}
 	public void setQuesType(String quesType) {
 		this.quesType = quesType;
+	}
+	public Integer getMust() {
+		return must;
+	}
+	public void setMust(Integer must) {
+		this.must = must;
 	}
 	public Date getCreateDate() {
 		return createDate;

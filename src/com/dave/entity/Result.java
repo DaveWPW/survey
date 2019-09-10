@@ -4,6 +4,12 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+/**
+ * 调查结果PO
+ * 
+ * @author Dave20190904
+ *
+ */
 public class Result {
 	private Integer resultId;
 	private Long mobileNum;
@@ -16,7 +22,6 @@ public class Result {
 	private Date startTime;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	private Date endTime;
-	private String url;
 	
 	public Integer getResultId() {
 		return resultId;
@@ -71,11 +76,5 @@ public class Result {
 	}
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
 	}
 }

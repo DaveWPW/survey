@@ -17,7 +17,7 @@ import com.dave.service.QuesService;
 /**
  * Ques业务层接口实现类
  * 
- * @author Dave2019
+ * @author Dave20190826
  *
  */
 @Service
@@ -51,6 +51,7 @@ public class QuesServiceImpl implements QuesService {
 		Ques ques = new Ques();
 		ques.setQuesName(quesInfo.getQuesName());
 		ques.setQuesType(quesInfo.getQuesType());
+		ques.setMust(quesInfo.getMust());
 		ques.setCreateDate(new Date());
 		int row = quesDao.addQues(ques);
 		if(row == 1) {
@@ -85,6 +86,7 @@ public class QuesServiceImpl implements QuesService {
 		quesInfo.setQuesId(quesId);
 		quesInfo.setQuesName(ques.getQuesName());
 		quesInfo.setQuesType(ques.getQuesType());
+		quesInfo.setMust(ques.getMust());
 		List<QuesOption> optionList = optionDao.selectOptionByQuesId(quesId);
 		String[] options = new String[optionList.size()];
 		Integer[] flags = new Integer[optionList.size()];
@@ -101,6 +103,7 @@ public class QuesServiceImpl implements QuesService {
 		Ques ques = new Ques();
 		ques.setQuesId(quesInfo.getQuesId());
 		ques.setQuesName(quesInfo.getQuesName());
+		ques.setMust(quesInfo.getMust());
 		int row = quesDao.updateQues(ques);
 		if(row == 1) {
 			row = optionDao.deleteOption(quesInfo.getQuesId());

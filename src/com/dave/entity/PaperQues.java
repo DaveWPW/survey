@@ -1,5 +1,11 @@
 package com.dave.entity;
 
+/**
+ * 调查问卷问题PO
+ * 
+ * @author Dave20190829
+ *
+ */
 public class PaperQues {
 	/**问卷问题ID*/
 	private Integer paperQuesId;
