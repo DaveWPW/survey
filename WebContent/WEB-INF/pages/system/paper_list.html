@@ -19,7 +19,7 @@
 	  </div>
 	  <!-- /.box-header -->
 	  <div class="box-body table-responsive no-padding">
-	    <table class="table table-hover">
+	    <table class="table table-hover text-center">
 	      <thead>
 		    <tr>
 		      <th><input type="checkbox" id="checkAllId">全选</th>
@@ -28,6 +28,7 @@
 			  <th>问卷语言</th>
 			  <th>当前状态/可操作</th>
 			  <th>创建日期</th>
+			  <th>测试</th>
 		    </tr>
 		  </thead>
 		  <tbody id="tbodyId"></tbody>
@@ -54,7 +55,9 @@ $(function(){
 		.on("click",".btn-search", doQueryObjects)
 		.on("click",".btn-create-only", doLoadEditUI)
 		.on("click",".btn-delete", doDeletePaper);
-	$("#tbodyId").on("click", ".btn-status", doUpdateStatus);
+	$("#tbodyId")
+		.on("click", ".btn-status", doUpdateStatus)
+		.on("click", ".btn-test", doTestPaper);
 });
 //页面显示数据操作================================================================
 //处理查询按钮事件
@@ -97,21 +100,15 @@ function doSetTableBodyRows(data){
 			tr.append(tds);
 			tBody.append(tr);
 		}
-	}else{
-		var tr = $("<tr></tr>");
-		tr.data("rowData", data);
-		var tds = doCreateTds(data);
-		tr.append(tds);
-		tBody.append(tr);
 	}
 }
 function doCreateTds(data){
 	//console.log(data);
 	var type;
 	if(data.paperType === "01"){
-		type = "单张方式";
+		type = "单张";
 	}else if(data.paperType === "02"){
-		type = "分支方式";
+		type = "分支";
 	}
 	var showStatus;
 	var status;
@@ -130,11 +127,12 @@ function doCreateTds(data){
 	}
 	var tds=
 		"<td><input type='checkbox' name='paperId' class='paperId' value='"+data.paperId+"'><span class='numberClass'></span></td>"+
-	    "<td align='center'><input type='submit' style='width:300px;' value='"+data.paperName+"' onclick='doGetPaperQues("+data.paperId+")'></td>"+
-	    "<td align='center'>"+type+"</td>"+
-	    "<td align='center'>"+language+"</td>"+
-	    "<td align='center'>"+showStatus+"：<input type='submit' value='"+status+"' class='btn-status'></td>"+
-	    "<td align='center'>"+data.createDate+"</td>";
+	    "<td><input type='button' style='width:300px;' value='"+data.paperName+"' onclick='doGetPaperQues("+data.paperId+")'></td>"+
+	    "<td>"+type+"</td>"+
+	    "<td>"+language+"</td>"+
+	    "<td>"+showStatus+"：<input type='button' value='"+status+"' class='btn-status'></td>"+
+	    "<td>"+data.createDate+"</td>"+
+	    "<td><input type='button' class='btn-test' value='测试'></td>";
     return tds;
 }
 //页面数据自增序列号
@@ -235,9 +233,9 @@ function doUpdateStatus(){
 	var language = $(this).parents('tr').find("td").eq(3).text();
 	var status = $(this).val();
 	var paperType;
-	if(type === "单张方式"){
+	if(type === "单张"){
 		paperType = "01";
-	}else if(type === "分支方式"){
+	}else if(type === "分支"){
 		paperType = "02";
 	}
 	var paperLanguage;
@@ -268,4 +266,29 @@ function doUpdateStatus(){
 		}
 	});
 }
+function doTestPaper(){
+	var date = new Date();
+	var dateStr,year,month,day,hours,minute,second;
+	year = date.getYear() + 1900;
+	month = date.getMonth() + 1;
+	day = date.getDate();
+	hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+	minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+	second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+	dateStr = year.toString() + (month>9?month:'0'+month) + (day>9?day:'0'+day) + hours + minute + second;
+	
+	var language = $(this).parents("tr").find("td").eq(3).html();
+	var paperName = $(this).parents("tr").find("td").eq(1).find("input").eq(0).val();
+	var paperLanguage;
+	if(language === "英文"){
+		paperLanguage = "eng";
+	}else if(language === "中文"){
+		paperLanguage = "ch";
+	}
+	var url = "doSurveyUI.do?mobile=88888888888&language="+paperLanguage+"&cli=66666666666&agentId=9999&startTime="+dateStr+"&paperName="+paperName;
+	window.open(url, "_blank", "top=100,left=100,width=393,height=660"); 
+}
+//console.log();
+//alert();
+//debugger;
 </script>

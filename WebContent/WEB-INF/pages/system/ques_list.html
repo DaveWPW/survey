@@ -21,7 +21,7 @@
 	  </div>
 	  <!-- /.box-header -->
 	  <div class="box-body table-responsive no-padding">
-	    <table class="table table-hover">
+	    <table class="table table-hover text-center">
 	      <thead>
 		    <tr>
 		      <th><input type="checkbox" id="checkAllId">全选</th>
@@ -96,12 +96,6 @@ function doSetTableBodyRows(data){
 			tr.append(tds);
 			tBody.append(tr);
 		}
-	}else{
-		var tr = $("<tr></tr>");
-		tr.data("rowData", data);
-		var tds = doCreateTds(data);
-		tr.append(tds);
-		tBody.append(tr);
 	}
 }
 function doCreateTds(data){
@@ -115,9 +109,9 @@ function doCreateTds(data){
 	}
 	var tds=
 		"<td><input type='checkbox' name='quesId' class='quesId' value='"+data.quesId+"'><span class='numberClass'></span></td>"+
-	    "<td align='center'><input type='submit' style='width:500px;' value='"+data.quesName+"' onclick='getQuesOption("+data.quesId+")'></td>"+
-	    "<td align='center'>"+type+"</td>"+
-	    "<td align='center'>"+data.createDate+"</td>";
+	    "<td><input type='submit' style='width:500px;' value='"+data.quesName+"' onclick='doGetQuesOption("+data.quesId+")'></td>"+
+	    "<td>"+type+"</td>"+
+	    "<td>"+data.createDate+"</td>";
     return tds;
 }
 //页面数据自增序列号
@@ -183,7 +177,6 @@ function doDeleteQues() {
 //添加操作
 function doLoadEditUI(){
 	var title;
-	var url;
 	if($(this).hasClass("btn-add-single")){
 		title = "添加单选题";
 	}else if($(this).hasClass("btn-add-multiple")){
@@ -191,16 +184,16 @@ function doLoadEditUI(){
 	}else if($(this).hasClass("btn-add-easy")){
 		title = "添加简答题";
 	}
-	url = "ques/doQuesEditUI.do"
+	var url = "ques/doQuesEditUI.do"
 	doLoadPage(title, url);
 }
 //修改操作
-function getQuesOption(quesId){
-	var url = "ques/getQuesOption.do";
+function doGetQuesOption(quesId){
+	var url = "ques/doGetQuesOption.do";
 	var params = {"quesId" : quesId}
 	$.getJSON(url, params, function(result){
 		$("#mainContentId").data("rowData", result.data);
-		var url;
+		var title;
 		if(result.data.quesType === "01"){
 			title = "修改单选题";
 		}else if(result.data.quesType === "02"){
@@ -208,7 +201,7 @@ function getQuesOption(quesId){
 		}else if(result.data.quesType === "03"){
 			title = "修改简答题";
 		}
-		url = "ques/doQuesEditUI.do"
+		var url = "ques/doQuesEditUI.do"
         doLoadPage(title, url);
 	});
 }

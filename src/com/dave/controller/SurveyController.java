@@ -17,18 +17,13 @@ import com.dave.service.SurveyService;
  *
  */
 @Controller
+@ResponseBody
 @RequestMapping("/survey/")
 public class SurveyController {
 	@Autowired
     private SurveyService surveyService;
 	
-	@RequestMapping("doSurveyListUI")
-	public String doSurveyListUI() {
-		return "system/survey_list";
-	}
-	
 	@RequestMapping("doStartSurvey")
-	@ResponseBody
 	public JsonResult doStartSurvey(String paperName, String paperLanguage) {
 		PaperInfo paperInfo = surveyService.findStartPaper(paperName, paperLanguage);
 		if(paperInfo == null) {
@@ -37,8 +32,8 @@ public class SurveyController {
 		return new JsonResult(paperInfo);
 	}
 	
+	//@ResponseBody
 	@RequestMapping("doSubmitSurveyResult")
-	@ResponseBody
 	public JsonResult doSubmitSurveyResult(ResultInfo resultInfo) {
 		int row = surveyService.submitSurveyResult(resultInfo);
 		if(row == 1) {

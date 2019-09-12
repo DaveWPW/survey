@@ -12,7 +12,7 @@
 <!-- /.box-header -->
 <!-- form start -->
 <form class="form-horizontal">
-  <div id="dbody" class="box-body">
+  <div id="dbody" class="box-body" style="background:#FFFFFF;">
   	<div class="form-group">
       <label for="paperName" class="col-sm-2 control-label">问卷名称:</label>
       <div class="col-sm-10">
@@ -65,7 +65,7 @@ $(document).ready(function(){
 function doSelectQuesUI(){
 	var paperData = $("#mainContentId").data("paperData");
 	var data = {
-		"paperId" : paperData.paperId,
+		"paperId" : paperData == null ? null : paperData.paperId,
 		"paperName" : $("#paperName").val(),
 		"paperLanguage" : doGetLanguage(),
 		"paperTitle" : $("#paperTitle").val(),
@@ -195,7 +195,6 @@ function doInitFormData(){
 function doInitQuesDate(){
 	//创建问卷时获取问题后的Data数据
 	var data = $("#mainContentId").data("quesData");
-	//console.log(data);
 	if(!data){
 		return;
     }
@@ -212,7 +211,6 @@ function doInitQuesDate(){
 		}
 		if(quesInfo.must == 0){
 			$(".is-must").eq(a).hide();//隐藏必作答标识
-			console.log($(".is-must").eq(a).val());
 		}
 	}
 	autoAddNumber();
@@ -241,12 +239,12 @@ function doSaveOrUpdate(){
 	var data = $("#mainContentId").data("paperData");
 	if(doValidated()){
 		var params = getDataParam();
-		if(data){
+		if(data.paperId != null){
 			params.paperId = data.paperId;
 		}
 		var insertUrl = "paper/doAddPaper.do";
 		var updateUrl = "paper/doUpdatePaper.do";
-		var url = data ? updateUrl : insertUrl;
+		var url = data.paperId != null ? updateUrl : insertUrl;
 		$.post(url, params, function(result){
 			if(result.state == 1){
 				alert(result.message);

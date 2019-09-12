@@ -1,5 +1,9 @@
 package com.dave.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,21 +44,30 @@ public class PageController {
 	@RequestMapping("doSurveyUI")
 	public String doSurveyUI(Model model, 
 			long mobile, String language, long cli, int agentId, String startTime, String paperName) {
-		System.out.println("/survey/doSurveyUI.do?mobile="+mobile+"&language="+language+"&cli="+cli+"&agentId="+agentId+"&startTime="+startTime+"&paperName="+paperName);
-		//String url = "/survey/doSurveyUI.do?mobile="+mobile+"&language="+language+"&cli="+cli+"&agentId="+agentId+"&startTime="+startTime+"&paperName="+paperName;
-		///survey/doSurveyUI.do?mobile=88888888888&language=ch&cli=0&agentId=8888&startTime=20190906111111&paperName=test20190902
-		PaperInfo paperInfo = surveyService.findStartPaper(paperName, language);
-		if(!(paperInfo == null || StringUtils.isEmpty(paperInfo))) {
-			if("01".equals(paperInfo.getPaperType())) {
-				model.addAttribute("language", language);
-				model.addAttribute("paperName", paperName);
-				model.addAttribute("mobile", mobile);
-				model.addAttribute("cli", cli);
-				model.addAttribute("agentId", agentId);
-				model.addAttribute("startTime", startTime);
-				return "survey01";
-			}	
+		try {
+			System.out.println("/survey/doSurveyUI.do?mobile="+mobile+"&language="+language+"&cli="+cli+"&agentId="+agentId+"&startTime="+startTime+"&paperName="+paperName);
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+			long userDate = simpleDateFormat.parse(startTime).getTime();
+			long nowDate = new Date().getTime();
+			if(7*24*3600*1000 > nowDate-userDate) {
+				PaperInfo paperInfo = surveyService.findStartPaper(paperName, language);
+				if(!(paperInfo == null || StringUtils.isEmpty(paperInfo))) {
+					if("01".equals(paperInfo.getPaperType())) {
+						model.addAttribute("language", language);
+						model.addAttribute("paperName", paperName);
+						model.addAttribute("mobile", mobile);
+						model.addAttribute("cli", cli);
+						model.addAttribute("agentId", agentId);
+						model.addAttribute("startTime", startTime);
+						return "survey01";
+					}
+				}			
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
-		return "404";
+		model.addAttribute("chMessage", "抱歉，此連結已經無效！");
+		model.addAttribute("engMessage", "Sorry , this link is no longer valid!");
+		return "404";	
 	}
 }

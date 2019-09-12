@@ -17,8 +17,7 @@ import com.dave.entity.Paper;
  */
 public interface PaperDao {
 	
-	@Select("select count(*) from su_paper where paper_name=#{paperName} and paper_language=#{paperLanguage}")
-	int checkoutPaperName(@Param("paperName")String paperName, @Param("paperLanguage")String paperLanguage);
+	int checkoutPaperName(@Param("paperName")String paperName, @Param("paperLanguage")String paperLanguage, @Param("paperId")Integer paperId);
 	
 	int addPaper(Paper paper);
 	
@@ -36,9 +35,7 @@ public interface PaperDao {
 	
 	@Update("update su_paper set status = #{status} where paper_id = #{paperId}")
 	int updateStatus(Paper paper);
-	
-//	int updateAllStatus(Paper paper);
-	
+		
 	@Select("select * from su_paper where paper_id = #{paperId}")
 	Paper selectPaperById(@Param("paperId")int paperId);
 	

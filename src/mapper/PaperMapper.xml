@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dave.dao.PaperDao">
+	<select id="checkoutPaperName" resultType="int">
+		select count(*) from su_paper
+		where paper_name=#{paperName} and paper_language=#{paperLanguage}
+		<if test="paperId != null and '' != paperId">
+			and paper_id <![CDATA[!= ]]> #{paperId}
+		</if>
+	</select>
 	<insert id="addPaper" parameterType="com.dave.entity.Paper">
      	insert into su_paper
       	(paper_name, paper_type, paper_language, status, create_date
@@ -21,11 +28,6 @@
 		where rownum <![CDATA[<= ]]> #{pageSize}) 
 		table_alias where table_alias.rowno > #{startIndex}
 	</select>
-	<!-- <update id="updateAllStatus" parameterType="com.dave.entity.Paper">
-		update su_paper set status = 9 
-		where paper_id in(
-		select paper_id from su_paper where paper_type = #{paperType} and paper_language = #{paperLanguage} and status = #{status})
-	</update> -->
 	<update id="updatePaper" parameterType="com.dave.entity.Paper">
 		update su_paper set paper_name = #{paperName}, paper_language = #{paperLanguage}
       	, paper_title = #{paperTitle}, greet = #{greet}, thank = #{thank} 

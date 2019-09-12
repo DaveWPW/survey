@@ -9,5 +9,17 @@
 		(#{mobileNum}, #{cli}, #{agentId}, #{paperId}, #{paperType}, 
 		#{paperLanguage}, #{startTime}, #{endTime})
 	</insert>
-	
+	<select id="findResultList" resultType="com.dave.entity.Result">
+		select * from 
+		(select tt.*, rownum as rowno from 
+		(select r.result_id, r.mobile_num, r.cli, r.agent_id, p.paper_name, r.paper_type, r.paper_language, r.start_time, r.end_time 
+		from su_result r left join su_paper p on r.paper_id = p.paper_id 
+		<if test="paperName != null and '' != paperName">
+			where p.paper_name like concat(concat('%', #{paperName}), '%') 
+		</if>
+		order by r.end_time desc
+		) tt
+		where rownum <![CDATA[<= ]]> #{pageSize}) 
+		table_alias where table_alias.rowno > #{startIndex}
+	</select>
 </mapper>

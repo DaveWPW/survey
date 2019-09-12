@@ -71,9 +71,9 @@ public class PaperController {
     	if(paperInfo == null) {
     		return new JsonResult("参数对象为空");
     	}
-    	int rowName = paperService.checkoutPaperName(paperInfo.getPaperName(), paperInfo.getPaperLanguage());
+    	int rowName = paperService.checkoutPaperName(paperInfo.getPaperName(), paperInfo.getPaperLanguage(), paperInfo.getPaperId());
     	if(rowName > 0) {
-    		return new JsonResult("该语言的问卷名称已存在！！");
+    		return new JsonResult("该相同语言的问卷名称已存在！！");
     	}
     	int row = paperService.addPaper(paperInfo);
     	if(row == 1) {
@@ -139,6 +139,13 @@ public class PaperController {
     @RequestMapping("doUpdatePaper")
     @ResponseBody
     public JsonResult doUpdatePaper(PaperInfo paperInfo) {
+    	if(paperInfo == null) {
+    		return new JsonResult("参数对象为空");
+    	}
+    	int rowName = paperService.checkoutPaperName(paperInfo.getPaperName(), paperInfo.getPaperLanguage(), paperInfo.getPaperId());
+    	if(rowName > 0) {
+    		return new JsonResult("该相同语言的问卷名称已存在！！");
+    	}
     	int row = paperService.updatePaper(paperInfo);
     	if(row == 1) {
     		return new JsonResult("update succeed", row); 		

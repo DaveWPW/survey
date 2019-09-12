@@ -16,6 +16,7 @@ public class Result {
 	private Long cli;
 	private Integer agentId;
 	private Integer paperId;
+	private String paperName;
 	private String paperType;
 	private String paperLanguage;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
@@ -52,6 +53,12 @@ public class Result {
 	}
 	public void setPaperId(Integer paperId) {
 		this.paperId = paperId;
+	}
+	public String getPaperName() {
+		return paperName;
+	}
+	public void setPaperName(String paperName) {
+		this.paperName = paperName;
 	}
 	public String getPaperType() {
 		return paperType;

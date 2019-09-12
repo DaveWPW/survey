@@ -65,8 +65,8 @@ public class PaperServiceImpl implements PaperService {
 	}
 	
 	@Override
-	public int checkoutPaperName(String paperName, String paperLanguage) {
-		int row = paperDao.checkoutPaperName(paperName, paperLanguage);
+	public int checkoutPaperName(String paperName, String paperLanguage, Integer paperId) {
+		int row = paperDao.checkoutPaperName(paperName, paperLanguage, paperId);
 		return row;
 	}
 	
@@ -127,15 +127,6 @@ public class PaperServiceImpl implements PaperService {
 
 	@Override
 	public int updateStatus(Paper paper) {
-//		int row = 0;
-//		if(paper.getStatus() == 1){
-//			//先把所有同类型的问卷禁用
-//			row = paperDao.updateAllStatus(paper);
-//			//更新成使用状态
-//			row = paperDao.updateStatus(paper);
-//		} else {
-//			//更新成禁用状态
-//		}
 		int row = paperDao.updateStatus(paper);
 		return row;
 	}

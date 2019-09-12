@@ -16,18 +16,20 @@
   	<img alt="3logo" src="images/3logo_28-5-18.gif">
   </div>
   <div id="paperDiv"></div>
+  <div id="thanks"></div>
+  <div class="box-button" align="center"  style="margin-top:30px; margin-bottom:80px;">
+    <button type="button" class="btn-submit" style="background-color: grey; width: 100px; height: 30px; color: #fff;"></button>
+  </div>
+  <div style="background:#FFFFFF; position:fixed; bottom:0px; width:100%;">
+    <hr/>
+    <div style="float:left;">
+  	  © 3HK 
+    </div>
+    <div style="float:right;">
+  	  <img alt="signature" src="images/signature.png">
+    </div>
+  </div>
 </body>
-<div class="box-button">
-  <button type="button" class="btn-submit"></button>
-</div>
-<div style="margin-top:10px;">
-  <div style="float:left;">
-  	© 3HK 
-  </div>
-  <div style="float:right;">
-  	<img alt="signature" src="images/signature.png">
-  </div>
-</div>
 <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script type="text/javascript">
 $(function(){
@@ -92,9 +94,9 @@ function doInitPaperDate(data){
 		"<input id='paperName' style='display: none;' value='"+data.paperName+"'>"+
 		"<input id='paperType' style='display: none;' value='"+data.paperType+"'>"+
 		"<div id='paperTitle'><h1>"+data.paperTitle+"</h1></div>"+
-		"<div id='greet'><h2>"+data.greet+"</h2></div>"+
+		"<div id='greet'><h3>"+data.greet+"</h3></div>"+
 		"<div id='quesDivs'></div>"+
-		"<div id='thank'><h2>"+data.thank+"</h2></div>";
+		"<input id='thank' style='display: none;' value='"+data.thank+"'>";
 	paperDiv.append(paper);
 }
 //初始化调查问题操作
@@ -127,15 +129,15 @@ function doAddQuesName(quesId, quesType, must){
 	var quesDivs = $("#quesDivs");
 	var quesNameDiv =
 		"<br/>"+
-		"<div class='quesDiv'>"+
-			"<div class='form-group'>"+
+		"<div class='quesDiv' style='font-size:18px;'>"+
+			"<div class='ques'>"+
     			"<div>"+
     				"<label class='numberClass'></label><label>.</label>"+
     				"<span style='color:red;' class='is-must'>*</span>"+
     				"<input class='quesId' value='"+quesId+"' style='display:none;'/>"+
     				"<input class='quesType' value='"+quesType+"' style='display:none;'/>"+
     				"<input class='must' value='"+must+"' style='display:none;'/>"+
-    				"<span class='quesName' style='font-weight:bold'></span>"+
+    				"<span class='quesName'></span>"+
     			"</div>"+
     		"</div>"+
     	"</div>";
@@ -145,25 +147,29 @@ function doAddQuesName(quesId, quesType, must){
 function doAddOption(optionCon, optionId, type, quesDiv, quesId, flag){
 	var content;
 	if($("#paperLanguage").val() === "ch"){
-		content = "仅限10个中文字符！";
+		content = "僅限10箇中文字符！";
 	}else if($("#paperLanguage").val() === "eng"){
 		content = "Limit 20 English characters！";
 	}
 	if(type === "01"){
 		var optionDiv = 
-			"<div class='form-group'>"+
+			"<div class='option'>"+
 				"<div>"+
-					"<input type='radio' class='optionId' name='optionName"+quesId+"' value='"+optionId+"'><span class='optionContent'>"+optionCon+"</span>"+
-					"<input type='text' class='flag' value='"+flag+"' style='display:none;' placeholder='"+content+"'>"+
+					"<label>"+
+						"<input type='radio' class='optionId' name='optionName"+quesId+"' value='"+optionId+"'><span class='optionContent' style='color: #191970;'>"+optionCon+"</span>"+
+						"<input type='text' class='flag' value='"+flag+"' style='display:none;' placeholder='"+content+"'>"+
+					"</label>"+
 				"</div>"+
 			"</div>";
 		quesDiv.append(optionDiv);
 	}else if(type === "02"){
 		var optionDiv = 
-			"<div class='form-group'>"+
+			"<div class='option'>"+
 				"<div>"+
-					"<input type='checkbox' class='optionId' value='"+optionId+"'><span class='optionContent'>"+optionCon+"</span>"+
-					"<input type='text' class='flag' value='"+flag+"' style='display:none;' placeholder='"+content+"'>"+
+					"<label>"+
+						"<input type='checkbox' class='optionId' value='"+optionId+"'><span class='optionContent' style='color: #191970;'>"+optionCon+"</span>"+
+						"<input type='text' class='flag' value='"+flag+"' style='display:none;' placeholder='"+content+"'>"+
+					"</label>"+
 				"</div>"+
 			"</div>";
 		quesDiv.append(optionDiv);
@@ -173,14 +179,14 @@ function doAddOption(optionCon, optionId, type, quesDiv, quesId, flag){
 function doAddEsay(quesDiv){
 	var content;
 	if($("#paperLanguage").val() === "ch"){
-		content = "仅限40个中文字符！";
+		content = "僅限40箇中文字符！";
 	}else if($("#paperLanguage").val() === "eng"){
 		content = "Limit 80 English characters！";
 	}
 	var optionDiv = 
-		"<div class='form-group'>"+
+		"<div class='option'>"+
 			"<div>"+
-				"<textarea class='esayResult' rows='3' cols='49' placeholder='"+content+"'></textarea>"+
+				"<textarea class='esayResult' rows='3' cols='48' placeholder='"+content+"'></textarea>"+
 			"</div>"+
 		"</div>";
 	quesDiv.append(optionDiv);
@@ -206,13 +212,16 @@ function buttonStatus(){
 }
 //提交操作
 function doSubmit(){
-	//debugger;
 	var params = getSubmitData();
 	if(params){
 		var url = "survey/doSubmitSurveyResult.do";
 		$.post(url, params, function(result){
 			if(result.state == 1){
-				alert(result.message);
+				var thank = $("#thank").val();
+				$("#paperDiv").remove();
+				var div = "<div><h2>"+thank+"</h2></div>";
+				$("#thanks").append(div);
+				$(".box-button").hide();
 			}else{
 				alert(result.message);
 			}
@@ -229,38 +238,31 @@ function getSubmitData(){
 	var optionCons = [];
 	$(".quesDiv").each(function(){
 		if(valid){
-			var num = $(this).find(".form-group").eq(0).find("div").eq(0).find(".numberClass").eq(0).html();
-			//console.log("num = "+num);
-			var quesId = $(this).find(".form-group").eq(0).find("div").eq(0).find("input").eq(0).val();
-			//console.log("quesId = "+quesId);
-			var quesType = $(this).find(".form-group").eq(0).find("div").eq(0).find("input").eq(1).val();
-			var must = $(this).find(".form-group").eq(0).find("div").eq(0).find("input").eq(2).val();
-			//console.log("must = "+must);
+			var num = $(this).find(".ques").eq(0).find("div").eq(0).find(".numberClass").eq(0).html();
+			var quesId = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(0).val();
+			var quesType = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(1).val();
+			var must = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(2).val();
 			if(quesType === "01"){
 				var optionId = $("div input[name='optionName"+quesId+"']:checked").val();
 				if((optionId == null || optionId == "") && must == 1){
-					//alert("请为第"+num+"题选择！");
 					valid = false;
 					return;
 				}
-				//console.log("optionId = "+optionId);
 				var optionCon = $("div input[name='optionName"+quesId+"']:checked").parent().find(".optionContent").html();
 				var flag = $("div input[name='optionName"+quesId+"']:checked").parent().find(".flag").val();
-				if(checkFlag(flag, num)){
+				if(checkFlag(flag)){
 					valid = false;
 					return;
 				}
 				if(flag != 0){
 					optionCon = optionCon + flag;
 				}
-				//console.log("optionCon = "+optionCon);
 				quesNums.push(num);
 				quesIds.push(quesId);
 				quesTypes.push(quesType);
 				optionCons.push(optionCon);
 			}else if(quesType === "02"){
 				if(($("div input[type='checkbox']:checked").length == 0)  && must == 1){
-					//alert("请为第"+num+"题选择！");
 					valid = false;
 					return;
 				}
@@ -268,14 +270,13 @@ function getSubmitData(){
 					if($(this).prop("checked")){
 						var optionCon = $(this).parent().find(".optionContent").html();
 						var flag = $(this).parent().find(".flag").val();
-						if(checkFlag(flag, num)){
+						if(checkFlag(flag)){
 							valid = false;
 							return;
 						}
 						if(flag != 0){
 							optionCon = optionCon + flag;
 						}
-						//console.log("optionCon = "+optionCon);
 						quesNums.push(num);
 						quesIds.push(quesId);
 						quesTypes.push(quesType);
@@ -284,21 +285,17 @@ function getSubmitData(){
 				});
 			}else if(quesType === "03"){
 				var esayCon = $(this).find(".esayResult").val();
-				//console.log("esay = "+esayCon);
 				if((esayCon == null || esayCon == "") && must == 1){
-					//alert("请为第"+num+"题填写内容！");
 					valid = false;
 					return;
 				}
 				if($("#paperLanguage").val() === "ch"){
 					if(esayCon.length > 40){
-						//alert("第"+num+"题仅限40个中文字符！");
 						valid = false;
 						return;
 					}
 				}else if($("#paperLanguage").val() === "eng"){
 					if(esayCon.length > 80){
-						//alert("Question "+num+" is Limit 80 English characters！");
 						valid = false;
 						return;
 					}
@@ -325,24 +322,21 @@ function getSubmitData(){
 			"optionCons" : optionCons.toString(),
 		}
 	}else{
-		alert("请完成作答！");
+		alert("未完成作答！");
 	}
 	return params;
 }
 //校验选项可填空内容操作
-function checkFlag(flag, num){
+function checkFlag(flag){
 	if(flag == null || flag == ""){
-		//alert("请为第"+num+"题选项填写内容！");
 		return true;
 	}
 	if($("#paperLanguage").val() === "ch"){
 		if(flag.length > 10){
-			//alert("第"+num+"题仅限10个中文字符！");
 			return true;
 		}
 	}else if($("#paperLanguage").val() === "eng"){
 		if(flag.length > 20){
-			//alert("Question "+num+" is Limit 20 English characters！");
 			return true;
 		}
 	}

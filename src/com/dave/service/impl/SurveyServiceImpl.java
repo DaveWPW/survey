@@ -71,7 +71,7 @@ public class SurveyServiceImpl implements SurveyService{
 			result.setPaperId(resultInfo.getPaperId());
 			result.setPaperType(resultInfo.getPaperType());
 			result.setPaperLanguage(resultInfo.getPaperLanguage());
-			SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMddHHmmss");
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 			Date startTime = simpleDateFormat.parse(resultInfo.getStartTime());
 			result.setStartTime(startTime);
 			result.setEndTime(new Date());

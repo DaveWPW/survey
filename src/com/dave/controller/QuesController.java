@@ -78,9 +78,9 @@ public class QuesController {
      * @param quesId
      * @return
      */
-    @RequestMapping("getQuesOption")
+    @RequestMapping("doGetQuesOption")
     @ResponseBody
-    public JsonResult getQuesOption(int quesId) {
+    public JsonResult doGetQuesOption(int quesId) {
     	QuesInfo quesInfo = quesService.getQuesOption(quesId);
     	return new JsonResult(quesInfo);
     }

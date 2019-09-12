@@ -17,7 +17,7 @@ public interface PaperService {
 	
 	List<QuesInfo> selectQuesByIds(Integer... quesIds);
 	
-	int checkoutPaperName(String paperName, String paperLanguage);
+	int checkoutPaperName(String paperName, String paperLanguage, Integer paperId);
 	
 	int addPaper(PaperInfo paperInfo);
 	
