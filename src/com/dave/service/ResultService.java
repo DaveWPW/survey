@@ -1,8 +1,10 @@
 package com.dave.service;
 
+import java.util.List;
+
 import com.dave.common.vo.PageObject;
 import com.dave.entity.Result;
-import com.dave.entity.vo.ResultInfo;
+import com.dave.entity.ResultQues;
 
 public interface ResultService {
 	
@@ -10,6 +12,6 @@ public interface ResultService {
 	
 	int deleteResult(Integer... resultIds);
 	
-	ResultInfo getResultQues(int resultId);
+	List<ResultQues> getResultQues(int resultId);
 	
 }

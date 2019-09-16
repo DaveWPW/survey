@@ -9,7 +9,7 @@ import com.dave.common.vo.PageObject;
 import com.dave.dao.ResultDao;
 import com.dave.dao.ResultQuesDao;
 import com.dave.entity.Result;
-import com.dave.entity.vo.ResultInfo;
+import com.dave.entity.ResultQues;
 import com.dave.service.ResultService;
 
 @Service
@@ -48,7 +48,7 @@ public class ResultServiceImpl implements ResultService {
 		return rows;
 	}
 	@Override
-	public ResultInfo getResultQues(int resultId) {
+	public List<ResultQues> getResultQues(int resultId) {
 		//ResultQuesInfo resultQuesInfo = resultQuesDao.selectResultQuesById(resultId);
 		
 		return null;

@@ -1,5 +1,7 @@
 package com.dave.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dave.common.vo.JsonResult;
 import com.dave.common.vo.PageObject;
 import com.dave.entity.Result;
+import com.dave.entity.ResultQues;
 import com.dave.entity.vo.ResultInfo;
 import com.dave.service.ResultService;
 
@@ -72,7 +75,7 @@ public class ResultController {
     @RequestMapping("doGetResultQues")
     @ResponseBody
     public JsonResult doGetResultQues(int resultId) {
-    	ResultInfo resultInfo = resultService.getResultQues(resultId);
-    	return new JsonResult(resultInfo);
+    	List<ResultQues> list = resultService.getResultQues(resultId);
+    	return new JsonResult(list);
     }
 }
