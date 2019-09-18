@@ -15,10 +15,16 @@ public class PaperInfo {
 	private String paperType;
 	/**语言种型*/
 	private String paperLanguage;
-	/**问卷ID*/
+	/**问题Num*/
 	private Integer[] quesNum;
-	/**问卷名称*/
+	/**问题IDs*/
 	private Integer[] quesIds;
+	/**问题类型*/
+	private String[] quesTypes;
+	/**问题选项IDs, 用于分支问卷*/
+	private Integer[][] quesOption;
+	/**问题选项选择下一题的题序, 用于分支问卷*/
+	private Integer[][] selectQues;
 	/**问卷标题*/
 	private String paperTitle;
 	/**欢迎语句*/
@@ -61,6 +67,24 @@ public class PaperInfo {
 	}
 	public void setQuesIds(Integer[] quesIds) {
 		this.quesIds = quesIds;
+	}
+	public String[] getQuesTypes() {
+		return quesTypes;
+	}
+	public void setQuesTypes(String[] quesTypes) {
+		this.quesTypes = quesTypes;
+	}
+	public Integer[][] getQuesOption() {
+		return quesOption;
+	}
+	public void setQuesOption(Integer[][] quesOption) {
+		this.quesOption = quesOption;
+	}
+	public Integer[][] getSelectQues() {
+		return selectQues;
+	}
+	public void setSelectQues(Integer[][] selectQues) {
+		this.selectQues = selectQues;
 	}
 	public String getPaperTitle() {
 		return paperTitle;

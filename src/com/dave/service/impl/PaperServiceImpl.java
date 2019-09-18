@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.dave.common.vo.PageObject;
 import com.dave.dao.QuesOptionDao;
 import com.dave.dao.PaperQuesDao;
+import com.dave.dao.PaperQuesOptionDao;
 import com.dave.dao.PaperDao;
 import com.dave.dao.QuesDao;
 import com.dave.entity.QuesOption;
@@ -17,6 +18,7 @@ import com.dave.entity.vo.PaperInfo;
 import com.dave.entity.vo.QuesInfo;
 import com.dave.entity.Paper;
 import com.dave.entity.PaperQues;
+import com.dave.entity.PaperQuesOption;
 import com.dave.entity.Ques;
 import com.dave.service.PaperService;
 
@@ -36,6 +38,8 @@ public class PaperServiceImpl implements PaperService {
 	private PaperDao paperDao;
 	@Autowired
 	private PaperQuesDao paperQuesDao;
+	@Autowired
+	private PaperQuesOptionDao paperQuesOptionDao;
 	
 	@Override
 	public List<QuesInfo> selectQuesByIds(Integer... quesIds) {
@@ -91,6 +95,23 @@ public class PaperServiceImpl implements PaperService {
 				paperQues.setQuesNum(paperInfo.getQuesNum()[i]);
 				paperQues.setQuesId(paperInfo.getQuesIds()[i]);
 				row = paperQuesDao.addPaperQues(paperQues);
+				if(row != 1) {
+					return row;
+				}
+				if("02".equals(paperInfo.getPaperType())) {
+					for(int j = 0; j < paperInfo.getQuesOption()[i].length; j++) {
+						PaperQuesOption paperQuesOption = new PaperQuesOption();
+						paperQuesOption.setPaperId(paperId);
+						paperQuesOption.setQuesId(paperInfo.getQuesIds()[i]);
+						paperQuesOption.setQuesType(paperInfo.getQuesTypes()[i]);
+						paperQuesOption.setOptionId(paperInfo.getQuesOption()[i][j]);
+						paperQuesOption.setSelectNum(paperInfo.getSelectQues()[i][j]);
+						row = paperQuesOptionDao.addPaperQuesOption(paperQuesOption);
+						if(row != 1) {
+							return row;
+						}
+					}
+				}
 			}
 		}
 		return row;

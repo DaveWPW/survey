@@ -4,7 +4,7 @@
 	  <div class="box-header">
 	    <h3 class="box-title">调查问卷管理</h3>
 	    <div class="box-tools">
-		  <div class="input-group input-group-sm" style="width: 400px;">
+		  <div class="input-group input-group-sm" style="width: 500px;">
 		    <input type="text" name="table_search" id="searchNameId"
 				  class="form-control pull-right" placeholder="请输入问卷名称">
 			<div class="input-group-btn">
@@ -12,6 +12,7 @@
                 <i class="fa fa-search"></i>
 			  </button>
 			  <button type="button" class="btn btn-default btn-create-only">创建单张问卷</button>
+			  <button type="button" class="btn btn-default btn-create-branch">创建分支问卷</button>
 			  <button type="button" class="btn btn-default btn-delete">删除</button>
 			</div>
 		  </div>
@@ -53,6 +54,7 @@ $(function(){
 	$("#tbodyId").on("change", ".quesId", doChangeTHeadCheckBoxState);
 	$(".input-group-btn")
 		.on("click",".btn-search", doQueryObjects)
+		.on("click",".btn-create-branch", doLoadEditUI)
 		.on("click",".btn-create-only", doLoadEditUI)
 		.on("click",".btn-delete", doDeletePaper);
 	$("#tbodyId")
@@ -202,6 +204,8 @@ function doLoadEditUI(){
 	var url;
 	if($(this).hasClass("btn-create-only")){
 		title = "创建单张问卷";
+	}else if($(this).hasClass("btn-create-branch")){
+		title = "创建分支问卷";
 	}
 	url = "paper/doPaperEditUI.do"
 	doLoadPage(title, url);

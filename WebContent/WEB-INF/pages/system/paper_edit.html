@@ -137,7 +137,7 @@ function doShiftDownQues(){
     $("#quesDivs").html(arr);
     autoAddNumber();
 }
-function doAddQuesName(quesId){
+function doAddQuesName(quesId, quesType){
 	var quesDivs = $("#quesDivs");
 	var quesNameDiv =
 		"<div class='quesDiv'>"+
@@ -146,6 +146,7 @@ function doAddQuesName(quesId){
     			"<div class='col-sm-10'>"+
     				"<span style='color:red;' class='is-must'>*</span>"+
     				"<input class='quesId' value='"+quesId+"' style='display:none;'/>"+
+    				"<input class='quesType' value='"+quesType+"' style='display:none;'/>"+
     				"<span class='quesName'></span>"+
     				"<button type='button' class='btn-delete'>删除</button>"+
     				"<button type='button' class='btn-shiftup'>上移</button>"+
@@ -163,6 +164,7 @@ function doAddOption(options, optionId, type, quesDiv, quesId, flag){
 				"<div class='col-sm-10'>"+
 					"<input type='radio' class='optionId' name='optionName"+quesId+"' value='"+optionId+"'><span class='optionContent'>"+options+"</span>"+
 					"<input type='text' class='flag' value='"+flag+"' style='width: 30%; display:none;' placeholder='请注明'>"+
+					"<select class='select-ques' style='display:none;'></select>"+
 				"</div>"+
 			"</div>";
 		quesDiv.append(optionDiv);
@@ -173,6 +175,7 @@ function doAddOption(options, optionId, type, quesDiv, quesId, flag){
 				"<div class='col-sm-10'>"+
 					"<input type='checkbox' class='optionId' value='"+optionId+"'><span class='optionContent'>"+options+"</span>"+
 					"<input type='text' class='flag' value='"+flag+"' style='width: 30%; display:none;' placeholder='请注明'>"+
+					"<select class='select-ques' style='display:none;'></select>"+
 				"</div>"+
 			"</div>";
 		quesDiv.append(optionDiv);
@@ -184,6 +187,7 @@ function doAddEsay(quesDiv){
 			"<label class='col-sm-2 control-label'></label>"+
 			"<div class='col-sm-10'>"+
 				"<textarea class='esayResult' style='width: 50%;height: 30%;'></textarea>"+
+				"<select class='select-ques' style='display:none;'></select>"+
 			"</div>"+
 		"</div>";
 	quesDiv.append(optionDiv);
@@ -200,7 +204,7 @@ function doInitQuesDate(){
     }
 	for(var a in data){
 		var quesInfo = data[a];
-		doAddQuesName(quesInfo.quesId);
+		doAddQuesName(quesInfo.quesId, quesInfo.quesType);
 		$(".quesName").eq(a).html(quesInfo.quesName);
 		var quesDiv = $(".quesDiv").eq(a);
 		for(var i = 0; i < quesInfo.options.length; i++){
@@ -222,6 +226,7 @@ function doInitQuesDate(){
 	});
 	var title = $("#mainContentId").data("title");
 	$(".box-title").html(title);
+	addSelectOption();
 }
 //自增序列号
 function autoAddNumber(){
@@ -233,6 +238,19 @@ function autoAddNumber(){
     	}
 	}
 	number();
+}
+//分支问卷添加选项后添加后续问题选择项
+function addSelectOption(){
+	//分支问卷部分
+	if($(".box-title").html() === "创建分支问卷"){
+		$(".select-ques").each(function(){
+			$(this).show();//显示选择列表
+			for(var i = 0; i <= $(".quesDiv").length; i++){
+				var option = "<option value='"+i+"'>"+i+"</option>";
+				$(this).append(option);
+			}
+		});
+	}
 }
 //保存和修改操作
 function doSaveOrUpdate(){
@@ -268,6 +286,8 @@ function getDataParam(){
 	var type;
 	if($(".box-title").html() === "创建单张问卷" || $(".box-title").html() === "修改单张问卷"){
 		type = "01";
+	}else if($(".box-title").html() === "创建分支问卷" || $(".box-title").html() === "修改分支问卷"){
+		type = "02";
 	}
 	var params = {
 		"paperName" : $("#paperName").val(),
@@ -278,6 +298,64 @@ function getDataParam(){
 		"paperTitle" : $("#paperTitle").val(),
 		"greet" : $("#greet").val(),
 		"thank" : $("#thank").val(),
+	}
+	if($(".box-title").html() === "创建分支问卷" || $(".box-title").html() === "修改分支问卷"){
+		//debugger;
+		var quesOption = new Array();
+		var selectQues = new Array();
+		for(var i=0; i < quesIds.length; i++){
+			//debugger;
+			quesOption[i] = new Array();
+			selectQues[i] = new Array();
+			$(".quesDiv").each(function(){
+				if(quesIds[i] == $(this).find(".quesId").val()){
+					//debugger;
+					var optionIds = [];
+					$(this).find(".optionId").each(function(){
+						optionIds.push($(this).val());
+					});
+					//console.log(optionIds);
+					var quesNums = [];
+					$(this).find(".select-ques").each(function(){
+						quesNums.push($(this).val());
+					});
+					//console.log(quesNums);
+					if(optionIds.length > 0){
+						//debugger;
+						//获取问题的选项ID
+						for(var j=0; j < optionIds.length; j++){
+							quesOption[i][j] = optionIds[j];
+							//console.log(quesOption[i][j]);
+						}
+						//获取问题的选项指定下一题的序号
+						for(var j=0; j < quesNums.length; j++){
+							selectQues[i][j] = quesNums[j];
+							//console.log(selectQues[i][j]);
+						}
+					}else{
+						alert("填空题");
+						for(var j=0; j < 1; j++){
+							quesOption[i][j] = 0;
+							//console.log(quesOption[i][j]);
+						}
+						//获取填空题指定下一题的序号
+						for(var j=0; j < 1; j++){
+							selectQues[i][j] = quesNums[j];
+							//console.log(selectQues[i][j]);
+						}
+					}	
+				}
+			});
+		}
+		//console.log(quesOption);
+		params.quesOption = quesOption;
+		//console.log(selectQues);
+		params.selectQues = selectQues;
+		var quesTypes = [];
+		$(".quesType").each(function(){
+			quesTypes.push("0"+$(this).val());
+		});
+		params.quesTypes = quesTypes.toString();
 	}
 	return params;
 }
