@@ -11,7 +11,6 @@ import com.dave.common.vo.JsonResult;
 import com.dave.common.vo.PageObject;
 import com.dave.entity.Result;
 import com.dave.entity.ResultQues;
-import com.dave.entity.vo.ResultInfo;
 import com.dave.service.ResultService;
 
 /**

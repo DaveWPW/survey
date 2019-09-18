@@ -26,11 +26,6 @@
        http://www.springframework.org/schema/context/spring-context-4.3.xsd" >
        
 	<mvc:annotation-driven/>
-	<!-- <bean id="viewResover" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="Prefix" value="/WEB-INF/pages/"/>
-		<property name="Suffix" value=".html"/>
-	</bean> -->
-	
 	<!-- 使用thymeleaf解析 -->
     <bean id="templateResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
         <property name="prefix" value="/WEB-INF/pages/" />

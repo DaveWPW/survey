@@ -2,8 +2,18 @@
   <div class="col-xs-12">
     <div class="box">
 	  <div class="box-header">
-	    <h3 class="box-title"></h3>
-	    <h5 class="paper-name"></h5>
+	  	<div>
+	  		<span style="font-weight:bold">手机号码：</span><span class="mobile"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+	  		<span style="font-weight:bold">问卷名称：</span><span class="paper-name"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+	  		<span style="font-weight:bold">作答时间：</span><span class="paper-date"></span>
+	  	</div>
+	    <div class="box-tools">
+		  <div class="input-group input-group-sm" style="width: 25px;">
+			<div class="input-group-btn">
+			  <button type="button" class="btn btn-default btn-cancel">返回</button>
+			</div>
+		  </div>
+	    </div>
 	  </div>
 	  <!-- /.box-header -->
 	  <div class="box-body table-responsive no-padding">
@@ -28,7 +38,8 @@
 <!-- /.row -->
 <script type="text/javascript">
 $(function(){
-	
+	$(".input-group-btn").on("click",".btn-cancel", doCancel);
+	doInitPage();
 });
 function doInitPage(){
 	var data = $("#mainContentId").data("rowData");
@@ -36,37 +47,40 @@ function doInitPage(){
 	tBody.empty();
 	if(data.length > 0){
 		for(var i in data){
-			var tr = $("<tr></tr>");
-			tr.data("rowData", data[i]);
-			var tds = doCreateTds(data[i]);
-			tr.append(tds);
-			tBody.append(tr);
+			var quesNum = $("#tbodyId").find("tr").eq(i-1).find("td").eq(0).html();
+			if(quesNum == data[i].quesNum){
+				var optionContent = $("#tbodyId").find("tr").eq(i-1).find("td").eq(3).html();
+				var text = optionContent+", "+data[i].optionContent;
+				$("#tbodyId").find("tr").eq(i-1).find("td").eq(3).html(text);
+			}else{
+				var tr = $("<tr></tr>");
+				tr.data("rowData", data[i]);
+				var tds = doCreateTds(data[i]);
+				tr.append(tds);
+				tBody.append(tr);
+			}
 		}
 	}
 }
 function doCreateTds(data){
 	var type;
-	if(data.paperType === "01"){
-		type = "单张";
-	}else if(data.paperType === "02"){
-		type = "分支";
-	}
-	var language;
-	if(data.paperLanguage === "ch"){
-		language = "中文";
-	}else if(data.paperLanguage === "eng"){
-		language = "英文";
+	if(data.quesType === "01"){
+		type = "单选题";
+	}else if(data.quesType === "02"){
+		type = "多选题";
+	}else if(data.quesType === "03"){
+		type = "简答题";
 	}
 	var tds=
-		"<td align='center'><input type='button' value='"+data.mobileNum+"' class='btn-open'></td>"+
-	    "<td align='center'>"+data.cli+"</td>"+
-	    "<td align='center'>"+data.agentId+"</td>"+
-	    "<td align='center'>"+data.paperName+"</td>"+
-	    "<td align='center'>"+type+"</td>"+
-	    "<td align='center'>"+language+"</td>"+
-	    "<td align='center'>"+data.startTime+"</td>"+
-	    "<td align='center'>"+data.endTime+"</td>";
+		"<td>"+data.quesNum+"</td>"+
+	    "<td>"+type+"</td>"+
+	    "<td>"+data.quesName+"</td>"+
+	    "<td>"+data.optionContent+"</td>";
     return tds;
+}
+function doCancel(){
+	$("#mainContentId").removeData("rowData");
+	$("#mainContentId").load("result/doResultListUI.do");
 }
 //console.log();
 //alert();

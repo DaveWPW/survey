@@ -120,8 +120,8 @@ function doCreateTds(data){
 	    "<td>"+data.cli+"</td>"+
 	    "<td>"+data.agentId+"</td>"+
 	    "<td>"+data.paperName+"</td>"+
-	    "<td>"+type+"</td>"+
 	    "<td>"+language+"</td>"+
+	    "<td>"+type+"</td>"+
 	    "<td>"+data.startTime+"</td>"+
 	    "<td>"+data.endTime+"</td>";
     return tds;
@@ -187,60 +187,21 @@ function doDeleteQues() {
 function doOpenDetails(){
 	var resultId = $(this).parents("tr").find("td").eq(0).find("input").val();
 	var paperName = $(this).parents("tr").find("td").eq(4).html();
+	var paperDate = $(this).parents("tr").find("td").eq(8).html();
 	var mobile = $(this).val();
-	console.log(mobile);
 	var url = "result/doGetResultQues.do";
 	var params = {"resultId" : resultId}
 	$.getJSON(url, params, function(result){
 		$("#mainContentId").data("rowData", result.data);
 		var url = "result/doResultDetailUI.do";
 		$("#mainContentId").load(url, function(){
-			$(".box-title").html(mobile);
+			$(".mobile").html(mobile);
 			$(".paper-name").html(paperName);
+			$(".paper-date").html(paperDate);
 		})
 	});
 }
 //console.log();
 //alert();
 //debugger;
-//================================================================
-//添加和修改操作
-//添加操作
-/* function doLoadEditUI(){
-	var title;
-	var url;
-	if($(this).hasClass("btn-add-single")){
-		title = "添加单选题";
-	}else if($(this).hasClass("btn-add-multiple")){
-		title = "添加多选题";
-	}else if($(this).hasClass("btn-add-easy")){
-		title = "添加简答题";
-	}
-	url = "ques/doQuesEditUI.do"
-	doLoadPage(title, url);
-}
-//修改操作
-function getQuesOption(quesId){
-	var url = "ques/getQuesOption.do";
-	var params = {"quesId" : quesId}
-	$.getJSON(url, params, function(result){
-		$("#mainContentId").data("rowData", result.data);
-		var url;
-		if(result.data.quesType === "01"){
-			title = "修改单选题";
-		}else if(result.data.quesType === "02"){
-			title = "修改多选题";
-		}else if(result.data.quesType === "03"){
-			title = "修改简答题";
-		}
-		url = "ques/doQuesEditUI.do"
-        doLoadPage(title, url);
-	});
-}
-//跳转操作
-function doLoadPage(title, url){
-	$("#mainContentId").load(url, function(){
-		$(".box-title").html(title);
-	}) 
-} */
 </script>

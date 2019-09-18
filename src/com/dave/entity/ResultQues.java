@@ -11,6 +11,7 @@ public class ResultQues {
 	private Integer resultId;
 	private Integer quesNum;
 	private Integer quesId;
+	private String quesName;
 	private String quesType;
 	private String optionContent;
 	
@@ -37,6 +38,12 @@ public class ResultQues {
 	}
 	public void setQuesId(Integer quesId) {
 		this.quesId = quesId;
+	}
+	public String getQuesName() {
+		return quesName;
+	}
+	public void setQuesName(String quesName) {
+		this.quesName = quesName;
 	}
 	public String getQuesType() {
 		return quesType;

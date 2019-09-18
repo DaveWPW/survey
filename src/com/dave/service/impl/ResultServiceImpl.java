@@ -49,9 +49,8 @@ public class ResultServiceImpl implements ResultService {
 	}
 	@Override
 	public List<ResultQues> getResultQues(int resultId) {
-		//ResultQuesInfo resultQuesInfo = resultQuesDao.selectResultQuesById(resultId);
-		
-		return null;
+		List<ResultQues> resultQuesList = resultQuesDao.selectResultQuesById(resultId);
+		return resultQuesList;
 	}
 
 }
