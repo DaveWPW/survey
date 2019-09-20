@@ -81,7 +81,7 @@ function doSelectQuesUI(){
 	});
 	$("#mainContentId").data("ids", quesIds);
 	$("#mainContentId").data("title", $(".box-title").html());
-	var title = $(".box-title").html() + " - 添加问题";
+	var title = $(".box-title").html() + ">添加问题";
 	$("#mainContentId").load("paper/doSelectQuesUI.do", function(){
 		$(".box-title").html(title);
 	});

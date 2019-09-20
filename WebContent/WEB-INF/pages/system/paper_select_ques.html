@@ -117,6 +117,11 @@ function doCreateTds(data){
 		type = "单选题";
 	}else if(data.quesType === "02"){
 		type = "多选题";
+		console.log($(".box-title").html());
+		if($(".box-title").html() === "创建分支问卷&gt;添加问题" 
+				|| $(".box-title").html() === "修改分支问卷&gt;添加问题"){
+			return;
+		}
 	}else if(data.quesType === "03"){
 		type = "简答题";
 	}
