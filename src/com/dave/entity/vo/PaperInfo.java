@@ -21,6 +21,8 @@ public class PaperInfo {
 	private Integer[] quesIds;
 	/**问题类型*/
 	private String[] quesTypes;
+	private String quesOptionStr;
+	private String selectQuesStr;
 	/**问题选项IDs, 用于分支问卷*/
 	private Integer[][] quesOption;
 	/**问题选项选择下一题的题序, 用于分支问卷*/
@@ -73,6 +75,18 @@ public class PaperInfo {
 	}
 	public void setQuesTypes(String[] quesTypes) {
 		this.quesTypes = quesTypes;
+	}
+	public String getQuesOptionStr() {
+		return quesOptionStr;
+	}
+	public void setQuesOptionStr(String quesOptionStr) {
+		this.quesOptionStr = quesOptionStr;
+	}
+	public String getSelectQuesStr() {
+		return selectQuesStr;
+	}
+	public void setSelectQuesStr(String selectQuesStr) {
+		this.selectQuesStr = selectQuesStr;
 	}
 	public Integer[][] getQuesOption() {
 		return quesOption;

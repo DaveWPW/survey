@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dave.common.vo.JsonResult;
 import com.dave.common.vo.PageObject;
 import com.dave.entity.Paper;
+import com.dave.entity.PaperQuesOption;
 import com.dave.entity.vo.PaperInfo;
 import com.dave.entity.vo.QuesInfo;
 import com.dave.service.PaperService;
@@ -130,6 +131,17 @@ public class PaperController {
     public JsonResult doGetPaperQues(int paperId) {
     	PaperInfo paperInfo = paperService.getPaperQues(paperId);
     	return new JsonResult(paperInfo);
+    }
+    /**
+     * 根据问卷获取问题
+     * @param quesId
+     * @return
+     */
+    @RequestMapping("doGetPaperQuesOption")
+    @ResponseBody
+    public JsonResult doGetPaperQuesOption(int paperId) {
+    	List<PaperQuesOption> list = paperService.getPaperQuesOption(paperId);
+    	return new JsonResult(list);
     }
     /**
      * 

@@ -219,6 +219,8 @@ function doGetPaperQues(paperId){
 		var url;
 		if(result.data.paperType === "01"){
 			title = "修改单张问卷";
+		}else if(result.data.paperType === "02"){
+			title = "修改分支问卷";
 		}
 		url = "paper/doPaperEditUI.do"
         doLoadPage(title, url);

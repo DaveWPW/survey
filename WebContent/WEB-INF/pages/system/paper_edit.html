@@ -19,6 +19,7 @@
       	<input type="text" id="paperName" style="width: 60%;" placeholder="请用英文和数字命名">
       	<input type="radio" name="paperLanguage" value="eng">英文 
       	<input type="radio" name="paperLanguage" value="ch">中文 
+      	<!-- <input class="paperType" style="display:none;"/> -->
       </div>
     </div>
     <div class="form-group">
@@ -80,7 +81,10 @@ function doSelectQuesUI(){
 	});
 	$("#mainContentId").data("ids", quesIds);
 	$("#mainContentId").data("title", $(".box-title").html());
-	$("#mainContentId").load("paper/doSelectQuesUI.do");
+	var title = $(".box-title").html() + " - 添加问题";
+	$("#mainContentId").load("paper/doSelectQuesUI.do", function(){
+		$(".box-title").html(title);
+	});
 }
 //刷新数据,重定向paper_list.html页面
 function doCancel(){
@@ -163,7 +167,7 @@ function doAddOption(options, optionId, type, quesDiv, quesId, flag){
 				"<label class='col-sm-2 control-label'></label>"+
 				"<div class='col-sm-10'>"+
 					"<input type='radio' class='optionId' name='optionName"+quesId+"' value='"+optionId+"'><span class='optionContent'>"+options+"</span>"+
-					"<input type='text' class='flag' value='"+flag+"' style='width: 30%; display:none;' placeholder='请注明'>"+
+					"<input type='text' class='flag' value='"+flag+"' style='width: 30%; display:none;' placeholder='仅限10个中文字符！'>"+
 					"<select class='select-ques' style='display:none;'></select>"+
 				"</div>"+
 			"</div>";
@@ -174,7 +178,7 @@ function doAddOption(options, optionId, type, quesDiv, quesId, flag){
 				"<label class='col-sm-2 control-label'></label>"+
 				"<div class='col-sm-10'>"+
 					"<input type='checkbox' class='optionId' value='"+optionId+"'><span class='optionContent'>"+options+"</span>"+
-					"<input type='text' class='flag' value='"+flag+"' style='width: 30%; display:none;' placeholder='请注明'>"+
+					"<input type='text' class='flag' value='"+flag+"' style='width: 30%; display:none;' placeholder='仅限10个中文字符！'>"+
 					"<select class='select-ques' style='display:none;'></select>"+
 				"</div>"+
 			"</div>";
@@ -186,7 +190,7 @@ function doAddEsay(quesDiv){
 		"<div class='form-group'>"+
 			"<label class='col-sm-2 control-label'></label>"+
 			"<div class='col-sm-10'>"+
-				"<textarea class='esayResult' style='width: 50%;height: 30%;'></textarea>"+
+				"<textarea class='esayResult' style='width: 50%;height: 30%;' placeholder='仅限40个中文字符！'></textarea>"+
 				"<select class='select-ques' style='display:none;'></select>"+
 			"</div>"+
 		"</div>";
@@ -242,12 +246,36 @@ function autoAddNumber(){
 //分支问卷添加选项后添加后续问题选择项
 function addSelectOption(){
 	//分支问卷部分
-	if($(".box-title").html() === "创建分支问卷"){
+	if($(".box-title").html() === "创建分支问卷" || $(".box-title").html() === "修改分支问卷"){
 		$(".select-ques").each(function(){
 			$(this).show();//显示选择列表
 			for(var i = 0; i <= $(".quesDiv").length; i++){
 				var option = "<option value='"+i+"'>"+i+"</option>";
 				$(this).append(option);
+			}
+		});
+	}
+	//分支问卷修改部分
+	if($(".box-title").html() === "修改分支问卷"){
+		var data = $("#mainContentId").data("paperData");
+		var url = "paper/doGetPaperQuesOption.do";
+		var params = {"paperId" : data.paperId}
+		$.getJSON(url, params, function(result){
+			for(var i in result.data){
+				$(".quesDiv").each(function(){
+					if($(this).find(".quesId").val() === result.data[i].quesId+""){
+						if($(this).find(".quesType").val() === "01" 
+								|| $(this).find(".quesType").val() === "02"){
+							$(this).find(".optionId").each(function(){
+								if($(this).val() === result.data[i].optionId+""){
+									$(this).parent().find(".select-ques").val(result.data[i].selectNum);
+								}
+							});			
+						}else if($(this).find(".quesType").val() === "03"){
+							$(this).find(".select-ques").val(result.data[i].selectNum);
+						}
+					}
+				});
 			}
 		});
 	}
@@ -299,61 +327,49 @@ function getDataParam(){
 		"greet" : $("#greet").val(),
 		"thank" : $("#thank").val(),
 	}
+	//分支问卷部分
 	if($(".box-title").html() === "创建分支问卷" || $(".box-title").html() === "修改分支问卷"){
-		//debugger;
 		var quesOption = new Array();
 		var selectQues = new Array();
 		for(var i=0; i < quesIds.length; i++){
-			//debugger;
-			quesOption[i] = new Array();
-			selectQues[i] = new Array();
 			$(".quesDiv").each(function(){
 				if(quesIds[i] == $(this).find(".quesId").val()){
-					//debugger;
+					//获取选项ID组
 					var optionIds = [];
 					$(this).find(".optionId").each(function(){
 						optionIds.push($(this).val());
 					});
-					//console.log(optionIds);
+					//获取选择题序组
 					var quesNums = [];
 					$(this).find(".select-ques").each(function(){
 						quesNums.push($(this).val());
 					});
-					//console.log(quesNums);
+					var sym = "";
+					//判断最后一个不需要添加分割符;
+					if(quesIds.length != (i+1)){
+						sym = ";";
+					}
 					if(optionIds.length > 0){
-						//debugger;
-						//获取问题的选项ID
-						for(var j=0; j < optionIds.length; j++){
-							quesOption[i][j] = optionIds[j];
-							//console.log(quesOption[i][j]);
-						}
-						//获取问题的选项指定下一题的序号
-						for(var j=0; j < quesNums.length; j++){
-							selectQues[i][j] = quesNums[j];
-							//console.log(selectQues[i][j]);
-						}
+						//选项题操作
+						//将选项ID组添加到题目选项集数组中
+						quesOption[i] = optionIds.toString()+sym;
+						//将选项指定下一题的序号组添加到题目序号集数组中
+						selectQues[i] = quesNums.toString()+sym;
 					}else{
-						alert("填空题");
-						for(var j=0; j < 1; j++){
-							quesOption[i][j] = 0;
-							//console.log(quesOption[i][j]);
-						}
-						//获取填空题指定下一题的序号
-						for(var j=0; j < 1; j++){
-							selectQues[i][j] = quesNums[j];
-							//console.log(selectQues[i][j]);
-						}
+						//填空题操作
+						//填空题没有选项ID，默认添加“0”到题目选项集数组中
+						quesOption[i] = "0"+sym;
+						//将选项指定下一题的序号组添加到题目序号集数组中
+						selectQues[i] = quesNums.toString()+sym;
 					}	
 				}
 			});
 		}
-		//console.log(quesOption);
-		params.quesOption = quesOption;
-		//console.log(selectQues);
-		params.selectQues = selectQues;
+		params.quesOptionStr = quesOption.toString();
+		params.selectQuesStr = selectQues.toString();
 		var quesTypes = [];
 		$(".quesType").each(function(){
-			quesTypes.push("0"+$(this).val());
+			quesTypes.push($(this).val());
 		});
 		params.quesTypes = quesTypes.toString();
 	}

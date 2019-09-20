@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dave.common.util.JsonUtil;
 import com.dave.common.vo.PageObject;
 import com.dave.dao.QuesOptionDao;
 import com.dave.dao.PaperQuesDao;
@@ -99,13 +100,16 @@ public class PaperServiceImpl implements PaperService {
 					return row;
 				}
 				if("02".equals(paperInfo.getPaperType())) {
-					for(int j = 0; j < paperInfo.getQuesOption()[i].length; j++) {
+					//将字符集数据转换为二维数组
+					Integer[][] quesOption = JsonUtil.jsonStrOnIntArray(paperInfo.getQuesOptionStr());
+					Integer[][] selectQues = JsonUtil.jsonStrOnIntArray(paperInfo.getSelectQuesStr());
+					for(int j = 0; j < quesOption[i].length; j++) {
 						PaperQuesOption paperQuesOption = new PaperQuesOption();
 						paperQuesOption.setPaperId(paperId);
 						paperQuesOption.setQuesId(paperInfo.getQuesIds()[i]);
 						paperQuesOption.setQuesType(paperInfo.getQuesTypes()[i]);
-						paperQuesOption.setOptionId(paperInfo.getQuesOption()[i][j]);
-						paperQuesOption.setSelectNum(paperInfo.getSelectQues()[i][j]);
+						paperQuesOption.setOptionId(quesOption[i][j]);
+						paperQuesOption.setSelectNum(selectQues[i][j]);
 						row = paperQuesOptionDao.addPaperQuesOption(paperQuesOption);
 						if(row != 1) {
 							return row;
@@ -142,6 +146,9 @@ public class PaperServiceImpl implements PaperService {
 		for(int paperId : paperIds) {
 			rows = paperQuesDao.deletePaperQues(paperId);
 			rows = paperDao.deletePaper(paperId);
+			if(rows == 1) {
+				paperQuesOptionDao.deletePaperQuesOption(paperId);
+			}
 		}
 		return rows;
 	}
@@ -176,6 +183,12 @@ public class PaperServiceImpl implements PaperService {
 	}
 
 	@Override
+	public List<PaperQuesOption> getPaperQuesOption(int paperId) {
+		List<PaperQuesOption> list = paperQuesOptionDao.getPaperQuesOption(paperId);
+		return list;
+	}
+	
+	@Override
 	public int updatePaper(PaperInfo paperInfo) {
 		Paper paper = new Paper();
 		paper.setPaperId(paperInfo.getPaperId());
@@ -188,16 +201,39 @@ public class PaperServiceImpl implements PaperService {
 		if(row == 1) {
 			row = paperQuesDao.deletePaperQues(paperInfo.getPaperId());
 			if(row > 0) {
-				for(int i = 0; i < paperInfo.getQuesIds().length; i++) {
-					PaperQues paperQues = new PaperQues();
-					paperQues.setPaperId(paperInfo.getPaperId());
-					paperQues.setQuesNum(paperInfo.getQuesNum()[i]);
-					paperQues.setQuesId(paperInfo.getQuesIds()[i]);
-					row = paperQuesDao.addPaperQues(paperQues);
-				}		
+				row = paperQuesOptionDao.deletePaperQuesOption(paperInfo.getPaperId());
+				if(row > 0) {
+					for(int i = 0; i < paperInfo.getQuesIds().length; i++) {
+						PaperQues paperQues = new PaperQues();
+						paperQues.setPaperId(paperInfo.getPaperId());
+						paperQues.setQuesNum(paperInfo.getQuesNum()[i]);
+						paperQues.setQuesId(paperInfo.getQuesIds()[i]);
+						row = paperQuesDao.addPaperQues(paperQues);
+						if(row != 1) {
+							return row;
+						}
+						if("02".equals(paperInfo.getPaperType())) {
+							//将字符集数据转换为二维数组
+							Integer[][] quesOption = JsonUtil.jsonStrOnIntArray(paperInfo.getQuesOptionStr());
+							Integer[][] selectQues = JsonUtil.jsonStrOnIntArray(paperInfo.getSelectQuesStr());
+							for(int j = 0; j < quesOption[i].length; j++) {
+								PaperQuesOption paperQuesOption = new PaperQuesOption();
+								paperQuesOption.setPaperId(paperInfo.getPaperId());
+								paperQuesOption.setQuesId(paperInfo.getQuesIds()[i]);
+								paperQuesOption.setQuesType(paperInfo.getQuesTypes()[i]);
+								paperQuesOption.setOptionId(quesOption[i][j]);
+								paperQuesOption.setSelectNum(selectQues[i][j]);
+								row = paperQuesOptionDao.addPaperQuesOption(paperQuesOption);
+								if(row != 1) {
+									return row;
+								}
+							}
+						}
+					}		
+				}
 			}
 		}
 		return row;
 	}
-
+	
 }

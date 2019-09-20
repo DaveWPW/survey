@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.dave.common.vo.PageObject;
 import com.dave.entity.Paper;
+import com.dave.entity.PaperQuesOption;
 import com.dave.entity.vo.PaperInfo;
 import com.dave.entity.vo.QuesInfo;
 
@@ -28,6 +29,8 @@ public interface PaperService {
 	int updateStatus(Paper paper);
 	
 	PaperInfo getPaperQues(int paperId);
+	
+	List<PaperQuesOption> getPaperQuesOption(int paperId);
 	
 	int updatePaper(PaperInfo paperInfo);
 }
