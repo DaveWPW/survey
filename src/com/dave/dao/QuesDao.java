@@ -33,6 +33,9 @@ public interface QuesDao {
 	@Select("select * from su_ques where ques_id = #{quesId}")
 	Ques selectQuesById(@Param("quesId")int quesId);
 	
+	@Select("select p.paper_name from su_paper_ques pq left join su_paper p on pq.paper_id = p.paper_id where pq.ques_id = #{quesId}")
+	String checkQuesUse(@Param("quesId")int quesId);
+	
 	int updateQues(Ques ques);
 	
 }

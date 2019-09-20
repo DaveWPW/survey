@@ -22,5 +22,7 @@ public interface QuesService {
 	
 	QuesInfo getQuesOption(int quesId);
 	
+	String checkQuesUse(int quesId);
+	
 	int updateQues(QuesInfo quesInfo);
 }

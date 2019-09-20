@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.druid.util.StringUtils;
 import com.dave.common.vo.JsonResult;
 import com.dave.entity.vo.QuesInfo;
 import com.dave.service.QuesService;
@@ -92,6 +93,10 @@ public class QuesController {
     @RequestMapping("doUpdateQues")
     @ResponseBody
     public JsonResult doUpdateQues(QuesInfo quesInfo) {
+    	String paperName = quesService.checkQuesUse(quesInfo.getQuesId());
+    	if(!StringUtils.isEmpty(paperName)) {
+    		return new JsonResult("该题目已经给"+paperName+"调查问卷使用，拒绝修改！");
+    	}
     	int row = quesService.updateQues(quesInfo);
     	if(row == 1) {
     		return new JsonResult("update succeed", row); 		

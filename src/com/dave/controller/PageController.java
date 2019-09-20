@@ -52,14 +52,16 @@ public class PageController {
 			if(7*24*3600*1000 > nowDate-userDate) {
 				PaperInfo paperInfo = surveyService.findStartPaper(paperName, language);
 				if(!(paperInfo == null || StringUtils.isEmpty(paperInfo))) {
+					model.addAttribute("language", language);
+					model.addAttribute("paperName", paperName);
+					model.addAttribute("mobile", mobile);
+					model.addAttribute("cli", cli);
+					model.addAttribute("agentId", agentId);
+					model.addAttribute("startTime", startTime);
 					if("01".equals(paperInfo.getPaperType())) {
-						model.addAttribute("language", language);
-						model.addAttribute("paperName", paperName);
-						model.addAttribute("mobile", mobile);
-						model.addAttribute("cli", cli);
-						model.addAttribute("agentId", agentId);
-						model.addAttribute("startTime", startTime);
 						return "survey01";
+					}else if("02".equals(paperInfo.getPaperType())) {
+						return "survey02";
 					}
 				}			
 			}

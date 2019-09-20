@@ -99,6 +99,10 @@ public class QuesServiceImpl implements QuesService {
 		return quesInfo;
 	}
 	@Override
+	public String checkQuesUse(int quesId) {
+		return quesDao.checkQuesUse(quesId);
+	}
+	@Override
 	public int updateQues(QuesInfo quesInfo) {
 		Ques ques = new Ques();
 		ques.setQuesId(quesInfo.getQuesId());

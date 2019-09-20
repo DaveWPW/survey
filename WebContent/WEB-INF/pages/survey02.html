@@ -6,6 +6,42 @@
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <title>Survey</title>
 </head>
+<style>
+  /* #left, #right{
+    border:1px solid black;
+    height: 25px;
+    line-height: 25px;
+    text-align:center;
+    padding:0px;
+  }
+  #center{
+    margin-right: -16px;
+    margin-left: -15px;
+  }
+  #progress{
+    height: 25px;
+    margin-bottom:0px;
+    border-radius:0;
+    background-color: #f5f5f5;
+    border-top:1px solid black;
+    border-bottom:1px solid black;
+  } */
+  /* .progress{
+    height: 25px;
+    margin-bottom:0px;
+    border-radius:0;
+    background-color: #f5f5f5;
+    border-top:1px solid black;
+    border-bottom:1px solid black;
+  } */
+  /* .left, .right{
+    border:1px solid black;
+    height: 25px;
+    line-height: 25px;
+    text-align:center;
+    padding:0px;
+  } */
+</style>
 <body>
   <input id="paperLanguage" type="hidden" th:value="${language}"/>
   <input id="paperName" type="hidden" th:value="${paperName}"/>
@@ -13,12 +49,26 @@
   <input id="cli" type="hidden" th:value="${cli}"/>
   <input id="agentId" type="hidden" th:value="${agentId}"/>
   <input id="startTime" type="hidden" th:value="${startTime}"/>
+  <input id="quesIndex" type="hidden"/>
   <div>
   	<img alt="3logo" src="images/3logo_28-5-18.gif">
   </div>
-  <div id="paperDiv"></div>
+  <!-- <div style="width:320px;">
+    <div  id="left"  class="col-md-2 col-xs-2" >${tno}/${total-2}</div>
+    <div id="center" class="col-md-8 col-xs-8">
+      <div id="progress" class="progress progress-striped active">
+        <div class="progress-bar progress-bar-success" role="progressbar"
+            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+            style="width: <c:out value="${tno/(total-2)*100 }%"></c:out>;">
+        </div>
+      </div>
+    </div>
+    <div id="right" class="col-md-2 col-xs-2"><c:if test="${tno/(total-2)>=1.0}">90%</c:if> <c:if test="${tno/(total-2)<1 }"><fmt:formatNumber  value="${tno/4 }" pattern="0%"/></c:if></div>
+  </div> -->
+  <div id="paperDiv" style="margin-right:5px;"></div>
   <div id="thanks"></div>
-  <div class="box-button" align="center"  style="margin-top:30px; margin-bottom:80px;">
+  <div class="box-button" align="center"  style="margin-top:20px; margin-bottom:80px;">
+    <button type="button" class="btn-next" style="background-color: grey; width: 100px; height: 30px; color: #fff;"></button>
     <button type="button" class="btn-submit" style="background-color: grey; width: 100px; height: 30px; color: #fff;"></button>
   </div>
   <div style="background:#FFFFFF; position:fixed; bottom:0px; width:100%;">
@@ -36,7 +86,9 @@
 $(function(){
 	doGetObjects();
 	buttonStatus();
-	$(".box-button").on("click",".btn-submit", doSubmit);
+	$(".box-button")
+		.on("click", ".btn-next", doNext)
+		.on("click", ".btn-submit", doSubmit);
 	$("#paperDiv")
 		.on("change", ".esayResult", checkLength)
 		.on("change", ".flag", checkOptionLength);
@@ -96,7 +148,15 @@ function doInitPaperDate(data){
 		"<input id='paperType' style='display: none;' value='"+data.paperType+"'>"+
 		"<div id='paperTitle'><h1>"+data.paperTitle+"</h1></div>"+
 		"<div id='greet'><h4>"+data.greet+"</h4></div>"+
-		
+		"<div style='margin-right:20px; margin-left:20px;'>"+
+	  		"<div style='width:10%; float:left;' align='center'>1/4</div>"+
+			"<div class='progress' style='width:90%;'>"+
+		  		"<div class='progress-bar' role='progressbar' aria-valuemin='0' aria-valuemax='100' "+
+		  			"aria-valuenow='60' style='width:60%;'>"+
+		  			"60%"+
+		  		"</div>"+
+			"</div>"+
+	  	"</div>"+
 		"<div id='quesDivs'></div>"+
 		"<input id='thank' style='display: none;' value='"+data.thank+"'>";
 	paperDiv.append(paper);
@@ -125,16 +185,24 @@ function doInitQuesDate(data){
 			$(this).val("");
 		}
 	});
+	addSelectOption();
+	$(".quesDiv").each(function(){
+		if($(this).find(".numberClass").html() === "1"){
+			$(this).show();//显示第一题
+			$("#quesIndex").val(1);
+			$(".numberClass").hide();
+			$(this).find(".index").html(1);
+		}
+	});
 }
 //添加题目Div操作
 function doAddQuesName(quesId, quesType, must){
 	var quesDivs = $("#quesDivs");
 	var quesNameDiv =
-		"<br/>"+
-		"<div class='quesDiv' style='font-size:18px;'>"+
+		"<div class='quesDiv' style='font-size:18px; display:none;'>"+
 			"<div class='ques'>"+
     			"<div>"+
-    				"<label class='numberClass'></label><label>.</label>"+
+    				"<label class='numberClass'></label><label class='index'></label><label>.</label>"+
     				"<span style='color:red;' class='is-must'>*</span>"+
     				"<input class='quesId' value='"+quesId+"' style='display:none;'/>"+
     				"<input class='quesType' value='"+quesType+"' style='display:none;'/>"+
@@ -160,17 +228,7 @@ function doAddOption(optionCon, optionId, type, quesDiv, quesId, flag){
 					"<label>"+
 						"<input type='radio' class='optionId' name='optionName"+quesId+"' value='"+optionId+"'><span class='optionContent' style='color: #191970;'>"+optionCon+"</span>"+
 						"<input type='text' class='flag' value='"+flag+"' style='display:none;' placeholder='"+content+"'>"+
-					"</label>"+
-				"</div>"+
-			"</div>";
-		quesDiv.append(optionDiv);
-	}else if(type === "02"){
-		var optionDiv = 
-			"<div class='option'>"+
-				"<div>"+
-					"<label>"+
-						"<input type='checkbox' class='optionId' value='"+optionId+"'><span class='optionContent' style='color: #191970;'>"+optionCon+"</span>"+
-						"<input type='text' class='flag' value='"+flag+"' style='display:none;' placeholder='"+content+"'>"+
+						"<input type='text' class='select-ques' style='display:none;'>"+
 					"</label>"+
 				"</div>"+
 			"</div>";
@@ -189,6 +247,7 @@ function doAddEsay(quesDiv){
 		"<div class='option'>"+
 			"<div>"+
 				"<textarea class='esayResult' rows='3' cols='48' placeholder='"+content+"'></textarea>"+
+				"<input type='text' class='select-ques' style='display:none;'>"+
 			"</div>"+
 		"</div>";
 	quesDiv.append(optionDiv);
@@ -204,11 +263,113 @@ function autoAddNumber(){
 	}
 	number();
 }
+//分支问卷添加选项后添加后续问题选择项
+function addSelectOption(){
+	var url = "paper/doGetPaperQuesOption.do";
+	var params = {"paperId" : $("#paperId").val()}
+	$.getJSON(url, params, function(result){
+		for(var i in result.data){
+			$(".quesDiv").each(function(){
+				if($(this).find(".quesId").val() === result.data[i].quesId+""){
+					if($(this).find(".quesType").val() === "01"){
+						$(this).find(".optionId").each(function(){
+							if($(this).val() === result.data[i].optionId+""){
+								$(this).parent().find(".select-ques").val(result.data[i].selectNum);
+							}
+						});			
+					}else if($(this).find(".quesType").val() === "03"){
+						$(this).find(".select-ques").val(result.data[i].selectNum);
+					}
+				}
+			});
+		}
+	});
+}
+function doNext(){
+	var valid = true;
+	var quesIndex = $("#quesIndex").val();
+	var selectNum;
+	var index;
+	$(".quesDiv").each(function(){
+		if(valid){
+			var num = $(this).find(".ques").eq(0).find("div").eq(0).find(".numberClass").html();
+			var quesId = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(0).val();
+			var quesType = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(1).val();
+			var must = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(2).val();
+			if(num === quesIndex){
+				if(quesType === "01"){
+					var optionId = $("div input[name='optionName"+quesId+"']:checked").val();
+					if((optionId == null || optionId == "") && must == 1){
+						valid = false;
+						return;
+					}
+					var optionCon = $("div input[name='optionName"+quesId+"']:checked").parent().find(".optionContent").html();
+					var flag = $("div input[name='optionName"+quesId+"']:checked").parent().find(".flag").val();
+					if(checkFlag(flag)){
+						valid = false;
+						return;
+					}
+					selectNum = $("div input[name='optionName"+quesId+"']:checked").parent().find(".select-ques").val();
+					$(this).hide();
+				}else if(quesType === "03"){
+					var esayCon = $(this).find(".esayResult").val();
+					if((esayCon == null || esayCon == "") && must == 1){
+						valid = false;
+						return;
+					}
+					if($("#paperLanguage").val() === "ch"){
+						if(esayCon.length > 40){
+							valid = false;
+							return;
+						}
+					}else if($("#paperLanguage").val() === "eng"){
+						if(esayCon.length > 80){
+							valid = false;
+							return;
+						}
+					}
+					selectNum = $(this).find(".select-ques").val();
+					$(this).hide();
+				}
+				index= $(this).find(".index").html();
+			}		
+		}
+	});
+	if(valid){
+	}else{
+		alert("未完成作答！");
+	}
+	if(selectNum === "0"){
+		return valid;
+	}
+	$(".quesDiv").each(function(){
+		if($(this).find(".numberClass").html() === selectNum){
+			var nextNum;
+			$(this).show();
+			$("#quesIndex").val(Number(selectNum));
+			$(this).find(".index").html(Number(index)+Number(1));
+			var quesId = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(0).val();
+			var quesType = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(1).val();
+			if(quesType === "01"){
+				nextNum = $("div input[name='optionName"+quesId+"']:checked").parent().find(".select-ques").val();
+			}else if(quesType === "03"){
+				nextNum = $(this).find(".select-ques").val();
+			}
+			if(nextNum === "0"){
+				$(".btn-next").hide();//隐藏next按钮
+				$(".btn-submit").show();//显示submit按钮
+			}
+		}
+	});
+}
 //提交按钮语言状态
 function buttonStatus(){
+	$(".btn-submit").hide();//隐藏提交按钮
 	if($("#paperLanguage").val() === "ch"){
+		$(".btn-next").html("下一步");
 		$(".btn-submit").html("提交");
 	}else if($("#paperLanguage").val() === "eng"){
+		$(".btn-next").html("Next");
 		$(".btn-submit").html("Submit");
 	}
 }
@@ -233,13 +394,12 @@ function doSubmit(){
 //获取数据和校验操作
 function getSubmitData(){
 	var params;
-	var valid = true;
-	var quesNums = [];
-	var quesIds = [];
-	var quesTypes = [];
-	var optionCons = [];
-	$(".quesDiv").each(function(){
-		if(valid){
+	if(doNext()){
+		var quesNums = [];
+		var quesIds = [];
+		var quesTypes = [];
+		var optionCons = [];
+		$(".quesDiv").each(function(){
 			var num = $(this).find(".ques").eq(0).find("div").eq(0).find(".numberClass").eq(0).html();
 			var quesId = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(0).val();
 			var quesType = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(1).val();
@@ -247,15 +407,10 @@ function getSubmitData(){
 			if(quesType === "01"){
 				var optionId = $("div input[name='optionName"+quesId+"']:checked").val();
 				if((optionId == null || optionId == "") && must == 1){
-					valid = false;
 					return;
 				}
 				var optionCon = $("div input[name='optionName"+quesId+"']:checked").parent().find(".optionContent").html();
 				var flag = $("div input[name='optionName"+quesId+"']:checked").parent().find(".flag").val();
-				if(checkFlag(flag)){
-					valid = false;
-					return;
-				}
 				if(flag != 0){
 					optionCon = optionCon + flag;
 				}
@@ -263,53 +418,17 @@ function getSubmitData(){
 				quesIds.push(quesId);
 				quesTypes.push(quesType);
 				optionCons.push(optionCon);
-			}else if(quesType === "02"){
-				if(($("div input[type='checkbox']:checked").length == 0)  && must == 1){
-					valid = false;
-					return;
-				}
-				$("div input[type='checkbox']").each(function(){
-					if($(this).prop("checked")){
-						var optionCon = $(this).parent().find(".optionContent").html();
-						var flag = $(this).parent().find(".flag").val();
-						if(checkFlag(flag)){
-							valid = false;
-							return;
-						}
-						if(flag != 0){
-							optionCon = optionCon + flag;
-						}
-						quesNums.push(num);
-						quesIds.push(quesId);
-						quesTypes.push(quesType);
-						optionCons.push(optionCon);
-					}
-				});
 			}else if(quesType === "03"){
 				var esayCon = $(this).find(".esayResult").val();
-				if((esayCon == null || esayCon == "") && must == 1){
-					valid = false;
+				if(esayCon == null || esayCon == ""){
 					return;
-				}
-				if($("#paperLanguage").val() === "ch"){
-					if(esayCon.length > 40){
-						valid = false;
-						return;
-					}
-				}else if($("#paperLanguage").val() === "eng"){
-					if(esayCon.length > 80){
-						valid = false;
-						return;
-					}
 				}
 				quesNums.push(num);
 				quesIds.push(quesId);
 				quesTypes.push(quesType);
 				optionCons.push(esayCon);
 			}
-		}
-	});
-	if(valid){
+		});
 		params = {
 			"mobileNum" : $("#mobile").val(),
 			"cli" : $("#cli").val(),
@@ -323,8 +442,6 @@ function getSubmitData(){
 			"quesTypes" : quesTypes.toString(),
 			"optionCons" : optionCons.toString(),
 		}
-	}else{
-		alert("未完成作答！");
 	}
 	return params;
 }
