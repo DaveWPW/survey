@@ -65,7 +65,7 @@
     </div>
     <div id="right" class="col-md-2 col-xs-2"><c:if test="${tno/(total-2)>=1.0}">90%</c:if> <c:if test="${tno/(total-2)<1 }"><fmt:formatNumber  value="${tno/4 }" pattern="0%"/></c:if></div>
   </div> -->
-  <div id="paperDiv" style="margin-right:5px;"></div>
+  <div id="paperDiv" style="margin-left:5px; margin-left:5px;"></div>
   <div id="thanks"></div>
   <div class="box-button" align="center"  style="margin-top:20px; margin-bottom:80px;">
     <button type="button" class="btn-next" style="background-color: grey; width: 100px; height: 30px; color: #fff;"></button>
@@ -148,8 +148,8 @@ function doInitPaperDate(data){
 		"<input id='paperType' style='display: none;' value='"+data.paperType+"'>"+
 		"<div id='paperTitle'><h1>"+data.paperTitle+"</h1></div>"+
 		"<div id='greet'><h4>"+data.greet+"</h4></div>"+
-		"<div style='margin-right:20px; margin-left:20px;'>"+
-	  		"<div style='width:10%; float:left;' align='center'>1/4</div>"+
+		"<div style='margin-right:20px; margin-left:5px;'>"+
+	  		"<div class='progress-per' style='width:10%; float:left;' align='center'>1/4</div>"+
 			"<div class='progress' style='width:90%;'>"+
 		  		"<div class='progress-bar' role='progressbar' aria-valuemin='0' aria-valuemax='100' "+
 		  			"aria-valuenow='60' style='width:60%;'>"+
@@ -246,7 +246,7 @@ function doAddEsay(quesDiv){
 	var optionDiv = 
 		"<div class='option'>"+
 			"<div>"+
-				"<textarea class='esayResult' rows='3' cols='48' placeholder='"+content+"'></textarea>"+
+				"<textarea class='esayResult' rows='3' cols='44' placeholder='"+content+"'></textarea>"+
 				"<input type='text' class='select-ques' style='display:none;'>"+
 			"</div>"+
 		"</div>";
