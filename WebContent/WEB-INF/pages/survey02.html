@@ -149,7 +149,7 @@ function doInitPaperDate(data){
 		"<div id='paperTitle'><h1>"+data.paperTitle+"</h1></div>"+
 		"<div id='greet'><h4>"+data.greet+"</h4></div>"+
 		"<div style='margin-right:20px; margin-left:5px;'>"+
-	  		"<div class='progress-per' style='width:10%; float:left;' align='center'>1/4</div>"+
+	  		"<div style='width:10%; float:left;' align='center'><span class='progress-num'>1</span>/<span class='progress-total'>4</span></div>"+
 			"<div class='progress' style='width:90%;'>"+
 		  		"<div class='progress-bar' role='progressbar' aria-valuemin='0' aria-valuemax='100' "+
 		  			"aria-valuenow='60' style='width:60%;'>"+
@@ -194,6 +194,7 @@ function doInitQuesDate(data){
 			$(this).find(".index").html(1);
 		}
 	});
+	initProgress();
 }
 //添加题目Div操作
 function doAddQuesName(quesId, quesType, must){
@@ -285,6 +286,11 @@ function addSelectOption(){
 		}
 	});
 }
+//初始化进度条
+function initProgress(){
+	
+}
+//下一题操作
 function doNext(){
 	var valid = true;
 	var quesIndex = $("#quesIndex").val();
