@@ -49,6 +49,9 @@ public class SurveyServiceImpl implements SurveyService{
 		paperInfo.setPaperTitle(paper.getPaperTitle());
 		paperInfo.setGreet(paper.getGreet());
 		paperInfo.setThank(paper.getThank());
+		if("02".equals(paper.getPaperType())){
+			paperInfo.setQuesSum(paper.getQuesSum());
+		}
 		List<PaperQues> quesList = paperQuesDao.selectQuesByPaperId(paper.getPaperId());
 		Integer[] quesIds = new Integer[quesList.size()];
 		Integer[] quesNum = new Integer[quesList.size()];

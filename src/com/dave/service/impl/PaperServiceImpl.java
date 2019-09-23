@@ -87,6 +87,9 @@ public class PaperServiceImpl implements PaperService {
 		paper.setPaperTitle(paperInfo.getPaperTitle());
 		paper.setGreet(paperInfo.getGreet());
 		paper.setThank(paperInfo.getThank());
+		if("02".equals(paperInfo.getPaperType())){
+			paper.setQuesSum(paperInfo.getQuesSum());
+		}
 		int row = paperDao.addPaper(paper);
 		if(row == 1) {
 			int paperId = paperDao.selectPaperId();
@@ -170,6 +173,9 @@ public class PaperServiceImpl implements PaperService {
 		paperInfo.setPaperTitle(paper.getPaperTitle());
 		paperInfo.setGreet(paper.getGreet());
 		paperInfo.setThank(paper.getThank());
+		if("02".equals(paper.getPaperType())){
+			paperInfo.setQuesSum(paper.getQuesSum());
+		}
 		List<PaperQues> quesList = paperQuesDao.selectQuesByPaperId(paperId);
 		Integer[] quesIds = new Integer[quesList.size()];
 		Integer[] quesNum = new Integer[quesList.size()];
@@ -197,39 +203,38 @@ public class PaperServiceImpl implements PaperService {
 		paper.setPaperTitle(paperInfo.getPaperTitle());
 		paper.setGreet(paperInfo.getGreet());
 		paper.setThank(paperInfo.getThank());
+		if("02".equals(paperInfo.getPaperType())){
+			paper.setQuesSum(paperInfo.getQuesSum());
+		}
 		int row = paperDao.updatePaper(paper);
 		if(row == 1) {
-			row = paperQuesDao.deletePaperQues(paperInfo.getPaperId());
-			if(row > 0) {
-				row = paperQuesOptionDao.deletePaperQuesOption(paperInfo.getPaperId());
-				if(row > 0) {
-					for(int i = 0; i < paperInfo.getQuesIds().length; i++) {
-						PaperQues paperQues = new PaperQues();
-						paperQues.setPaperId(paperInfo.getPaperId());
-						paperQues.setQuesNum(paperInfo.getQuesNum()[i]);
-						paperQues.setQuesId(paperInfo.getQuesIds()[i]);
-						row = paperQuesDao.addPaperQues(paperQues);
+			paperQuesDao.deletePaperQues(paperInfo.getPaperId());
+			paperQuesOptionDao.deletePaperQuesOption(paperInfo.getPaperId());
+			for(int i = 0; i < paperInfo.getQuesIds().length; i++) {
+				PaperQues paperQues = new PaperQues();
+				paperQues.setPaperId(paperInfo.getPaperId());
+				paperQues.setQuesNum(paperInfo.getQuesNum()[i]);
+				paperQues.setQuesId(paperInfo.getQuesIds()[i]);
+				row = paperQuesDao.addPaperQues(paperQues);
+				if(row != 1) {
+					return row;
+				}
+				if("02".equals(paperInfo.getPaperType())) {
+					//将字符集数据转换为二维数组
+					Integer[][] quesOption = JsonUtil.jsonStrOnIntArray(paperInfo.getQuesOptionStr());
+					Integer[][] selectQues = JsonUtil.jsonStrOnIntArray(paperInfo.getSelectQuesStr());
+					for(int j = 0; j < quesOption[i].length; j++) {
+						PaperQuesOption paperQuesOption = new PaperQuesOption();
+						paperQuesOption.setPaperId(paperInfo.getPaperId());
+						paperQuesOption.setQuesId(paperInfo.getQuesIds()[i]);
+						paperQuesOption.setQuesType(paperInfo.getQuesTypes()[i]);
+						paperQuesOption.setOptionId(quesOption[i][j]);
+						paperQuesOption.setSelectNum(selectQues[i][j]);
+						row = paperQuesOptionDao.addPaperQuesOption(paperQuesOption);
 						if(row != 1) {
 							return row;
 						}
-						if("02".equals(paperInfo.getPaperType())) {
-							//将字符集数据转换为二维数组
-							Integer[][] quesOption = JsonUtil.jsonStrOnIntArray(paperInfo.getQuesOptionStr());
-							Integer[][] selectQues = JsonUtil.jsonStrOnIntArray(paperInfo.getSelectQuesStr());
-							for(int j = 0; j < quesOption[i].length; j++) {
-								PaperQuesOption paperQuesOption = new PaperQuesOption();
-								paperQuesOption.setPaperId(paperInfo.getPaperId());
-								paperQuesOption.setQuesId(paperInfo.getQuesIds()[i]);
-								paperQuesOption.setQuesType(paperInfo.getQuesTypes()[i]);
-								paperQuesOption.setOptionId(quesOption[i][j]);
-								paperQuesOption.setSelectNum(selectQues[i][j]);
-								row = paperQuesOptionDao.addPaperQuesOption(paperQuesOption);
-								if(row != 1) {
-									return row;
-								}
-							}
-						}
-					}		
+					}
 				}
 			}
 		}

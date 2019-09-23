@@ -53,22 +53,22 @@ $(function(){
 		.on("click",".btn-submit", doSubmitQues)
 		.on("click",".btn-cancel", doCancel);
 });
+
+//========
+//返回操作
+//========
 //刷新数据,重定向paper_edit.html页面
 function doCancel(){
-	var ids = $("#mainContentId").data("ids");
-	if(ids){
-		var params = {"quesIds" : ids.toString()}
-		var url = "paper/doSubmitQues.do";
-		$.post(url, params, function(result){
-			$("#mainContentId").data("quesData", result.data);
-			$("#mainContentId").load("paper/doPaperEditUI.do");
-		});
-	}else{
-		$("#mainContentId").removeData("quesData");
-		$("#mainContentId").load("paper/doPaperEditUI.do");
-	}
+	$("#mainContentId").removeData("quesData");
+	$("#mainContentId").load("paper/doPaperEditUI.do", function(){
+		var title = $("#mainContentId").data("title");
+		$(".box-title").html(title);
+	});
 }
-//页面显示数据操作================================================================
+
+//================
+//页面显示数据操作
+//================
 //处理查询按钮事件
 function doQueryObjects(){
 	$("#pageId").data("pageCurrent", 1);
@@ -95,13 +95,11 @@ function doHandleResponseResult(result){
 		alert(result.message);
 	}
 }
-//通过服务端返回的数据初始化页面
+//返回数据初始化页面
 function doSetTableBodyRows(data){
-	//1.获取tbody对象，并清空内容
 	var tBody = $("#tbodyId");
 	tBody.empty();
 	if(data.length > 0){
-		//2.迭代data内容将数据追加到tbody中
 		for(var i in data){
 			var tr = $("<tr></tr>");
 			tr.data("quesData", data[i]);
@@ -144,7 +142,10 @@ function autoAddNumber(){
 	}
 	number();
 }
-//单选和复选框操作=======================================================
+
+//================
+//单选和复选框操作
+//================
 //单选操作
 function doChangeTHeadCheckBoxState(){
 	var flag = true;
@@ -158,7 +159,10 @@ function doChangeTBodyCheckBoxState(){
 	var state = $(this).prop("checked");
 	$("#tbodyId input[type='checkbox']").prop("checked", state);
 }
-//获取选项提交操作------------------------------------------------------------
+
+//================
+//获取选项提交操作
+//================
 //获取用户选中的记录id
 function doGetCheckedIds(){
 	var array = [];
@@ -171,7 +175,6 @@ function doGetCheckedIds(){
 }
 //提交选择题目后操作
 function doSubmitQues() {
-	//debugger;
 	var ids = doGetCheckedIds();
 	if(ids.length == 0) {
 		alert("请先选择");
@@ -182,17 +185,16 @@ function doSubmitQues() {
 		ids = ids + "," + quesIds;
 	}
 	//alert(ids);
-	var params = {"quesIds" : ids.toString()}
-	var url = "paper/doSubmitQues.do";
-	$.post(url, params, function(result){
-		$("#mainContentId").removeData("ids");
-		$("#mainContentId").data("ids", ids.toString());
-		$("#mainContentId").data("quesData", result.data);
-		$("#mainContentId").load("paper/doPaperEditUI.do");
+	$("#mainContentId").removeData("ids");
+	$("#mainContentId").data("ids", ids.toString());
+	$("#mainContentId").load("paper/doPaperEditUI.do", function(){
+		var title = $("#mainContentId").data("title");
+		$(".box-title").html(title);
 	});
 }
-//================================================================
-//点击查看题目操作
+//====================
+//点击查看问题内容操作
+//====================
 function doGetQuesOption(quesId){
 	var url = "ques/doGetQuesOption.do";
 	var params = {"quesId" : quesId}

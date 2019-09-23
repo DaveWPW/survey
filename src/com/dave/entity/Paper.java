@@ -30,6 +30,8 @@ public class Paper {
 	private String greet;
 	/**感谢语句*/
 	private String thank;
+	/**分支作答总题数，用于分支问卷*/
+	private Integer quesSum;
 	
 	public Integer getPaperId() {
 		return paperId;
@@ -84,5 +86,11 @@ public class Paper {
 	}
 	public void setThank(String thank) {
 		this.thank = thank;
+	}
+	public Integer getQuesSum() {
+		return quesSum;
+	}
+	public void setQuesSum(Integer quesSum) {
+		this.quesSum = quesSum;
 	}
 }

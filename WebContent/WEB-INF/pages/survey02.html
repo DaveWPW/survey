@@ -7,42 +7,8 @@
   <title>Survey</title>
 </head>
 <style>
-  /* #left, #right{
-    border:1px solid black;
-    height: 25px;
-    line-height: 25px;
-    text-align:center;
-    padding:0px;
-  }
-  #center{
-    margin-right: -16px;
-    margin-left: -15px;
-  }
-  #progress{
-    height: 25px;
-    margin-bottom:0px;
-    border-radius:0;
-    background-color: #f5f5f5;
-    border-top:1px solid black;
-    border-bottom:1px solid black;
-  } */
-  /* .progress{
-    height: 25px;
-    margin-bottom:0px;
-    border-radius:0;
-    background-color: #f5f5f5;
-    border-top:1px solid black;
-    border-bottom:1px solid black;
-  } */
-  /* .left, .right{
-    border:1px solid black;
-    height: 25px;
-    line-height: 25px;
-    text-align:center;
-    padding:0px;
-  } */
 </style>
-<body>
+<body style="margin-left:5%; margin-right:5%;">
   <input id="paperLanguage" type="hidden" th:value="${language}"/>
   <input id="paperName" type="hidden" th:value="${paperName}"/>
   <input id="mobile" type="hidden" th:value="${mobile}"/>
@@ -53,25 +19,13 @@
   <div>
   	<img alt="3logo" src="images/3logo_28-5-18.gif">
   </div>
-  <!-- <div style="width:320px;">
-    <div  id="left"  class="col-md-2 col-xs-2" >${tno}/${total-2}</div>
-    <div id="center" class="col-md-8 col-xs-8">
-      <div id="progress" class="progress progress-striped active">
-        <div class="progress-bar progress-bar-success" role="progressbar"
-            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-            style="width: <c:out value="${tno/(total-2)*100 }%"></c:out>;">
-        </div>
-      </div>
-    </div>
-    <div id="right" class="col-md-2 col-xs-2"><c:if test="${tno/(total-2)>=1.0}">90%</c:if> <c:if test="${tno/(total-2)<1 }"><fmt:formatNumber  value="${tno/4 }" pattern="0%"/></c:if></div>
-  </div> -->
-  <div id="paperDiv" style="margin-left:5px; margin-left:5px;"></div>
+  <div id="paperDiv"></div>
   <div id="thanks"></div>
   <div class="box-button" align="center"  style="margin-top:20px; margin-bottom:80px;">
     <button type="button" class="btn-next" style="background-color: grey; width: 100px; height: 30px; color: #fff;"></button>
     <button type="button" class="btn-submit" style="background-color: grey; width: 100px; height: 30px; color: #fff;"></button>
   </div>
-  <div style="background:#FFFFFF; position:fixed; bottom:0px; width:100%;">
+  <div style="background:#FFFFFF; position:fixed; bottom:0px; width:90%;">
     <hr/>
     <div style="float:left;">
   	  © 3HK 
@@ -142,6 +96,7 @@ function doGetObjects(){
 //初始化调查问卷基本内容Div操作
 function doInitPaperDate(data){
 	var paperDiv = $("#paperDiv");
+	var progress = Math.round((1/data.quesSum)*100);
 	var paper =
 		"<input id='paperId' style='display: none;' value='"+data.paperId+"'>"+
 		"<input id='paperName' style='display: none;' value='"+data.paperName+"'>"+
@@ -149,11 +104,11 @@ function doInitPaperDate(data){
 		"<div id='paperTitle'><h1>"+data.paperTitle+"</h1></div>"+
 		"<div id='greet'><h4>"+data.greet+"</h4></div>"+
 		"<div style='margin-right:20px; margin-left:5px;'>"+
-	  		"<div style='width:10%; float:left;' align='center'><span class='progress-num'>1</span>/<span class='progress-total'>4</span></div>"+
+	  		"<div style='width:10%; float:left;' align='center'><span class='progress-num'>1</span>/<span class='progress-sum'>"+data.quesSum+"</span></div>"+
 			"<div class='progress' style='width:90%;'>"+
 		  		"<div class='progress-bar' role='progressbar' aria-valuemin='0' aria-valuemax='100' "+
-		  			"aria-valuenow='60' style='width:60%;'>"+
-		  			"60%"+
+		  			"aria-valuenow='60' style='width:"+progress+"%;'>"+
+		  			progress+"%"+
 		  		"</div>"+
 			"</div>"+
 	  	"</div>"+
@@ -194,7 +149,6 @@ function doInitQuesDate(data){
 			$(this).find(".index").html(1);
 		}
 	});
-	initProgress();
 }
 //添加题目Div操作
 function doAddQuesName(quesId, quesType, must){
@@ -247,7 +201,7 @@ function doAddEsay(quesDiv){
 	var optionDiv = 
 		"<div class='option'>"+
 			"<div>"+
-				"<textarea class='esayResult' rows='3' cols='44' placeholder='"+content+"'></textarea>"+
+				"<textarea class='esayResult' rows='3' cols='41' placeholder='"+content+"'></textarea>"+
 				"<input type='text' class='select-ques' style='display:none;'>"+
 			"</div>"+
 		"</div>";
@@ -286,19 +240,15 @@ function addSelectOption(){
 		}
 	});
 }
-//初始化进度条
-function initProgress(){
-	
-}
 //下一题操作
 function doNext(){
 	var valid = true;
 	var quesIndex = $("#quesIndex").val();
 	var selectNum;
-	var index;
+	var index;//当前显示题序号
 	$(".quesDiv").each(function(){
 		if(valid){
-			var num = $(this).find(".ques").eq(0).find("div").eq(0).find(".numberClass").html();
+			var num = $(this).find(".ques").eq(0).find("div").eq(0).find(".numberClass").html();//分支问卷的整张题序号
 			var quesId = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(0).val();
 			var quesType = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(1).val();
 			var must = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(2).val();
@@ -350,10 +300,10 @@ function doNext(){
 	}
 	$(".quesDiv").each(function(){
 		if($(this).find(".numberClass").html() === selectNum){
-			var nextNum;
+			var nextNum;//下一题的分支题号
 			$(this).show();
-			$("#quesIndex").val(Number(selectNum));
-			$(this).find(".index").html(Number(index)+Number(1));
+			$("#quesIndex").val(Number(selectNum));//当前题目的分支题号
+			$(this).find(".index").html(Number(index)+Number(1));//+1下一题显示题序号
 			var quesId = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(0).val();
 			var quesType = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(1).val();
 			if(quesType === "01"){
@@ -365,8 +315,17 @@ function doNext(){
 				$(".btn-next").hide();//隐藏next按钮
 				$(".btn-submit").show();//显示submit按钮
 			}
+			initProgress($(this).find(".index").html());
 		}
 	});
+}
+//初始化进度条
+function initProgress(index){
+	var sum = $(".progress-sum").html();
+	var progress = Math.round((index/sum)*100);
+	$(".progress-num").html(index);
+	$(".progress-bar").html(progress+"%");
+	$(".progress-bar").width(progress+"%");
 }
 //提交按钮语言状态
 function buttonStatus(){

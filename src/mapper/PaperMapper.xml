@@ -11,10 +11,10 @@
 	<insert id="addPaper" parameterType="com.dave.entity.Paper">
      	insert into su_paper
       	(paper_name, paper_type, paper_language, status, create_date
-      	, paper_title, greet, thank)
+      	, paper_title, greet, thank, ques_sum)
       	values
-		(#{paperName}, #{paperType}, #{paperLanguage}, #{status}, #{createDate}
-		, #{paperTitle}, #{greet}, #{thank})
+		(#{paperName}, #{paperType}, #{paperLanguage}, #{status}, #{createDate},
+		#{paperTitle}, #{greet}, #{thank}, #{quesSum, jdbcType=NUMERIC})
 	</insert>
 	<select id="findPaperList" resultType="com.dave.entity.Paper">
 		select * from 
@@ -30,7 +30,7 @@
 	</select>
 	<update id="updatePaper" parameterType="com.dave.entity.Paper">
 		update su_paper set paper_name = #{paperName}, paper_language = #{paperLanguage}
-      	, paper_title = #{paperTitle}, greet = #{greet}, thank = #{thank} 
+      	, paper_title = #{paperTitle}, greet = #{greet}, thank = #{thank}, ques_sum = #{quesSum, jdbcType=NUMERIC} 
 		where paper_id = #{paperId}
 	</update>
 </mapper>

@@ -27,6 +27,8 @@ public class PaperInfo {
 	private Integer[][] quesOption;
 	/**问题选项选择下一题的题序, 用于分支问卷*/
 	private Integer[][] selectQues;
+	/**分支作答总题数，用于分支问卷*/
+	private Integer quesSum;
 	/**问卷标题*/
 	private String paperTitle;
 	/**欢迎语句*/
@@ -99,6 +101,12 @@ public class PaperInfo {
 	}
 	public void setSelectQues(Integer[][] selectQues) {
 		this.selectQues = selectQues;
+	}
+	public Integer getQuesSum() {
+		return quesSum;
+	}
+	public void setQuesSum(Integer quesSum) {
+		this.quesSum = quesSum;
 	}
 	public String getPaperTitle() {
 		return paperTitle;
