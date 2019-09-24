@@ -50,7 +50,7 @@ $(function(){
 	$("#tbodyId").on("change", ".quesId", doChangeTHeadCheckBoxState);
 	$(".input-group-btn")
 		.on("click",".btn-search", doQueryObjects)
-		.on("click",".btn-submit", doSubmitQues)
+		.on("click",".btn-submit", doSelectQues)
 		.on("click",".btn-cancel", doCancel);
 });
 
@@ -174,7 +174,7 @@ function doGetCheckedIds(){
 	return array;
 }
 //提交选择题目后操作
-function doSubmitQues() {
+function doSelectQues() {
 	var ids = doGetCheckedIds();
 	if(ids.length == 0) {
 		alert("请先选择");

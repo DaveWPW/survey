@@ -6,7 +6,14 @@
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <title>Survey</title>
 </head>
-<body style="margin-left:5%; margin-right:5%;">
+<style>
+.body-backgauge{
+	margin-left:5%;
+	margin-right:5%;
+	margin-top:3%;
+}
+</style>
+<body class="body-backgauge">
   <input id="paperLanguage" type="hidden" th:value="${language}"/>
   <input id="paperName" type="hidden" th:value="${paperName}"/>
   <input id="mobile" type="hidden" th:value="${mobile}"/>
@@ -17,7 +24,7 @@
   	<img alt="3logo" src="images/3logo_28-5-18.gif">
   </div>
   <div id="paperDiv"></div>
-  <div id="thanks"></div>
+  <div id="thanks" style="font-size:18px;"></div>
   <div class="box-button" align="center"  style="margin-top:30px; margin-bottom:80px;">
     <button type="button" class="btn-submit" style="background-color: grey; width: 100px; height: 30px; color: #fff;"></button>
   </div>
@@ -78,7 +85,7 @@ function doGetObjects(){
 		if(result.state == 1){
 			doInitPaperDate(result.data);
 			var params = {"quesIds" : result.data.quesIds.toString()}
-			var url = "paper/doSubmitQues.do";
+			var url = "paper/doSelectQues.do";
 			$.post(url, params, function(result){
 				doInitQuesDate(result.data);
 			});

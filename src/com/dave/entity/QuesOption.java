@@ -13,8 +13,10 @@ public class QuesOption {
 	private int quesId;
 	/**选项内容*/
 	private String optionContent;
-	/**是否可填空*/
+	/**是否可填空 0：否，1：是*/
 	private int flag;
+	/**问题状态 0：删除，1：使用*/
+	private int status;
 	
 	public int getOptionId() {
 		return optionId;
@@ -39,5 +41,11 @@ public class QuesOption {
 	}
 	public void setFlag(int flag) {
 		this.flag = flag;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }

@@ -46,12 +46,15 @@ function doInitPage(){
 	var tBody = $("#tbodyId");
 	tBody.empty();
 	if(data.length > 0){
+		var a = 1;
 		for(var i in data){
-			var quesNum = $("#tbodyId").find("tr").eq(i-1).find("td").eq(0).html();
+			//debugger;
+			var quesNum = $("#tbodyId").find("tr").eq(i-a).find("td").eq(0).html();
 			if(quesNum == data[i].quesNum){
-				var optionContent = $("#tbodyId").find("tr").eq(i-1).find("td").eq(3).html();
+				var optionContent = $("#tbodyId").find("tr").eq(i-a).find("td").eq(3).html();
 				var text = optionContent+", "+data[i].optionContent;
-				$("#tbodyId").find("tr").eq(i-1).find("td").eq(3).html(text);
+				$("#tbodyId").find("tr").eq(i-a).find("td").eq(3).html(text);
+				a++;
 			}else{
 				var tr = $("<tr></tr>");
 				tr.data("rowData", data[i]);

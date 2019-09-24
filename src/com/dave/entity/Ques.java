@@ -22,6 +22,8 @@ public class Ques {
 	/**创建日期*/
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	private Date createDate;
+	/**问题状态 0：删除，1：使用*/
+	private int status;
 	
 	public int getQuesId() {
 		return quesId;
@@ -52,5 +54,11 @@ public class Ques {
 	}
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }

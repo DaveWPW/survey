@@ -3,8 +3,8 @@
 <mapper namespace="com.dave.dao.QuesOptionDao">
 	<insert id="addOption" parameterType="com.dave.entity.QuesOption">
      	insert into su_ques_option
-      	(ques_id, option_content, flag)
+      	(ques_id, option_content, flag, status)
       	values
-		(#{quesId}, #{optionContent}, #{flag})
+		(#{quesId}, #{optionContent}, #{flag}, #{status})
 	</insert>
 </mapper>

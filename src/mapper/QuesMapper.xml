@@ -3,9 +3,9 @@
 <mapper namespace="com.dave.dao.QuesDao">
 	<insert id="addQues" parameterType="com.dave.entity.Ques">
      	insert into su_ques
-      	(ques_name, ques_type, must, create_date)
+      	(ques_name, ques_type, must, create_date, status)
       	values
-		(#{quesName}, #{quesType}, #{must}, #{createDate})
+		(#{quesName}, #{quesType}, #{must}, #{createDate}, #{status})
 	</insert>
 	<update id="updateQues" parameterType="com.dave.entity.Ques">
 		update su_ques set ques_name = #{quesName}, must = #{must} where ques_id = #{quesId}
@@ -13,9 +13,9 @@
 	<select id="findQuesList" resultType="com.dave.entity.Ques">
 		select * from 
 		(select tt.*, rownum as rowno from 
-		(select * from su_ques 
+		(select * from su_ques where status = 1 
 		<if test="quesName != null and '' != quesName">
-			where ques_name like concat(concat('%', #{quesName}), '%') 
+			and ques_name like concat(concat('%', #{quesName}), '%') 
 		</if>
 		order by create_date desc
 		) tt

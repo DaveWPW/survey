@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dave.dao.PaperDao;
 import com.dave.dao.PaperQuesDao;
@@ -26,6 +27,7 @@ import com.dave.service.SurveyService;
  * @author Dave20190902
  *
  */
+@Transactional(rollbackFor=Throwable.class)
 @Service
 public class SurveyServiceImpl implements SurveyService{
 	@Autowired

@@ -55,9 +55,9 @@ public class PaperController {
      * @param paperIds
      * @return
      */
-    @RequestMapping("doSubmitQues")
+    @RequestMapping("doSelectQues")
     @ResponseBody
-    public JsonResult doSubmitQues(Integer... quesIds) {
+    public JsonResult doSelectQues(Integer... quesIds) {
     	List<QuesInfo> list = paperService.selectQuesByIds(quesIds);
     	return new JsonResult(list);
     }

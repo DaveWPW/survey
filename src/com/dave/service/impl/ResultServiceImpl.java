@@ -20,9 +20,7 @@ public class ResultServiceImpl implements ResultService {
 	private ResultQuesDao resultQuesDao;
 	@Override
 	public PageObject<Result> findResultList(int pageCurrent, String paperName) {
-		//计算startIndex的值
         int pageSize = 10;
-        //依据条件获取当前页数据
         int startIndex = (pageCurrent-1) * pageSize;
         int rowCount = resultDao.getAllResultCount();
         if(rowCount < startIndex){
@@ -30,7 +28,6 @@ public class ResultServiceImpl implements ResultService {
             startIndex = (pageCurrent-1) * pageSize;
         }
         List<Result> records = resultDao.findResultList(startIndex, pageSize*pageCurrent, paperName);
-        //设置分页对象参数
         PageObject<Result> pageObject = new PageObject<>();
         pageObject.setPageCurrent(pageCurrent);
         pageObject.setRowCount(rowCount);
@@ -43,7 +40,7 @@ public class ResultServiceImpl implements ResultService {
 		int rows = 0;
 		for(int resultId : resultIds) {
 			rows = resultDao.deleteResult(resultId);
-			rows = resultQuesDao.deleteResultQues(resultId);
+			resultQuesDao.deleteResultQues(resultId);
 		}
 		return rows;
 	}

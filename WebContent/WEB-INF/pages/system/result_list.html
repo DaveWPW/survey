@@ -28,8 +28,7 @@
 			  <th>问卷名称</th>
 			  <th>问卷语言</th>
 			  <th>问卷类型</th>
-			  <th>开始时间</th>
-			  <th>结束时间</th>
+			  <th>作答时间</th>
 		    </tr>
 		  </thead>
 		  <tbody id="tbodyId"></tbody>
@@ -122,7 +121,6 @@ function doCreateTds(data){
 	    "<td>"+data.paperName+"</td>"+
 	    "<td>"+language+"</td>"+
 	    "<td>"+type+"</td>"+
-	    "<td>"+data.startTime+"</td>"+
 	    "<td>"+data.endTime+"</td>";
     return tds;
 }
@@ -187,7 +185,7 @@ function doDeleteQues() {
 function doOpenDetails(){
 	var resultId = $(this).parents("tr").find("td").eq(0).find("input").val();
 	var paperName = $(this).parents("tr").find("td").eq(4).html();
-	var paperDate = $(this).parents("tr").find("td").eq(8).html();
+	var paperDate = $(this).parents("tr").find("td").eq(7).html();
 	var mobile = $(this).val();
 	var url = "result/doGetResultQues.do";
 	var params = {"resultId" : resultId}

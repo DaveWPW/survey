@@ -7,8 +7,13 @@
   <title>Survey</title>
 </head>
 <style>
+.body-backgauge{
+	margin-left:5%;
+	margin-right:5%;
+	margin-top:3%;
+}
 </style>
-<body style="margin-left:5%; margin-right:5%;">
+<body class="body-backgauge">
   <input id="paperLanguage" type="hidden" th:value="${language}"/>
   <input id="paperName" type="hidden" th:value="${paperName}"/>
   <input id="mobile" type="hidden" th:value="${mobile}"/>
@@ -84,7 +89,7 @@ function doGetObjects(){
 		if(result.state == 1){
 			doInitPaperDate(result.data);
 			var params = {"quesIds" : result.data.quesIds.toString()}
-			var url = "paper/doSubmitQues.do";
+			var url = "paper/doSelectQues.do";
 			$.post(url, params, function(result){
 				doInitQuesDate(result.data);
 			});

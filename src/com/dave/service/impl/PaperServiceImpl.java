@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dave.common.util.JsonUtil;
 import com.dave.common.vo.PageObject;
@@ -29,6 +30,7 @@ import com.dave.service.PaperService;
  * @author Dave20190828
  *
  */
+@Transactional(rollbackFor=Throwable.class)
 @Service
 public class PaperServiceImpl implements PaperService {
 	@Autowired
@@ -134,7 +136,6 @@ public class PaperServiceImpl implements PaperService {
             startIndex = (pageCurrent-1) * pageSize;
         }
         List<Paper> records = paperDao.findPaperList(startIndex, pageSize*pageCurrent, paperName);
-        
         PageObject<Paper> pageObject = new PageObject<>();
         pageObject.setPageCurrent(pageCurrent);
         pageObject.setRowCount(rowCount);
@@ -147,11 +148,11 @@ public class PaperServiceImpl implements PaperService {
 	public int deletePaper(Integer... paperIds) {
 		int rows = 0;
 		for(int paperId : paperIds) {
-			rows = paperQuesDao.deletePaperQues(paperId);
 			rows = paperDao.deletePaper(paperId);
-			if(rows == 1) {
-				paperQuesOptionDao.deletePaperQuesOption(paperId);
-			}
+//			rows = paperQuesDao.deletePaperQues(paperId);
+//			if(rows == 1) {
+//				paperQuesOptionDao.deletePaperQuesOption(paperId);
+//			}
 		}
 		return rows;
 	}
@@ -164,27 +165,29 @@ public class PaperServiceImpl implements PaperService {
 
 	@Override
 	public PaperInfo getPaperQues(int paperId) {
-		Paper paper = paperDao.selectPaperById(paperId);
 		PaperInfo paperInfo = new PaperInfo();
-		paperInfo.setPaperId(paperId);
-		paperInfo.setPaperName(paper.getPaperName());
-		paperInfo.setPaperType(paper.getPaperType());
-		paperInfo.setPaperLanguage(paper.getPaperLanguage());
-		paperInfo.setPaperTitle(paper.getPaperTitle());
-		paperInfo.setGreet(paper.getGreet());
-		paperInfo.setThank(paper.getThank());
-		if("02".equals(paper.getPaperType())){
-			paperInfo.setQuesSum(paper.getQuesSum());
+		Paper paper = paperDao.selectPaperById(paperId);
+		if(paper != null) {
+			paperInfo.setPaperId(paperId);
+			paperInfo.setPaperName(paper.getPaperName());
+			paperInfo.setPaperType(paper.getPaperType());
+			paperInfo.setPaperLanguage(paper.getPaperLanguage());
+			paperInfo.setPaperTitle(paper.getPaperTitle());
+			paperInfo.setGreet(paper.getGreet());
+			paperInfo.setThank(paper.getThank());
+			if("02".equals(paper.getPaperType())){
+				paperInfo.setQuesSum(paper.getQuesSum());
+			}
+			List<PaperQues> quesList = paperQuesDao.selectQuesByPaperId(paperId);
+			Integer[] quesIds = new Integer[quesList.size()];
+			Integer[] quesNum = new Integer[quesList.size()];
+			for(int i = 0; i < quesList.size(); i++) {
+				quesIds[i] = quesList.get(i).getQuesId();
+				quesNum[i] = quesList.get(i).getQuesNum();
+			}
+			paperInfo.setQuesIds(quesIds);
+			paperInfo.setQuesNum(quesNum);
 		}
-		List<PaperQues> quesList = paperQuesDao.selectQuesByPaperId(paperId);
-		Integer[] quesIds = new Integer[quesList.size()];
-		Integer[] quesNum = new Integer[quesList.size()];
-		for(int i = 0; i < quesList.size(); i++) {
-			quesIds[i] = quesList.get(i).getQuesId();
-			quesNum[i] = quesList.get(i).getQuesNum();
-		}
-		paperInfo.setQuesIds(quesIds);
-		paperInfo.setQuesNum(quesNum);
 		return paperInfo;
 	}
 

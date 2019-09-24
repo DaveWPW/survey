@@ -28,4 +28,11 @@
 	<context:component-scan base-package="com.dave"/>
 	<import resource="classpath:spring-mvc.xml"/>
 	<import resource="classpath:spring-mybatis.xml"/>
+	
+	<aop:aspectj-autoproxy/>
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+       	<property name="dataSource" ref="druidDataSource"></property>
+    </bean>
+    <tx:annotation-driven transaction-manager="txManager"/>
+    
 </beans>

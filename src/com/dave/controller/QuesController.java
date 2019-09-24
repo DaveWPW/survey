@@ -1,11 +1,12 @@
 package com.dave.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.druid.util.StringUtils;
 import com.dave.common.vo.JsonResult;
 import com.dave.entity.vo.QuesInfo;
 import com.dave.service.QuesService;
@@ -68,6 +69,12 @@ public class QuesController {
     @RequestMapping("doDeleteQues")
     @ResponseBody
     public JsonResult doDeleteQues(Integer... quesIds) {
+    	for(int quesId : quesIds) {
+    		List<String> paperName = quesService.checkQuesUse(quesId);
+    		if(paperName.size() > 0) {
+    			return new JsonResult("该题目已经给"+paperName.toString()+"调查问卷使用，拒绝删除！");
+    		}
+    	}
     	int row = quesService.deleteQues(quesIds);
     	if(row > 0) {
     		return new JsonResult("delete succeed", row); 		
@@ -93,9 +100,9 @@ public class QuesController {
     @RequestMapping("doUpdateQues")
     @ResponseBody
     public JsonResult doUpdateQues(QuesInfo quesInfo) {
-    	String paperName = quesService.checkQuesUse(quesInfo.getQuesId());
-    	if(!StringUtils.isEmpty(paperName)) {
-    		return new JsonResult("该题目已经给"+paperName+"调查问卷使用，拒绝修改！");
+    	List<String> paperName = quesService.checkQuesUse(quesInfo.getQuesId());
+    	if(paperName.size() > 0) {
+    		return new JsonResult("该题目已经给"+paperName.toString()+"调查问卷使用，拒绝修改！");
     	}
     	int row = quesService.updateQues(quesInfo);
     	if(row == 1) {

@@ -24,19 +24,20 @@ public interface PaperDao {
 	@Select("select max(paper_id) as paper_id from su_paper")
 	int selectPaperId();
 	
-	@Select("select count(*) from su_paper")
+	@Select("select count(*) from su_paper where status != 0")
 	int getAllPaperCount();
 	
 	List<Paper> findPaperList(
 			@Param("startIndex")int startIndex, @Param("pageSize")int pageSize, @Param("paperName")String paperName);
 	
-	@Delete("delete from su_paper where paper_id = #{paperId}")
+//	@Delete("delete from su_paper where paper_id = #{paperId}")
+	@Update("update su_paper set status = 0 where paper_id = #{paperId}")
 	int deletePaper(@Param("paperId")int paperId);
 	
 	@Update("update su_paper set status = #{status} where paper_id = #{paperId}")
 	int updateStatus(Paper paper);
 		
-	@Select("select * from su_paper where paper_id = #{paperId}")
+	@Select("select * from su_paper where paper_id = #{paperId} and status != 0")
 	Paper selectPaperById(@Param("paperId")int paperId);
 	
 	int updatePaper(Paper paper);

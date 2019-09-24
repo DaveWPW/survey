@@ -3,7 +3,7 @@
 <mapper namespace="com.dave.dao.PaperDao">
 	<select id="checkoutPaperName" resultType="int">
 		select count(*) from su_paper
-		where paper_name=#{paperName} and paper_language=#{paperLanguage}
+		where paper_name=#{paperName} and paper_language=#{paperLanguage} and status<![CDATA[!= ]]>0
 		<if test="paperId != null and '' != paperId">
 			and paper_id <![CDATA[!= ]]> #{paperId}
 		</if>
@@ -19,9 +19,9 @@
 	<select id="findPaperList" resultType="com.dave.entity.Paper">
 		select * from 
 		(select tt.*, rownum as rowno from 
-		(select * from su_paper 
+		(select * from su_paper where status<![CDATA[!= ]]>0 
 		<if test="paperName != null and '' != paperName">
-			where paper_name like concat(concat('%', #{paperName}), '%') 
+			and paper_name like concat(concat('%', #{paperName}), '%') 
 		</if>
 		order by create_date desc
 		) tt

@@ -1,5 +1,7 @@
 package com.dave.service;
 
+import java.util.List;
+
 import com.dave.common.vo.PageObject;
 import com.dave.entity.Ques;
 import com.dave.entity.vo.QuesInfo;
@@ -16,13 +18,13 @@ public interface QuesService {
 	
 	int addQues(QuesInfo quesInfo);
 	
-	int selectQuesId();
+//	int selectQuesId();
 	
 	int deleteQues(Integer... quesIds);
 	
 	QuesInfo getQuesOption(int quesId);
 	
-	String checkQuesUse(int quesId);
+	List<String> checkQuesUse(int quesId);
 	
 	int updateQues(QuesInfo quesInfo);
 }

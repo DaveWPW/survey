@@ -19,7 +19,6 @@
       	<input type="text" id="paperName" style="width: 60%;" placeholder="请用英文和数字命名">
       	<input type="radio" name="paperLanguage" value="eng">英文 
       	<input type="radio" name="paperLanguage" value="ch">中文 
-      	<!-- <input class="paperType" style="display:none;"/> -->
       </div>
     </div>
     <div class="form-group" style="display:none;">
@@ -98,7 +97,7 @@ function doInitFormData(){
 	}
 	var ids = $("#mainContentId").data("ids");
 	var params = {"quesIds" : ids == null ? data.quesIds.toString() : ids.toString()}
-	var url = "paper/doSubmitQues.do";
+	var url = "paper/doSelectQues.do";
 	$.post(url, params, function(result){
 		$("#mainContentId").data("quesData", result.data);
 		if(ids){
@@ -211,8 +210,10 @@ function addSelectOption(){
 		$(".select-ques").each(function(){
 			$(this).show();//显示选择列表
 			for(var i = 0; i <= $(".quesDiv").length; i++){
-				var option = "<option value='"+i+"'>"+i+"</option>";
-				$(this).append(option);
+				if(i != 1){
+					var option = "<option value='"+i+"'>"+i+"</option>";
+					$(this).append(option);
+				}
 			}
 		});
 	}
@@ -470,6 +471,27 @@ function doValidated(){
 			valid = false;
 		}
 	}
+	$(".quesDiv").each(function(){
+		var be = false;
+		$(this).find(".select-ques").each(function(){
+			if($(this).val() === "0"){
+				be = true;
+			}
+		});
+		if(be){
+			var count = 0;
+			$(this).find(".select-ques").each(function(){
+				if($(this).val() === "0"){
+					count++;
+				}
+			});
+			if($(this).find(".select-ques").length == count){
+			}else{
+				alert("0为最后一题标识，选项后的序号设置必须全部同一为0");
+				valid = false;
+			}	
+		}
+	});
 	return valid;
 }
 //console.log();
