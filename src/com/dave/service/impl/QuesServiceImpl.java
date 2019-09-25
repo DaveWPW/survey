@@ -67,10 +67,6 @@ public class QuesServiceImpl implements QuesService {
 		}
 		return row;
 	}
-//	@Override
-//	public int selectQuesId() {
-//		return quesDao.selectQuesId();
-//	}
 	@Override
 	public int deleteQues(Integer... quesIds) {
 		int rows = 0;

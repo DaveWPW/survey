@@ -18,8 +18,6 @@ public interface QuesService {
 	
 	int addQues(QuesInfo quesInfo);
 	
-//	int selectQuesId();
-	
 	int deleteQues(Integer... quesIds);
 	
 	QuesInfo getQuesOption(int quesId);

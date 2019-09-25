@@ -48,8 +48,8 @@ public class ResultController {
 	 */
     @RequestMapping("doFindResultList")
     @ResponseBody
-    public JsonResult doFindResultList(int pageCurrent, String paperName) {
-    	PageObject<Result> list = resultService.findResultList(pageCurrent, paperName);
+    public JsonResult doFindResultList(int pageCurrent, String paperName, String startDate, String endDate) {
+    	PageObject<Result> list = resultService.findResultList(pageCurrent, paperName, startDate, endDate);
     	return new JsonResult(list);
     }
     /**

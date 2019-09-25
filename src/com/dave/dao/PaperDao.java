@@ -2,7 +2,6 @@ package com.dave.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -30,7 +29,6 @@ public interface PaperDao {
 	List<Paper> findPaperList(
 			@Param("startIndex")int startIndex, @Param("pageSize")int pageSize, @Param("paperName")String paperName);
 	
-//	@Delete("delete from su_paper where paper_id = #{paperId}")
 	@Update("update su_paper set status = 0 where paper_id = #{paperId}")
 	int deletePaper(@Param("paperId")int paperId);
 	
