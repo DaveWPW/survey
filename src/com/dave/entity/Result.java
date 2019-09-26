@@ -23,6 +23,8 @@ public class Result {
 	private Date startTime;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	private Date endTime;
+	/**记录状态 0：删除，1：使用*/
+	private int status;
 	
 	public Integer getResultId() {
 		return resultId;
@@ -83,5 +85,11 @@ public class Result {
 	}
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }

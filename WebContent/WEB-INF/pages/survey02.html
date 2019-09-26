@@ -30,10 +30,11 @@
     <button type="button" class="btn-next" style="background-color: grey; width: 100px; height: 30px; color: #fff;"></button>
     <button type="button" class="btn-submit" style="background-color: grey; width: 100px; height: 30px; color: #fff;"></button>
   </div>
-  <div style="background:#FFFFFF; position:fixed; bottom:0px; width:90%;">
+  <div class="box-footer" style="background:#FFFFFF; position:fixed; bottom:0px; width:90%;">
     <hr/>
     <div style="float:left;">
-  	  © 3HK 
+  	  <span>© 3HK |</span>
+  	  <a href="#" class="terms-url"><span id="text1"></span></a>
     </div>
     <div style="float:right;">
   	  <img alt="signature" src="images/signature.png">
@@ -44,13 +45,14 @@
 <script type="text/javascript">
 $(function(){
 	doGetObjects();
-	buttonStatus();
+	doButtonChange();
 	$(".box-button")
 		.on("click", ".btn-next", doNext)
 		.on("click", ".btn-submit", doSubmit);
 	$("#paperDiv")
 		.on("change", ".esayResult", checkLength)
 		.on("change", ".flag", checkOptionLength);
+	$(".box-footer").on("click",".terms-url", doTermsUrl);
 });
 //触发性校验填空题内容长度操作
 function checkLength(){
@@ -118,7 +120,8 @@ function doInitPaperDate(data){
 			"</div>"+
 	  	"</div>"+
 		"<div id='quesDivs'></div>"+
-		"<input id='thank' style='display: none;' value='"+data.thank+"'>";
+		"<input id='thank' style='display: none;' value='"+data.thank+"'>"+
+		"<input id='termsUrl' style='display: none;' value='"+data.termsUrl+"'>";
 	paperDiv.append(paper);
 }
 //初始化调查问题操作
@@ -162,12 +165,14 @@ function doAddQuesName(quesId, quesType, must){
 		"<div class='quesDiv' style='font-size:18px; display:none;'>"+
 			"<div class='ques'>"+
     			"<div>"+
-    				"<label class='numberClass'></label><label class='index'></label><label>.</label>"+
-    				"<span style='color:red;' class='is-must'>*</span>"+
-    				"<input class='quesId' value='"+quesId+"' style='display:none;'/>"+
-    				"<input class='quesType' value='"+quesType+"' style='display:none;'/>"+
-    				"<input class='must' value='"+must+"' style='display:none;'/>"+
-    				"<span class='quesName'></span>"+
+    				"<label>"+
+	    				"<label class='numberClass'></label><label class='index'></label><label>.</label>"+
+	    				"<span style='color:red;' class='is-must'>*</span>"+
+	    				"<input class='quesId' value='"+quesId+"' style='display:none;'/>"+
+	    				"<input class='quesType' value='"+quesType+"' style='display:none;'/>"+
+	    				"<input class='must' value='"+must+"' style='display:none;'/>"+
+	    				"<span class='quesName'></span>"+
+    				"<label>"+
     			"</div>"+
     		"</div>"+
     	"</div>";
@@ -175,6 +180,12 @@ function doAddQuesName(quesId, quesType, must){
 }
 //添加单选题和多选题Div操作
 function doAddOption(optionCon, optionId, type, quesDiv, quesId, flag){
+	var image = "";
+	if(optionCon.indexOf("@#") != -1){
+		arr = optionCon.split("@#");
+		optionCon = arr[1];
+		image = "<img alt='"+arr[0]+"' src='images/"+arr[0]+".png'>";
+	}
 	var content;
 	if($("#paperLanguage").val() === "ch"){
 		content = "僅限10箇中文字符！";
@@ -186,7 +197,7 @@ function doAddOption(optionCon, optionId, type, quesDiv, quesId, flag){
 			"<div class='option'>"+
 				"<div>"+
 					"<label>"+
-						"<input type='radio' class='optionId' name='optionName"+quesId+"' value='"+optionId+"'><span class='optionContent' style='color: #191970;'>"+optionCon+"</span>"+
+						"<input type='radio' class='optionId' name='optionName"+quesId+"' value='"+optionId+"'>"+image+"<span class='optionContent' style='color: #191970;'>"+optionCon+"</span>"+
 						"<input type='text' class='flag' value='"+flag+"' style='display:none;' placeholder='"+content+"'>"+
 						"<input type='text' class='select-ques' style='display:none;'>"+
 					"</label>"+
@@ -298,7 +309,7 @@ function doNext(){
 	});
 	if(valid){
 	}else{
-		alert("未完成作答！");
+		alert("请完成作答！");
 	}
 	if(selectNum === "0"){
 		return valid;
@@ -332,15 +343,17 @@ function initProgress(index){
 	$(".progress-bar").html(progress+"%");
 	$(".progress-bar").width(progress+"%");
 }
-//提交按钮语言状态
-function buttonStatus(){
+//定义提交按钮语言
+function doButtonChange(){
 	$(".btn-submit").hide();//隐藏提交按钮
 	if($("#paperLanguage").val() === "ch"){
 		$(".btn-next").html("下一步");
 		$(".btn-submit").html("提交");
+		$("#text1").html("條款及細則");//页尾a标签提示
 	}else if($("#paperLanguage").val() === "eng"){
 		$(".btn-next").html("Next");
 		$(".btn-submit").html("Submit");
+		$("#text1").html("Terms &<br> Conditions");
 	}
 }
 //提交操作
@@ -352,7 +365,7 @@ function doSubmit(){
 			if(result.state == 1){
 				var thank = $("#thank").val();
 				$("#paperDiv").remove();
-				var div = "<div><h2>"+thank+"</h2></div>";
+				var div = "<div><h4>"+thank+"</h4></div>";
 				$("#thanks").append(div);
 				$(".box-button").hide();
 			}else{
@@ -430,6 +443,15 @@ function checkFlag(flag){
 		}
 	}
 	return false;
+}
+function doTermsUrl(){
+	if($("#paperLanguage").val() === "ch"){
+		$("#termsUrl").val("https://www.three.com.hk/website/appmanager/three/home?_nfpb=true&pageid=zz6101&_pageLabel=P200470391219567710594&lang=chi");
+	}else if($("#paperLanguage").val() === "eng"){
+		$("#termsUrl").val("https://www.three.com.hk/website/appmanager/three/home?_nfpb=true&pageid=zz6101&_pageLabel=P200470391219567710594&lang=eng");
+	}
+	var url = $("#termsUrl").val();
+	window.open(url, "_blank", "scrollbars=1, resizable=1, height=600, width=1100");
 }
 //console.log();
 //alert();

@@ -89,6 +89,7 @@ public class SurveyServiceImpl implements SurveyService{
 			Date startTime = simpleDateFormat.parse(resultInfo.getStartTime());
 			result.setStartTime(startTime);
 			result.setEndTime(new Date());
+			result.setStatus(1);
 			int row = resultDao.addResult(result);
 			if(row == 1) {
 				int resultId = resultDao.selectResultId();

@@ -19,7 +19,7 @@
 		</if>
 		order by create_date desc
 		) tt
-		where rownum <![CDATA[<= ]]> #{pageSize}) 
+		where rownum <![CDATA[<=]]> #{pageSize}) 
 		table_alias where table_alias.rowno > #{startIndex}
 	</select>
 </mapper>

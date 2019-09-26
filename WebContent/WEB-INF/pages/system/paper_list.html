@@ -290,7 +290,9 @@ function doTestPaper(){
 	}else if(language === "中文"){
 		paperLanguage = "ch";
 	}
-	var url = "doSurveyUI.do?mobile=88888888888&language="+paperLanguage+"&cli=66666666666&agentId=9999&startTime="+dateStr+"&paperName="+paperName;
+	var mobile = Math.floor(Math.random()*100000000);
+	var cli = Math.floor(Math.random()*1000);
+	var url = "doSurveyUI.do?mobile=852"+mobile+"&language="+paperLanguage+"&cli=66666666"+cli+"&agentId=9999&startTime="+dateStr+"&paperName="+paperName;
 	window.open(url, "_blank", "top=100,left=100,width=393,height=660"); 
 }
 //console.log();
