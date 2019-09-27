@@ -35,9 +35,6 @@ public interface ResultDao {
 	@Update("update su_result set status = 0 where resultId = #{resultId}")
 	int deleteResult(@Param("resultId")int resultId);
 	
-//	@Select("select r.result_id, r.mobile_num, r.cli, r.agent_id, p.paper_name, r.paper_type, r.paper_language, r.start_time, r.end_time from su_result r left join su_paper p on r.paper_id = p.paper_id where r.result_id = #{resultId}")
-//	Result selectResultById(@Param("resultId")int resultId);
-	
 	List<ResultExportInfo> exportSurveyResult(
 			@Param("paperName")String paperName, @Param("startDate")String startDate,
 			@Param("endDate")String endDate);

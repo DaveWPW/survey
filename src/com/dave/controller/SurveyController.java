@@ -40,7 +40,12 @@ public class SurveyController {
 		return new JsonResult(paperInfo);
 	}
 	
-	//@ResponseBody
+	/**
+	 * 条件调查结果
+	 * 
+	 * @param resultInfo
+	 * @return
+	 */
 	@RequestMapping("doSubmitSurveyResult")
 	public JsonResult doSubmitSurveyResult(ResultInfo resultInfo) {
 		int row = surveyService.submitSurveyResult(resultInfo);
@@ -54,6 +59,8 @@ public class SurveyController {
 	 * 
 	 * @param response
 	 * @param paperName
+	 * @param startDate
+	 * @param endDate
 	 */
 	@RequestMapping("doExportSurveyResult")
 	public void doExportSurveyResult(HttpServletResponse response, String paperName, String startDate, String endDate) {

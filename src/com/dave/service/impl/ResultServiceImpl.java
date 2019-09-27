@@ -48,7 +48,6 @@ public class ResultServiceImpl implements ResultService {
 		int rows = 0;
 		for(int resultId : resultIds) {
 			rows = resultDao.deleteResult(resultId);
-//			resultQuesDao.deleteResultQues(resultId);
 		}
 		return rows;
 	}
