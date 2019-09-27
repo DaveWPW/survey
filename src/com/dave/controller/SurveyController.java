@@ -50,9 +50,9 @@ public class SurveyController {
 	public JsonResult doSubmitSurveyResult(ResultInfo resultInfo) {
 		int row = surveyService.submitSurveyResult(resultInfo);
 		if(row == 1) {
-			return new JsonResult("submit succeed!", row);
+			return new JsonResult("Submit Succeed!", row);
 		}
-		return new JsonResult("submit failed!!");
+		return new JsonResult("Submit Failed!!");
 	}
 	/**
 	 * 导出调查结果

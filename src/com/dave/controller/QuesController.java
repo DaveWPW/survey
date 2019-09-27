@@ -1,11 +1,16 @@
 package com.dave.controller;
 
-import java.util.List;
+import java.util.Iterator;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.dave.common.vo.JsonResult;
 import com.dave.entity.vo.QuesInfo;
@@ -57,9 +62,9 @@ public class QuesController {
     public JsonResult doAddQues(QuesInfo quesInfo) {
     	int row = quesService.addQues(quesInfo);
     	if(row == 1) {
-    		return new JsonResult("add succeed", row); 		
+    		return new JsonResult("Add Succeed!", row); 		
     	}
-    	return new JsonResult("add failed");
+    	return new JsonResult("Add Failed!!");
     }
     /**
      * 删除问题
@@ -69,17 +74,11 @@ public class QuesController {
     @RequestMapping("doDeleteQues")
     @ResponseBody
     public JsonResult doDeleteQues(Integer... quesIds) {
-    	for(int quesId : quesIds) {
-    		List<String> paperName = quesService.checkQuesUse(quesId);
-    		if(paperName.size() > 0) {
-    			return new JsonResult("该题目已经给"+paperName.toString()+"调查问卷使用，拒绝删除！");
-    		}
+    	String resultInfo = quesService.deleteQues(quesIds);
+    	if(resultInfo == null) {
+    		return new JsonResult("Delete Succeed!", 1);	
     	}
-    	int row = quesService.deleteQues(quesIds);
-    	if(row > 0) {
-    		return new JsonResult("delete succeed", row); 		
-    	}
-    	return new JsonResult("delete failed");
+    	return new JsonResult(resultInfo);
     }
     /**
      * 根据问题获取选项
@@ -100,14 +99,33 @@ public class QuesController {
     @RequestMapping("doUpdateQues")
     @ResponseBody
     public JsonResult doUpdateQues(QuesInfo quesInfo) {
-    	List<String> paperName = quesService.checkQuesUse(quesInfo.getQuesId());
-    	if(paperName.size() > 0) {
-    		return new JsonResult("该题目已经给"+paperName.toString()+"调查问卷使用，拒绝修改！");
+    	String resultInfo = quesService.updateQues(quesInfo);
+    	if(resultInfo == null) {
+    		return new JsonResult("Update Succeed!", 1);	
     	}
-    	int row = quesService.updateQues(quesInfo);
-    	if(row == 1) {
-    		return new JsonResult("update succeed", row); 		
-    	}
-    	return new JsonResult("update failed");
+    	return new JsonResult(resultInfo);
     }
+    
+    @RequestMapping("doImportQues")
+	@ResponseBody
+	public JsonResult doImportQues(HttpServletRequest request) {
+		try {
+			MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+			if (multipartRequest != null) {
+				Iterator<String> iterator = multipartRequest.getFileNames();
+				while (iterator.hasNext()) {
+	                MultipartFile file = multipartRequest.getFile(iterator.next());
+	                if (StringUtils.hasText(file.getOriginalFilename())) {
+	                	String resultInfo = quesService.importQues(file.getOriginalFilename(), file);
+	                	if(resultInfo != null) {
+	                		return new JsonResult(resultInfo, 0);
+	                	}
+	                }
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new JsonResult("Import Succeed!", 1);
+	}
 }

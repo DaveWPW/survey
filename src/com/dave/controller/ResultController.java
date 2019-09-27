@@ -62,9 +62,9 @@ public class ResultController {
     public JsonResult doDeleteResult(Integer... resultIds) {
     	int row = resultService.deleteResult(resultIds);
     	if(row > 0) {
-    		return new JsonResult("delete succeed", row); 		
+    		return new JsonResult("Delete Succeed!", row); 		
     	}
-    	return new JsonResult("delete failed");
+    	return new JsonResult("Delete failed!!");
     }
     /**
      * 删除调查结果

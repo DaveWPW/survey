@@ -1,6 +1,6 @@
 package com.dave.service;
 
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dave.common.vo.PageObject;
 import com.dave.entity.Ques;
@@ -18,11 +18,11 @@ public interface QuesService {
 	
 	int addQues(QuesInfo quesInfo);
 	
-	int deleteQues(Integer... quesIds);
+	String deleteQues(Integer... quesIds);
 	
 	QuesInfo getQuesOption(int quesId);
 	
-	List<String> checkQuesUse(int quesId);
+	String updateQues(QuesInfo quesInfo);
 	
-	int updateQues(QuesInfo quesInfo);
+	String importQues(String fileName, MultipartFile file);
 }

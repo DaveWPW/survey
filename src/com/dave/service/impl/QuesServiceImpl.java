@@ -1,12 +1,20 @@
 package com.dave.service.impl;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.dave.common.util.ExcelUtil;
 import com.dave.common.vo.PageObject;
 import com.dave.dao.QuesOptionDao;
 import com.dave.dao.QuesDao;
@@ -68,13 +76,18 @@ public class QuesServiceImpl implements QuesService {
 		return row;
 	}
 	@Override
-	public int deleteQues(Integer... quesIds) {
-		int rows = 0;
+	public String deleteQues(Integer... quesIds) {
 		for(int quesId : quesIds) {
-			rows = optionDao.deleteOption(quesId);
-			rows = quesDao.deleteQues(quesId);
+			optionDao.deleteOption(quesId);
+			quesDao.deleteQues(quesId);
 		}
-		return rows;
+		List<String> paperNameList = quesDao.findUsePaperNameByQuesIds(quesIds);
+		if(paperNameList.size() == 0 || paperNameList == null) {
+		} else {
+			List<String> quesIdList = quesDao.findUseQuesIdByQuesIds(quesIds);
+			return paperNameList.toString()+"调查问卷正在使用"+quesIdList.toString()+"编号的问题，拒绝删除"+quesIdList.toString()+"编号的问题！！";		
+		}
+		return null;
 	}
 	@Override
 	public QuesInfo getQuesOption(int quesId) {
@@ -96,11 +109,12 @@ public class QuesServiceImpl implements QuesService {
 		return quesInfo;
 	}
 	@Override
-	public List<String> checkQuesUse(int quesId) {
-		return quesDao.checkQuesUse(quesId);
-	}
-	@Override
-	public int updateQues(QuesInfo quesInfo) {
+	public String updateQues(QuesInfo quesInfo) {
+		List<String> paperNameList = quesDao.findUsePaperNameByQuesIds(quesInfo.getQuesId());
+		if(paperNameList.size() == 0 || paperNameList == null) {
+		} else {
+			return paperNameList.toString()+"调查问卷正在使用"+quesInfo.getQuesId()+"编号的问题，拒绝修改！！";	
+		}
 		Ques ques = new Ques();
 		ques.setQuesId(quesInfo.getQuesId());
 		ques.setQuesName(quesInfo.getQuesName());
@@ -117,6 +131,81 @@ public class QuesServiceImpl implements QuesService {
 				row = optionDao.addOption(option);
 			}
 		}
-		return row;
+		if(row != 1) {
+			return "Update Failed!!";
+		}
+		return null;
+	}
+	@Override
+	public String importQues(String fileName, MultipartFile file) {
+		if (!fileName.matches("^.+\\.(?i)(xls)$") && !fileName.matches("^.+\\.(?i)(xlsx)$")) {
+			return "提示：上传文件格式不是xls和xlsx文件！！";
+		}
+		Workbook wb = null;
+		Boolean isQues = true;
+		try {
+			InputStream is = file.getInputStream();
+			wb = WorkbookFactory.create(is);
+			Sheet sheet = wb.getSheetAt(0);
+			int quesId = 0;
+			for (int i = 0; i < sheet.getLastRowNum() + 1; i++) {
+				Row row = sheet.getRow(i);
+				if (row == null || ExcelUtil.isBlankRow(row)) {
+					isQues = true;
+					continue;
+				}
+				if(isQues) {
+					Cell cell = row.getCell(0);
+					Ques ques = new Ques();
+					if (cell != null) {
+						String cellValue = ExcelUtil.getCellValue(cell);
+						ques.setQuesName(cellValue);
+					} else {
+						return "提示：第"+(i+1)+"行格式错误！！";
+					}
+					cell = row.getCell(1);
+					if (cell != null) {
+						String cellValue = ExcelUtil.getCellValue(cell);
+						ques.setQuesType("0"+cellValue);
+					} else {
+						return "提示：第"+(i+1)+"行格式错误！！";
+					}
+					cell = row.getCell(2);
+					if (cell != null) {
+						String cellValue = ExcelUtil.getCellValue(cell);
+						ques.setMust(Integer.parseInt(cellValue));
+					} else {
+						return "提示：第"+(i+1)+"行格式错误！！";
+					}
+					ques.setCreateDate(new Date());
+					ques.setStatus(1);
+					quesDao.addQues(ques);
+					quesId = quesDao.selectQuesId();
+					isQues = false;
+				} else {
+					Cell cell = row.getCell(0);
+					QuesOption option = new QuesOption();
+					option.setQuesId(quesId);
+					if (cell != null) {
+						String cellValue = ExcelUtil.getCellValue(cell);
+						option.setOptionContent(cellValue);
+					} else {
+						return "提示：第"+(i+1)+"行格式错误！！";
+					}
+					cell = row.getCell(1);
+					if (cell != null) {
+						String cellValue = ExcelUtil.getCellValue(cell);
+						option.setFlag(Integer.parseInt(cellValue));
+					} else {
+						return "提示：第"+(i+1)+"行格式错误！！";
+					}
+					option.setStatus(1);
+					optionDao.addOption(option);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

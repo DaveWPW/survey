@@ -56,7 +56,7 @@ $(function(){
 		.on("click", ".btn-open", doOpenDetails);
 	$(".box-button")
 		.on("click",".btn-search", doQueryObjects)
-		.on("click",".btn-export", doExport)
+		.on("click",".btn-export", doExportResult)
 		.on("click",".btn-delete", doDeleteQues);
 });
 //页面显示数据操作================================================================
@@ -203,7 +203,7 @@ function doOpenDetails(){
 		})
 	});
 }
-function doExport(){
+function doExportResult(){
 	var paperName = $("#searchNameId").val().trim();
 	var startDate = $("#startDate").val();
 	var endDate = $("#endDate").val();

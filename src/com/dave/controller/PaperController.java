@@ -78,9 +78,9 @@ public class PaperController {
     	}
     	int row = paperService.addPaper(paperInfo);
     	if(row == 1) {
-    		return new JsonResult("add succeed", row);
+    		return new JsonResult("Add Succeed!", row);
     	}
-    	return new JsonResult("add failed");
+    	return new JsonResult("Add Failed!");
     }
     /**
      * 查找问卷数据
@@ -103,9 +103,9 @@ public class PaperController {
     public JsonResult doDeletePaper(Integer... paperIds) {
     	int row = paperService.deletePaper(paperIds);
     	if(row > 0) {
-    		return new JsonResult("delete succeed", row); 		
+    		return new JsonResult("Delete Succeed!", row); 		
     	}
-    	return new JsonResult("delete failed");
+    	return new JsonResult("Delete Failed!");
     }
     /**
      * 更改问卷状态
@@ -117,9 +117,9 @@ public class PaperController {
     public JsonResult doUpdateStatus(Paper paper) {
     	int row = paperService.updateStatus(paper);
     	if(row > 0) {
-    		return new JsonResult("update succeed", row); 		
+    		return new JsonResult("Update Succeed!", row); 		
     	}
-    	return new JsonResult("update failed");
+    	return new JsonResult("Update Failed!");
     }
     /**
      * 根据问卷获取问题
@@ -160,8 +160,8 @@ public class PaperController {
     	}
     	int row = paperService.updatePaper(paperInfo);
     	if(row == 1) {
-    		return new JsonResult("update succeed", row); 		
+    		return new JsonResult("Update Succeed!", row); 		
     	}
-    	return new JsonResult("update failed");
+    	return new JsonResult("Update Failed");
     }
 }
