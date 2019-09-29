@@ -1,7 +1,5 @@
 package com.dave.service;
 
-import org.apache.poi.ss.usermodel.Workbook;
-
 import com.dave.entity.vo.PaperInfo;
 import com.dave.entity.vo.ResultInfo;
 
@@ -16,6 +14,4 @@ public interface SurveyService {
 	PaperInfo findStartPaper(String paperName, String paperLanguage);
 	
 	int submitSurveyResult(ResultInfo resultInfo);
-	
-	Workbook exportSurveyResult(String paperName, String startDate, String endDate);
 }

@@ -20,8 +20,8 @@ public interface ResultDao {
 	
 	int addResult(Result result);
 	
-	@Select("select max(result_id) as result_id from su_result")
-	int selectResultId();
+	@Select("select seq_result_id.nextval from dual")
+	int getResultId();
 	
 	@Select("select count(*) from su_result where status = 1")
 	int getAllResultCount();
@@ -32,10 +32,10 @@ public interface ResultDao {
 			@Param("endDate")String endDate);
 	
 //	@Delete("delete from su_result where result_id = #{resultId}")
-	@Update("update su_result set status = 0 where resultId = #{resultId}")
+	@Update("update su_result set status = 0, modify_time = sysdate where result_id = #{resultId}")
 	int deleteResult(@Param("resultId")int resultId);
 	
-	List<ResultExportInfo> exportSurveyResult(
+	List<ResultExportInfo> exportResult(
 			@Param("paperName")String paperName, @Param("startDate")String startDate,
 			@Param("endDate")String endDate);
 	

@@ -23,8 +23,8 @@ public interface QuesDao {
 	
 	int addQues(Ques ques);
 	
-	@Select("select max(ques_id) as ques_id from su_ques")
-	int selectQuesId();
+	@Select("select seq_ques_id.nextval from dual")
+	int getQuesId();
 	
 	int deleteQues(@Param("quesId")int quesId);
 	

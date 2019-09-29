@@ -21,6 +21,6 @@ public interface ResultQuesDao {
 //	@Delete("delete from su_result_ques where result_id = #{resultId}")
 //	int deleteResultQues(@Param("resultId")int resultId);
 	
-	@Select("select r.*, q.ques_name from su_result_ques r, su_ques q where r.result_id = #{resultId} and q.ques_id = r.ques_id order by ques_num asc")
+	@Select("select * from su_result_ques where result_id = #{resultId} order by ques_num asc")
 	List<ResultQues> selectResultQuesById(@Param("resultId")int resultId);
 }

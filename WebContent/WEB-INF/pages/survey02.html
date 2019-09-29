@@ -19,7 +19,7 @@
   <input id="mobile" type="hidden" th:value="${mobile}"/>
   <input id="cli" type="hidden" th:value="${cli}"/>
   <input id="agentId" type="hidden" th:value="${agentId}"/>
-  <input id="startTime" type="hidden" th:value="${startTime}"/>
+  <input id="inviteTime" type="hidden" th:value="${inviteTime}"/>
   <input id="quesIndex" type="hidden"/>
   <div>
   	<img alt="3logo" src="images/3logo_28-5-18.gif">
@@ -106,7 +106,6 @@ function doInitPaperDate(data){
 	var progress = Math.round((1/data.quesSum)*100);
 	var paper =
 		"<input id='paperId' style='display: none;' value='"+data.paperId+"'>"+
-		"<input id='paperName' style='display: none;' value='"+data.paperName+"'>"+
 		"<input id='paperType' style='display: none;' value='"+data.paperType+"'>"+
 		"<div id='paperTitle'><h1>"+data.paperTitle+"</h1></div>"+
 		"<div id='greet'><h4>"+data.greet+"</h4></div>"+
@@ -380,11 +379,13 @@ function getSubmitData(){
 	if(doNext()){
 		var quesNums = [];
 		var quesIds = [];
+		var quesNames = [];
 		var quesTypes = [];
 		var optionCons = [];
 		$(".quesDiv").each(function(){
 			var num = $(this).find(".ques").eq(0).find("div").eq(0).find(".numberClass").eq(0).html();
 			var quesId = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(0).val();
+			var quesName = $(this).find(".ques").eq(0).find("div").eq(0).find(".quesName").html();
 			var quesType = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(1).val();
 			var must = $(this).find(".ques").eq(0).find("div").eq(0).find("input").eq(2).val();
 			if(quesType === "01"){
@@ -399,6 +400,7 @@ function getSubmitData(){
 				}
 				quesNums.push(num);
 				quesIds.push(quesId);
+				quesNames.push(quesName);
 				quesTypes.push(quesType);
 				optionCons.push(optionCon);
 			}else if(quesType === "03"){
@@ -408,6 +410,7 @@ function getSubmitData(){
 				}
 				quesNums.push(num);
 				quesIds.push(quesId);
+				quesNames.push(quesName);
 				quesTypes.push(quesType);
 				optionCons.push(esayCon);
 			}
@@ -417,11 +420,13 @@ function getSubmitData(){
 			"cli" : $("#cli").val(),
 			"agentId" : $("#agentId").val(),
 			"paperId" : $("#paperId").val(),
+			"paperName" : $("#paperName").val(),
 			"paperType" : $("#paperType").val(),
 			"paperLanguage" : $("#paperLanguage").val(),
-			"startTime" : $("#startTime").val(),
+			"inviteTime" : $("#inviteTime").val(),
 			"quesNums" : quesNums.toString(),
 			"quesIds" : quesIds.toString(),
+			"quesNames" : quesNames.toString(),
 			"quesTypes" : quesTypes.toString(),
 			"optionCons" : optionCons.toString(),
 		}

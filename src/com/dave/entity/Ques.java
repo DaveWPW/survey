@@ -19,9 +19,12 @@ public class Ques {
 	private String quesType;
 	/**问题作答*/
 	private Integer must;
-	/**创建日期*/
+	/**创建时间*/
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-	private Date createDate;
+	private Date createTime;
+	/**修改时间*/
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+	private Date modifyTime;
 	/**问题状态 0：删除，1：使用*/
 	private int status;
 	
@@ -49,11 +52,17 @@ public class Ques {
 	public void setMust(Integer must) {
 		this.must = must;
 	}
-	public Date getCreateDate() {
-		return createDate;
+	public Date getCreateTime() {
+		return createTime;
 	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
 	}
 	public int getStatus() {
 		return status;

@@ -23,7 +23,10 @@ public class Paper {
 	private Integer status;
 	/**创建日期*/
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-	private Date createDate;
+	private Date createTime;
+	/**创建修改*/
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+	private Date modifyTime;
 	/**问卷标题*/
 	private String paperTitle;
 	/**欢迎语句*/
@@ -63,11 +66,17 @@ public class Paper {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	public Date getCreateDate() {
-		return createDate;
+	public Date getCreateTime() {
+		return createTime;
 	}
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
 	}
 	public String getPaperTitle() {
 		return paperTitle;
@@ -87,6 +96,7 @@ public class Paper {
 	public void setThank(String thank) {
 		this.thank = thank;
 	}
+	
 	public Integer getQuesSum() {
 		return quesSum;
 	}

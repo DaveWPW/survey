@@ -20,9 +20,11 @@ public class Result {
 	private String paperType;
 	private String paperLanguage;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-	private Date startTime;
+	private Date inviteTime;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-	private Date endTime;
+	private Date createTime;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+	private Date modifyTime;
 	/**记录状态 0：删除，1：使用*/
 	private int status;
 	
@@ -74,17 +76,23 @@ public class Result {
 	public void setPaperLanguage(String paperLanguage) {
 		this.paperLanguage = paperLanguage;
 	}
-	public Date getStartTime() {
-		return startTime;
+	public Date getInviteTime() {
+		return inviteTime;
 	}
-	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
+	public void setInviteTime(Date inviteTime) {
+		this.inviteTime = inviteTime;
 	}
-	public Date getEndTime() {
-		return endTime;
+	public Date getCreateTime() {
+		return createTime;
 	}
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	public Date getModifyTime() {
+		return modifyTime;
+	}
+	public void setModifyTime(Date modifyTime) {
+		this.modifyTime = modifyTime;
 	}
 	public int getStatus() {
 		return status;

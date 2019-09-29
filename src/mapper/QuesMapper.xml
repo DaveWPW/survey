@@ -8,22 +8,22 @@
 		<if test="quesName != null and '' != quesName">
 			and ques_name like concat(concat('%', #{quesName}), '%') 
 		</if>
-		order by create_date desc
+		order by create_time desc, ques_id asc
 		) tt
 		where rownum <![CDATA[<=]]> #{pageSize}) 
 		table_alias where table_alias.rowno > #{startIndex}
 	</select>
 	<insert id="addQues" parameterType="com.dave.entity.Ques">
      	insert into su_ques
-      	(ques_name, ques_type, must, create_date, status)
+      	(ques_id, ques_name, ques_type, must, create_time, status)
       	values
-		(#{quesName}, #{quesType}, #{must}, #{createDate}, #{status})
+		(#{quesId}, #{quesName}, #{quesType}, #{must}, #{createTime}, #{status})
 	</insert>
 	<update id="updateQues" parameterType="com.dave.entity.Ques">
-		update su_ques set ques_name = #{quesName}, must = #{must} where ques_id = #{quesId}
+		update su_ques set ques_name = #{quesName}, must = #{must}, modify_time = sysdate where ques_id = #{quesId}
 	</update>
 	<update id="deleteQues">
-		update su_ques set status = 0 
+		update su_ques set status = 0, modify_time = sysdate
 		where ques_id = #{quesId} and 0 = (
 		select count(*) from su_paper_ques pq 
 		left join su_paper p on pq.paper_id = p.paper_id 

@@ -59,11 +59,12 @@ public class QuesServiceImpl implements QuesService {
 		ques.setQuesName(quesInfo.getQuesName());
 		ques.setQuesType(quesInfo.getQuesType());
 		ques.setMust(quesInfo.getMust());
-		ques.setCreateDate(new Date());
+		ques.setCreateTime(new Date());
 		ques.setStatus(1);
+		int quesId = quesDao.getQuesId();
+		ques.setQuesId(quesId);
 		int row = quesDao.addQues(ques);
 		if(row == 1) {
-			int quesId = quesDao.selectQuesId();
 			for(int i = 0; i < quesInfo.getOptions().length; i++) {
 				QuesOption option = new QuesOption();
 				option.setQuesId(quesId);
@@ -177,10 +178,11 @@ public class QuesServiceImpl implements QuesService {
 					} else {
 						return "提示：第"+(i+1)+"行格式错误！！";
 					}
-					ques.setCreateDate(new Date());
+					ques.setCreateTime(new Date());
 					ques.setStatus(1);
+					quesId = quesDao.getQuesId();
+					ques.setQuesId(quesId);
 					quesDao.addQues(ques);
-					quesId = quesDao.selectQuesId();
 					isQues = false;
 				} else {
 					Cell cell = row.getCell(0);

@@ -12,11 +12,13 @@ public class ResultInfo {
 	private Long cli;
 	private Integer agentId;
 	private Integer paperId;
+	private String paperName;
 	private String paperType;
 	private String paperLanguage;
-	private String startTime;
+	private String inviteTime;
 	private Integer[] quesNums;
 	private Integer[] quesIds;
+	private String[] quesNames;
 	private String[] quesTypes;
 	private String[] optionCons;
 	
@@ -50,6 +52,12 @@ public class ResultInfo {
 	public void setPaperId(Integer paperId) {
 		this.paperId = paperId;
 	}
+	public String getPaperName() {
+		return paperName;
+	}
+	public void setPaperName(String paperName) {
+		this.paperName = paperName;
+	}
 	public String getPaperType() {
 		return paperType;
 	}
@@ -62,11 +70,11 @@ public class ResultInfo {
 	public void setPaperLanguage(String paperLanguage) {
 		this.paperLanguage = paperLanguage;
 	}
-	public String getStartTime() {
-		return startTime;
+	public String getInviteTime() {
+		return inviteTime;
 	}
-	public void setStartTime(String startTime) {
-		this.startTime = startTime;
+	public void setInviteTime(String inviteTime) {
+		this.inviteTime = inviteTime;
 	}
 	public Integer[] getQuesNums() {
 		return quesNums;
@@ -79,6 +87,12 @@ public class ResultInfo {
 	}
 	public void setQuesIds(Integer[] quesIds) {
 		this.quesIds = quesIds;
+	}
+	public String[] getQuesNames() {
+		return quesNames;
+	}
+	public void setQuesNames(String[] quesNames) {
+		this.quesNames = quesNames;
 	}
 	public String[] getQuesTypes() {
 		return quesTypes;

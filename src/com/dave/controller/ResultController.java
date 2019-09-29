@@ -1,7 +1,14 @@
 package com.dave.controller;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -77,4 +84,29 @@ public class ResultController {
     	List<ResultQues> list = resultService.getResultQues(resultId);
     	return new JsonResult(list);
     }
+    /**
+	 * 导出调查结果
+	 * 
+	 * @param response
+	 * @param paperName
+	 * @param startDate
+	 * @param endDate
+	 */
+	@RequestMapping("doExportResult")
+	public void doExportResult(HttpServletResponse response, String paperName, String startDate, String endDate) {
+		try {
+			Workbook wb = resultService.exportResult(paperName, startDate, endDate);
+			response.setContentType("application/vnd.ms-excel;charset=utf-8");
+			OutputStream os = response.getOutputStream();
+			Date currentTime = new Date();
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+			String dateStr = format.format(currentTime);
+			response.setHeader("Content-disposition", "attachment;filename=survey_result_"+dateStr+".xls");// 默认Excel名称
+			wb.write(os);
+			os.flush();
+			os.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

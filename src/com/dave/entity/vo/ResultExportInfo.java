@@ -16,14 +16,14 @@ public class ResultExportInfo {
 	private String quesName;
 	private String optionContent;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-	private Date endTime;
+	private Date createTime;
 	
 	@Override
 	public String toString() {
 		return "ResultExportInfo [paperName=" + paperName + ", mobileNum=" + mobileNum + ", cli=" + cli + ", agentId="
 				+ agentId + ", paperType=" + paperType + ", paperLanguage=" + paperLanguage + ", quesNum=" + quesNum
 				+ ", quesType=" + quesType + ", quesName=" + quesName + ", optionContent=" + optionContent
-				+ ", endTime=" + endTime + "]";
+				+ ", createTime=" + createTime + "]";
 	}
 	public String getPaperName() {
 		return paperName;
@@ -85,10 +85,10 @@ public class ResultExportInfo {
 	public void setOptionContent(String optionContent) {
 		this.optionContent = optionContent;
 	}
-	public Date getEndTime() {
-		return endTime;
+	public Date getCreateTime() {
+		return createTime;
 	}
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 }

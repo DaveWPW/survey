@@ -43,11 +43,11 @@ public class PageController {
 	
 	@RequestMapping("doSurveyUI")
 	public String doSurveyUI(Model model, 
-			long mobile, String language, long cli, int agentId, String startTime, String paperName) {
+			long mobile, String language, long cli, int agentId, String inviteTime, String paperName) {
 		try {
-			System.out.println("/survey/doSurveyUI.do?mobile="+mobile+"&language="+language+"&cli="+cli+"&agentId="+agentId+"&startTime="+startTime+"&paperName="+paperName);
+			System.out.println("/survey/doSurveyUI.do?mobile="+mobile+"&language="+language+"&cli="+cli+"&agentId="+agentId+"&inviteTime="+inviteTime+"&paperName="+paperName);
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-			long userDate = simpleDateFormat.parse(startTime).getTime();
+			long userDate = simpleDateFormat.parse(inviteTime).getTime();
 			long nowDate = new Date().getTime();
 			if(7*24*3600*1000 > nowDate-userDate) {
 				PaperInfo paperInfo = surveyService.findStartPaper(paperName, language);
@@ -57,7 +57,7 @@ public class PageController {
 					model.addAttribute("mobile", mobile);
 					model.addAttribute("cli", cli);
 					model.addAttribute("agentId", agentId);
-					model.addAttribute("startTime", startTime);
+					model.addAttribute("inviteTime", inviteTime);
 					if("01".equals(paperInfo.getPaperType())) {
 						return "survey01";
 					}else if("02".equals(paperInfo.getPaperType())) {

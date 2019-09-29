@@ -20,8 +20,8 @@ public interface PaperDao {
 	
 	int addPaper(Paper paper);
 	
-	@Select("select max(paper_id) as paper_id from su_paper")
-	int selectPaperId();
+	@Select("select seq_paper_id.nextval from dual")
+	int getPaperId();
 	
 	@Select("select count(*) from su_paper where status != 0")
 	int getAllPaperCount();
@@ -29,7 +29,7 @@ public interface PaperDao {
 	List<Paper> findPaperList(
 			@Param("startIndex")int startIndex, @Param("pageSize")int pageSize, @Param("paperName")String paperName);
 	
-	@Update("update su_paper set status = 0 where paper_id = #{paperId}")
+	@Update("update su_paper set status = 0, modify_time = sysdate where paper_id = #{paperId}")
 	int deletePaper(@Param("paperId")int paperId);
 	
 	@Update("update su_paper set status = #{status} where paper_id = #{paperId}")

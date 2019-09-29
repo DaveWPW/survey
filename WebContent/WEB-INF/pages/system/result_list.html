@@ -125,7 +125,7 @@ function doCreateTds(data){
 	    "<td>"+data.paperName+"</td>"+
 	    "<td>"+language+"</td>"+
 	    "<td>"+type+"</td>"+
-	    "<td>"+data.endTime+"</td>";
+	    "<td>"+data.createTime+"</td>";
     return tds;
 }
 //页面数据自增序列号
@@ -207,7 +207,7 @@ function doExportResult(){
 	var paperName = $("#searchNameId").val().trim();
 	var startDate = $("#startDate").val();
 	var endDate = $("#endDate").val();
-    window.location.href="survey/doExportSurveyResult.do?paperName="+paperName+"&startDate="+startDate+"&endDate="+endDate;
+    window.location.href="result/doExportResult.do?paperName="+paperName+"&startDate="+startDate+"&endDate="+endDate;
 }    
 //console.log();
 //alert();

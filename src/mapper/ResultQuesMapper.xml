@@ -3,8 +3,8 @@
 <mapper namespace="com.dave.dao.ResultQuesDao">
 	<insert id="addResultQues" parameterType="com.dave.entity.ResultQues">
      	insert into su_result_ques
-      	(result_id, ques_num, ques_id, ques_type, option_content)
+      	(result_id, ques_num, ques_id, ques_type, option_content, ques_name)
       	values
-		(#{resultId}, #{quesNum}, #{quesId}, #{quesType}, #{optionContent})
+		(#{resultId}, #{quesNum}, #{quesId}, #{quesType}, #{optionContent}, #{quesName})
 	</insert>
 </mapper>

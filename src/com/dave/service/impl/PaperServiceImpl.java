@@ -85,16 +85,17 @@ public class PaperServiceImpl implements PaperService {
 		paper.setPaperLanguage(paperInfo.getPaperLanguage());
 		//使用状态，1：:使用，9：禁用
 		paper.setStatus(9);
-		paper.setCreateDate(new Date());
+		paper.setCreateTime(new Date());
 		paper.setPaperTitle(paperInfo.getPaperTitle());
 		paper.setGreet(paperInfo.getGreet());
 		paper.setThank(paperInfo.getThank());
 		if("02".equals(paperInfo.getPaperType())){
 			paper.setQuesSum(paperInfo.getQuesSum());
 		}
+		int paperId = paperDao.getPaperId();
+		paper.setPaperId(paperId);
 		int row = paperDao.addPaper(paper);
 		if(row == 1) {
-			int paperId = paperDao.selectPaperId();
 			for(int i = 0; i < paperInfo.getQuesIds().length; i++) {
 				PaperQues paperQues = new PaperQues();
 				paperQues.setPaperId(paperId);
@@ -149,10 +150,6 @@ public class PaperServiceImpl implements PaperService {
 		int rows = 0;
 		for(int paperId : paperIds) {
 			rows = paperDao.deletePaper(paperId);
-//			rows = paperQuesDao.deletePaperQues(paperId);
-//			if(rows == 1) {
-//				paperQuesOptionDao.deletePaperQuesOption(paperId);
-//			}
 		}
 		return rows;
 	}
