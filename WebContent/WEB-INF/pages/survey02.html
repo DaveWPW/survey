@@ -26,17 +26,17 @@
   </div>
   <div id="paperDiv"></div>
   <div id="thanks"></div>
-  <div class="box-button" align="center"  style="margin-top:20px; margin-bottom:80px;">
+  <div class="box-button" align="center"  style="margin-top:20px; margin-bottom:90px;">
     <button type="button" class="btn-next" style="background-color: grey; width: 100px; height: 30px; color: #fff;"></button>
     <button type="button" class="btn-submit" style="background-color: grey; width: 100px; height: 30px; color: #fff;"></button>
   </div>
   <div class="box-footer" style="background:#FFFFFF; position:fixed; bottom:0px; width:90%;">
     <hr/>
-    <div style="float:left;">
+    <div style="float:left; width:40%;">
   	  <span>© 3HK |</span>
   	  <a href="#" class="terms-url"><span id="text1"></span></a>
     </div>
-    <div style="float:right;">
+    <div style="float:right; width:55%;  margin-bottom:10px;">
   	  <img alt="signature" src="images/signature.png">
     </div>
   </div>
@@ -352,7 +352,7 @@ function doButtonChange(){
 	}else if($("#paperLanguage").val() === "eng"){
 		$(".btn-next").html("Next");
 		$(".btn-submit").html("Submit");
-		$("#text1").html("Terms &<br> Conditions");
+		$("#text1").html("Terms & Conditions");
 	}
 }
 //提交操作
