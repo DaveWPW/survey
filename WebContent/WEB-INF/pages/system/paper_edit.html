@@ -3,7 +3,7 @@
   <div class="box-header with-border">
     <h3 class="box-title">问卷编辑页面</h3>
     <div class="box-tools">
-	  <div class="input-group input-group-sm" style="width: 100px;">
+	  <div class="input-group input-group-sm" style="width: 80px;">
 		<button type="button" class="btn btn-default btn-select-ques">添加问题</button>
 	  </div>
 	</div>
@@ -140,7 +140,7 @@ function doInitQuesDate(){
 function doAddQuesName(quesId, quesType){
 	var quesDivs = $("#quesDivs");
 	var quesNameDiv =
-		"<div class='quesDiv'>"+
+		"<div class='quesDiv'  style='border:2px solid #DDDDDD;'>"+
 			"<div class='form-group'>"+
     			"<label class='col-sm-2 control-label numberClass'></label>"+
     			"<div class='col-sm-10'>"+
@@ -148,9 +148,11 @@ function doAddQuesName(quesId, quesType){
     				"<input class='quesId' value='"+quesId+"' style='display:none;'/>"+
     				"<input class='quesType' value='"+quesType+"' style='display:none;'/>"+
     				"<span class='quesName'></span>"+
-    				"<button type='button' class='btn-delete'>删除</button>"+
-    				"<button type='button' class='btn-shiftup'>上移</button>"+
-    				"<button type='button' class='btn-shiftdown'>下移</button>"+
+    				"<div style='float:right;'>"+
+	    				"<button type='button' class='btn-delete'>删除</button>"+
+	    				"<button type='button' class='btn-shiftup'>上移</button>"+
+	    				"<button type='button' class='btn-shiftdown'>下移</button>"+
+    				"</div>"+
     			"</div>"+
     		"</div>"+
     	"</div>";
@@ -290,13 +292,13 @@ function doInitQuesIds(){
 }
 //删除问题操作
 function doDeleteQues(){
-	$(this).parent().parent().parent().remove();
+	$(this).parent().parent().parent().parent().remove();
 	autoAddNumber();
 	doInitQuesIds();
 }
 //上移操作
 function doShiftUpQues(){
-	var index = $(this).parent().parent().parent().index();
+	var index = $(this).parent().parent().parent().parent().index();
 	if(index === 0){
 		alert("已在最上面");
 		return;
@@ -311,7 +313,7 @@ function doShiftUpQues(){
 }
 //下移操作
 function doShiftDownQues(){
-	var index = $(this).parent().parent().parent().index();
+	var index = $(this).parent().parent().parent().parent().index();
 	var arr = $("#quesDivs").find(".quesDiv").toArray();
 	if(index === arr.length-1){
 		alert("已在最下面");
