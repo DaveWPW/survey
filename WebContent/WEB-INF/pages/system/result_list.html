@@ -125,7 +125,7 @@ function doCreateTds(data){
 	    "<td>"+data.paperName+"</td>"+
 	    "<td>"+language+"</td>"+
 	    "<td>"+type+"</td>"+
-	    "<td>"+data.createTime+"</td>";
+	    "<td>"+new Date(data.createTime).toLocaleString()+"</td>";
     return tds;
 }
 //页面数据自增序列号

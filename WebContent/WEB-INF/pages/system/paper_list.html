@@ -132,7 +132,7 @@ function doCreateTds(data){
 	    "<td>"+type+"</td>"+
 	    "<td>"+language+"</td>"+
 	    "<td>"+showStatus+"：<input type='button' value='"+status+"' class='btn-status'></td>"+
-	    "<td>"+data.createTime+"</td>"+
+	    "<td>"+new Date(data.createTime).toLocaleString()+"</td>"+
 	    "<td><input type='button' class='btn-test' value='测试'></td>";
     return tds;
 }

@@ -19,7 +19,7 @@ public class Paper {
 	private String paperType;
 	/**语言种型*/
 	private String paperLanguage;
-	/**使用状态*/
+	/**使用状态 0：删除，1：使用， 9：禁用*/
 	private Integer status;
 	/**创建日期*/
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dave.dao.UserDao">
+	<insert id="addUser" parameterType="com.dave.entity.User">
+        insert into su_user
+      	(user_id, role_id, username, real_name, password, password_salt, staff_id, create_user, create_time, modify_user, modify_time, status)
+      	values
+		(#{userId}, #{roleId}, #{username}, #{realName}, #{password}, #{passwordSalt}, #{staffId}, #{createUser}, #{createTime}, #{modifyUser}, #{modifyTime}, #{status})
+    </insert>
+	<select id="findUserList" resultType="com.dave.entity.User">
+    	select * from 
+		(select tt.*, rownum as rowno from 
+		(select * from su_user where status = 1 
+		<if test="username != null and '' != username">
+			and username like concat(concat('%', #{username}), '%') 
+		</if>
+		<if test="staffId != null and '' != staffId">
+			and staff_id like concat(concat('%', #{staffId}), '%') 
+		</if>
+		order by create_time desc
+		) tt
+		where rownum <![CDATA[<=]]> #{pageSize}) 
+		table_alias where table_alias.rowno > #{startIndex}
+	</select>
+    <update id="updateUser" parameterType="com.dave.entity.User">
+    	update su_user set 
+      	real_name = #{realName}, role_id = #{roleId},
+     	password = #{password}, staff_id = #{staffId},
+        modify_user = #{modifyUser}, modify_time = #{modifyTime}
+        where user_id = #{userId}
+    </update>
+</mapper>

@@ -1,0 +1,119 @@
+package com.dave.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+//import com.dave.common.vo.CheckBox;
+import com.dave.common.vo.JsonResult;
+import com.dave.entity.Role;
+import com.dave.service.RoleService;
+
+/**
+ * 角色Controller
+ * 
+ * @author Dave20191012
+ *
+ */
+@Controller
+@RequestMapping("/role/")
+public class RoleController {
+	@Autowired
+    private RoleService roleService;
+	/**
+	 * 角色管理页面
+	 * @return system/role_list
+	 */
+	@RequestMapping("doRoleListUI")
+	public String doRoleListUI() {
+		return "system/role_list";
+	}
+	/**
+     * 角色编辑页面
+     * @return system/role_edit
+     */
+    @RequestMapping("doRoleEditUI")
+	public String doRoleEditUI(){
+		return "system/role_edit";
+	}
+    /**
+     * 添加角色
+     * @param role
+     * @return
+     */
+    @RequestMapping("doAddRole")
+    @ResponseBody
+    public JsonResult doAddRole(Role role) {
+    	int row = roleService.addRole(role);
+    	if(row == 1) {
+    		return new JsonResult("Add Succeed!", row); 		
+    	}
+    	return new JsonResult("Add Failed!!");
+    }
+    /**
+     * 查找所有角色
+     * @return
+     */
+    @RequestMapping("doFindRoleList")
+    @ResponseBody
+    public JsonResult doFindRoleList(Integer pageCurrent, String roleName) {
+    	return new JsonResult(roleService.findRoleList(pageCurrent, roleName));
+    }
+    /**
+     * 根据角色ID获取角色
+     * @param roleId
+     * @return
+     */
+    @RequestMapping("doFindRoleById")
+	@ResponseBody
+	public JsonResult doFindRoleById(Integer roleId){
+    	Map<String, Object> map = roleService.findRoleById(roleId);
+    	return new JsonResult(map);
+    }
+    /**
+     * 修改角色
+     * @param role
+     * @return
+     */
+    @RequestMapping("doUpdateRole")
+    @ResponseBody
+    public JsonResult doUpdateRole(Role role) {
+    	int row = roleService.updateRole(role);
+    	if(row == 1) {
+    		return new JsonResult("Update Succeed!", row); 		
+    	}
+    	return new JsonResult("Update Failed!!");
+    }
+    /**
+     * 根据角色ID删除角色
+     * @param roleId
+     * @return
+     */
+    @RequestMapping("doDeleteRole")
+	@ResponseBody
+	public JsonResult doDeleteRole(Integer roleId){
+		String info = roleService.deleteRole(roleId);
+		if(info == null) {
+			if("Delete Failed!!".equals(info)) {
+				return new JsonResult(info);
+			} else {
+				return new JsonResult("这个角色也给"+info+"这些用户, 拒绝删除！");
+			}
+		}
+		return new JsonResult("Delete Succeed!", 1);
+	}
+    /**
+     * 获取所有角色
+     * @return
+     */
+    @RequestMapping("doFindRoles")
+	@ResponseBody
+	public JsonResult doFindRoles(){
+		List<Map<String, Object>> list = roleService.findRoles();
+	    return new JsonResult(list);
+	}
+}

@@ -25,6 +25,14 @@ public class PageController {
 	@Autowired
     private SurveyService surveyService;
 	/**
+	 * 登录页面
+	 * @return
+	 */
+	@RequestMapping("doLoginUI")
+	public String doLoginUI(){
+		return "login";
+	}
+	/**
 	 * 主页
 	 * @return index
 	 */
