@@ -22,7 +22,7 @@
 	    <table class="table table-hover text-center">
 	      <thead>
 		    <tr>
-		      <th><input type="checkbox" id="checkAllId">全选</th>
+		      <th style="text-align:left;"><input type="checkbox" id="checkAllId">全选</th>
 			  <th>用户手机号</th>
 			  <th>CLI</th>
 			  <th>Agent ID</th>
@@ -69,7 +69,10 @@ function doQueryObjects(){
 function doGetObjects(){
 	var url = "result/doFindResultList.do";
 	var pageCurrent = $("#pageId").data("pageCurrent");
-	if(!pageCurrent)pageCurrent = 1;
+	if(!pageCurrent){
+		pageCurrent = 1;
+		$("#pageId").data("pageCurrent", 1);
+	}
 	var params = {"pageCurrent" : pageCurrent}
 	params.paperName = $("#searchNameId").val().trim();
 	params.startDate = $("#startDate").val();
@@ -118,7 +121,7 @@ function doCreateTds(data){
 		language = "英文";
 	}
 	var tds=
-		"<td><input type='checkbox' name='resultId' class='resultId' value='"+data.resultId+"'><span class='numberClass'></span></td>"+
+		"<td style='text-align:left;'><input type='checkbox' name='resultId' class='resultId' value='"+data.resultId+"'><span class='numberClass'></span></td>"+
 	    "<td><input type='button' value='"+data.mobileNum+"' class='btn-open'></td>"+
 	    "<td>"+data.cli+"</td>"+
 	    "<td>"+data.agentId+"</td>"+

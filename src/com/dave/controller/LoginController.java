@@ -30,11 +30,14 @@ public class LoginController {
 	 */
 	@RequestMapping("doLogin")
 	@ResponseBody
-	public JsonResult doLogin(String username, String password){
-		//用户名密码非空判断
+	public JsonResult doLogin(String username, String password) {
 		if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-			if(StringUtils.isEmpty(username))return new JsonResult("登录名不能为空");
-			if(StringUtils.isEmpty(password))return new JsonResult("密码不能为空");
+			if(StringUtils.isEmpty(username)) {
+				return new JsonResult("登录名不能为空");
+			}
+			if(StringUtils.isEmpty(password)) {
+				return new JsonResult("密码不能为空");
+			}
 		}
 		UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 		Subject currentUser = SecurityUtils.getSubject();

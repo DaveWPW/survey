@@ -64,6 +64,9 @@ public class UserController {
     	if(StringUtils.isEmpty(user.getStaffId())) {
     		return new JsonResult("员工号不能为空");
     	}
+    	if(StringUtils.isEmpty(user.getRoleId())) {
+    		return new JsonResult("角色不能为空");
+    	}
     	User userData = userService.findUserByUserName(user.getUsername());
     	if(userData != null){
     		return new JsonResult("登录账号已存在");	
@@ -124,6 +127,9 @@ public class UserController {
     	if(StringUtils.isEmpty(user.getStaffId())) {
     		return new JsonResult("员工号不能为空");
     	}
+    	if(StringUtils.isEmpty(user.getRoleId())) {
+    		return new JsonResult("角色ID不能为空");
+    	}
     	int rows = userService.updateUser(user);
     	if(rows != 1) {
     		return new JsonResult("修改失败！！");
@@ -135,6 +141,9 @@ public class UserController {
     @RequestMapping("doDeleteUser")
     @ResponseBody
     public JsonResult doDeleteUser(Integer userId){
+    	if(StringUtils.isEmpty(userId)) {
+    		return new JsonResult("用户ID不能为空");
+    	}
     	User user = (User)SecurityUtils.getSubject().getPrincipal();
     	if(user.getUserId() == userId) {
     		return new JsonResult("不能删除自身用户");

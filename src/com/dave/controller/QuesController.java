@@ -49,7 +49,10 @@ public class QuesController {
      */
     @RequestMapping("doFindQuesList")
     @ResponseBody
-    public JsonResult doFindQuesList(int pageCurrent, String quesName) {
+    public JsonResult doFindQuesList(Integer pageCurrent, String quesName) {
+    	if(pageCurrent == null || pageCurrent <= 0) {
+    		return new JsonResult("当前页面数不能为空");
+    	}
     	return new JsonResult(quesService.findQuesList(pageCurrent, quesName));
     }
     /**
@@ -60,6 +63,15 @@ public class QuesController {
     @RequestMapping("doAddQues")
     @ResponseBody
     public JsonResult doAddQues(QuesInfo quesInfo) {
+    	if(quesInfo == null) {
+    		return new JsonResult("问题对象不能为空");
+    	}
+    	if(StringUtils.isEmpty(quesInfo.getQuesName())) {
+    		return new JsonResult("问题名称不能为空");
+    	}
+    	if(StringUtils.isEmpty(quesInfo.getQuesType())) {
+    		return new JsonResult("问题类型不能为空");
+    	}
     	int row = quesService.addQues(quesInfo);
     	if(row == 1) {
     		return new JsonResult("Add Succeed!", row); 		
@@ -74,6 +86,9 @@ public class QuesController {
     @RequestMapping("doDeleteQues")
     @ResponseBody
     public JsonResult doDeleteQues(Integer... quesIds) {
+    	if(StringUtils.isEmpty(quesIds) || quesIds.length > 0) {
+    		return new JsonResult("问题ID集不能为空");
+    	}
     	String resultInfo = quesService.deleteQues(quesIds);
     	if(resultInfo == null) {
     		return new JsonResult("Delete Succeed!", 1);	
@@ -87,7 +102,10 @@ public class QuesController {
      */
     @RequestMapping("doGetQuesOption")
     @ResponseBody
-    public JsonResult doGetQuesOption(int quesId) {
+    public JsonResult doGetQuesOption(Integer quesId) {
+    	if(StringUtils.isEmpty(quesId)) {
+    		return new JsonResult("问题ID不能为空");
+    	}
     	QuesInfo quesInfo = quesService.getQuesOption(quesId);
     	return new JsonResult(quesInfo);
     }
@@ -99,6 +117,18 @@ public class QuesController {
     @RequestMapping("doUpdateQues")
     @ResponseBody
     public JsonResult doUpdateQues(QuesInfo quesInfo) {
+    	if(quesInfo == null) {
+    		return new JsonResult("问题对象不能为空");
+    	}
+    	if(StringUtils.isEmpty(quesInfo.getQuesId())) {
+    		return new JsonResult("问题ID不能为空");
+    	}
+    	if(StringUtils.isEmpty(quesInfo.getQuesName())) {
+    		return new JsonResult("问题名称不能为空");
+    	}
+    	if(StringUtils.isEmpty(quesInfo.getQuesType())) {
+    		return new JsonResult("问题类型不能为空");
+    	}
     	String resultInfo = quesService.updateQues(quesInfo);
     	if(resultInfo == null) {
     		return new JsonResult("Update Succeed!", 1);	

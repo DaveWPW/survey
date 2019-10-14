@@ -38,6 +38,8 @@ public class User implements Serializable {
 	private Date modifyTime;
 	/**用户状态 0：删除，1：使用， 9：禁用*/
 	private int status;
+	/**角色名称*/
+	private String roleName;
 	
 	public Integer getUserId() {
 		return userId;
@@ -111,5 +113,10 @@ public class User implements Serializable {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
+	public String getRoleName() {
+		return roleName;
+	}
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
 }

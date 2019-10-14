@@ -10,15 +10,15 @@
 	<select id="findUserList" resultType="com.dave.entity.User">
     	select * from 
 		(select tt.*, rownum as rowno from 
-		(select * from su_user where status = 1 
+		(select u.*, r.role_name from su_user u left join su_role r on u.role_id = r.role_id
+		where u.status = 1 
 		<if test="username != null and '' != username">
-			and username like concat(concat('%', #{username}), '%') 
+			and u.username like concat(concat('%', #{username}), '%') 
 		</if>
 		<if test="staffId != null and '' != staffId">
-			and staff_id like concat(concat('%', #{staffId}), '%') 
+			and u.staff_id like concat(concat('%', #{staffId}), '%') 
 		</if>
-		order by create_time desc
-		) tt
+		order by u.create_time desc) tt
 		where rownum <![CDATA[<=]]> #{pageSize}) 
 		table_alias where table_alias.rowno > #{startIndex}
 	</select>

@@ -4,7 +4,7 @@
       <div class="box-header">
         <h3 class="box-title">角色管理</h3>
         <div class="box-tools">
-          <div class="input-group input-group-sm" style="width: 350px;">
+          <div class="input-group input-group-sm" style="width:300px;">
 		    <input type="text" name="table_search" id="searchNameId"
 							class="form-control pull-right" placeholder="角色名">
             <div class="input-group-btn">
@@ -22,14 +22,12 @@
 		  <table class="table table-hover text-center">
 			<thead>
 			  <tr>
-				 <th>序号</th>
-				 <th>角色名称</th>
-				 <th>备注</th>
-				 <th>创建用户</th>
-				 <th>创建时间</th>
-				 <th>修改用户</th>
-				 <th>修改时间</th>
-				 <th>操作</th>
+				 <th style="width:5%;">序号</th>
+				 <th style="width:10%;">角色名称</th>
+				 <th style="width:40%;">备注</th>
+				 <th style="width:15%;">创建用户</th>
+				 <th style="width:15%;">修改用户</th>
+				 <th style="width:10%;">操作</th>
 			  </tr>
 			</thead>
 		    <tbody id="tbodyId"></tbody>
@@ -85,6 +83,7 @@ function doGetObjects(){
 	var pageCurrent = $("#pageId").data("pageCurrent");
 	if(!pageCurrent){
 		pageCurrent = 1;
+		$("#pageId").data("pageCurrent", 1);
 	}
 	var params = {"pageCurrent" : pageCurrent};
 	var roleName = $("#searchNameId").val();
@@ -100,6 +99,7 @@ function doHandleResponseResult(result){
 	if(result.state == 1){
 		doSetTableBodyRows(result.data.records);
 		doSetPagination(result.data);
+		autoAddNumber();//自增序列号
 	}else{
 		doSetTableBodyErrors(result.message);
 	}
@@ -110,26 +110,37 @@ function doSetTableBodyRows(records){
 	for(var i in records){
 		var tr = $("<tr></tr>");
 		tr.data("roleId", records[i].roleId);
-		var tds = doCreateTds(records[i],parseInt(i));
+		var tds = doCreateTds(records[i]);
 		tr.append(tds);
 		tBody.append(tr);
 	}
 }
-function doCreateTds(row, i){
-	var tds=
-		"<td>"+(i+1)+"</td>"+
+function doCreateTds(row){
+	var tds = 
+		"<td><span class='numberClass'></span></td>"+
 		"<td>"+row.roleName+"</td>"+
 		"<td>"+row.roleNote+"</td>"+
 		"<td>"+row.createUser+"</td>"+
-		"<td>"+new Date(row.createTime).toLocaleString()+"</td>"+
 		"<td>"+row.modifyUser+"</td>"+
-		"<td>"+new Date(row.modifyTime).toLocaleString()+"</td>"+
 		"<td>"+
 			"<input type='button' class='btn-delete' value='删除'>"+
 			"&nbsp;&nbsp;"+
 			"<input type='button' class='btn-update' value='修改'>"+
 		"</td>";
 	return tds;
+}
+//页面数据自增序列号
+function autoAddNumber(){
+    var pageCurrent = $("#pageId").data("pageCurrent");
+    var pageNo = (pageCurrent-1) * 10;
+	function number(){
+	    var index = 0;
+    	for(var i = 0+pageNo;i < $(".numberClass").length+pageNo; i++){
+			$(".numberClass").get(index).innerHTML = i+1;
+			index++;
+    	}
+	}
+	number();
 }
 function doSetTableBodyErrors(message){
 	   var tBody = $("#tbodyId");
@@ -147,16 +158,17 @@ function doQueryRole(){
 	doGetObjects();
 }
 function doDeleteRole(){
-	var roleId = $(this).parents("tr").data("roleId");
-	var params = {"roleId" : roleId};
-	var url="role/doDeleteRole.do"
-	$.post(url, params, function(result){
-		if(result.state == 1){
-			doGetObjects();
-			//alert(result.message);
-		}else{
-			alert(result.message);
-		}
-	})   
+	if(window.confirm("您确定要删除吗？")){
+		var roleId = $(this).parents("tr").data("roleId");
+		var params = {"roleId" : roleId};
+		var url="role/doDeleteRole.do"
+		$.post(url, params, function(result){
+			if(result.state == 1){
+				doGetObjects();
+			}else{
+				alert(result.message);
+			}
+		});	
+	}
 }
 </script>

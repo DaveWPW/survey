@@ -4,7 +4,7 @@
 	  <div class="box-header">
 	    <h3 class="box-title">用户管理</h3>
 	    <div class="box-tools">
-		  <div class="input-group input-group-sm" style="width: 350px;">
+		  <div class="input-group input-group-sm" style="width: 300px;">
 		    <input type="text" name="table_search" id="searchNameId"
 				  class="form-control pull-right" placeholder="用户名或员工号">
 			<div class="input-group-btn">
@@ -12,33 +12,29 @@
                 <i class="fa fa-search"></i>
 			  </button>
 			  <button type="button" class="btn btn-default btn-add">添加</button>
-			  <button type="button" class="btn btn-default btn-update">修改</button>
-			  <button type="button" class="btn btn-default btn-delete">删除</button>
 			</div>
 		  </div>
 	    </div>
 	  </div>
-	  
 	  <!-- /.box-header -->
 	  <div class="box-body table-responsive no-padding">
 	    <table class="table table-hover text-center">
 	      <thead>
 		    <tr>
-		      <th></th>
-			  <th>用户名</th>
-			  <th>真实名</th>
-			  <th>员工号</th>
-			  <th>创建用户</th>
-			  <th>创建时间</th>
-			  <th>修改用户</th>
-			  <th>修改时间</th>
+		      <th style="width:5%;">序号</th>
+			  <th style="width:15%;">用户名</th>
+			  <th style="width:15%;">真实名</th>
+			  <th style="width:10%;">角色</th>
+			  <th style="width:15%;">员工号</th>
+			  <th style="width:15%;">创建用户</th>
+			  <th style="width:15%;">修改用户</th>
+			  <th style="width:10%;">操作</th>
 		    </tr>
 		  </thead>
 		  <tbody id="tbodyId"></tbody>
 	    </table>
 	  </div>
 	  <!-- /.box-body -->
-	 
 	  <div id="pageId" class="box-footer clearfix"></div>
     </div>
     <!-- /.box -->
@@ -52,9 +48,11 @@ $(function(){
 		doGetObjects();
 	});
 	$(".input-group-btn")
-		.on("click",".btn-add,.btn-update", doLoadEditUI)
-		.on("click",".btn-search", doQueryUser)
-		.on("click",".btn-delete", doDeleteUser);
+		.on("click",".btn-add", doLoadEditUI)
+		.on("click",".btn-search", doQueryUser);
+	$("#tbodyId")
+  		.on("click", ".btn-update", doLoadEditUI)
+  		.on("click", ".btn-delete", doDeleteUser);
 });
 //查询用户
 function doQueryUser(){
@@ -67,6 +65,7 @@ function doGetObjects(){
 	var pageCurrent = $("#pageId").data("pageCurrent");
 	if(!pageCurrent){
 		pageCurrent = 1;
+		$("#pageId").data("pageCurrent", 1);
 	}
 	var params = {"pageCurrent" : pageCurrent}
 	var searchValue = $("#searchNameId").val().trim();
@@ -84,6 +83,7 @@ function doGetObjects(){
 function doHandleResponseResult(result){
 	if(result.state == 1){
 		doSetTableBodyRows(result.data.records);
+		autoAddNumber();//自增序列号
 	}else{
 		alert(result.message);
 	}
@@ -94,7 +94,7 @@ function doSetTableBodyRows(data){
 	if(data.length > 0){
 		for(var i in data){
 			var tr = $("<tr></tr>");
-			tr.data("rowData",data[i]);
+			tr.data("userId", data[i].userId);
 			var tds = doCreateTds(data[i]);
 			tr.append(tds);
 			tBody.append(tr);
@@ -102,15 +102,33 @@ function doSetTableBodyRows(data){
 	}
 }
 function doCreateTds(row){
-	var tds="<td><input type='radio' name='radioId' value='"+row.userId+"' ></td>"+
-	    "<td>"+row.username+"</td>"+
+	var tds = 
+		"<td><span class='numberClass'></span></td>"+
+		"<td>"+row.username+"</td>"+
 		"<td>"+row.realName+"</td>"+
+		"<td>"+row.roleName+"</td>"+
 	    "<td>"+row.staffId+"</td>"+
 	    "<td>"+row.createUser+"</td>"+
-	    "<td>"+new Date(row.createTime).toLocaleString()+"</td>"+
 	    "<td>"+row.modifyUser+"</td>"+
-	    "<td>"+new Date(row.modifyTime).toLocaleString()+"</td>";
+	    "<td>"+
+			"<input type='button' class='btn-delete' value='删除'>"+
+			"&nbsp;&nbsp;"+
+			"<input type='button' class='btn-update' value='修改'>"+
+		"</td>";
     return tds;
+}
+//页面数据自增序列号
+function autoAddNumber(){
+    var pageCurrent = $("#pageId").data("pageCurrent");
+    var pageNo = (pageCurrent-1) * 10;
+	function number(){
+	    var index = 0;
+    	for(var i = 0+pageNo;i < $(".numberClass").length+pageNo; i++){
+			$(".numberClass").get(index).innerHTML = i+1;
+			index++;
+    	}
+	}
+	number();
 }
 //=====================================
 //添加和修改用户
@@ -121,16 +139,9 @@ function doLoadEditUI(){
 		doLoadPage(title);
 	}else if($(this).hasClass("btn-update")){
 		title = "修改用户";
-		var userId = doGetCheckedId();
-		if(!userId){
-			alert("请先选择");
-			return;
-		}
+		var userId = $(this).parents("tr").data("userId");
 		doFindObjectById(userId, title);
 	}
-}
-function doGetCheckedId(){
-	return $("tbody input[name='radioId']:checked").val();
 }
 function doFindObjectById(userId, title){
 	var params = {"userId" : userId};
@@ -153,20 +164,18 @@ function doLoadPage(title){
 //==========================================
 //删除用户
 function doDeleteUser(){
-	var userId = doGetCheckedId();
-	if(!userId){
-		alert("请先选择!!");
-		return;
+	if(window.confirm("您确定要删除吗？")){
+		var userId = $(this).parents("tr").data("userId");
+		var params = {"userId" : userId};
+		var url="user/doDeleteUser.do";
+		$.getJSON(url, params, function(result){
+			if(result.state == 1){
+				doGetObjects();
+				alert(result.message);
+			}else{
+				alert(result.message);
+			}
+		});
 	}
-	var params = {"userId" : userId};
-	var url="user/doDeleteUser.do";
-	$.getJSON(url, params, function(result){
-		if(result.state == 1){
-			doGetObjects();
-			alert(result.message);
-		}else{
-			alert(result.message);
-		}
-	});
 }
 </script>

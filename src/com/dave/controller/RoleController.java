@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -48,6 +49,15 @@ public class RoleController {
     @RequestMapping("doAddRole")
     @ResponseBody
     public JsonResult doAddRole(Role role) {
+    	if(role == null) {
+    		return new JsonResult("保存对象不能为空");
+    	}
+    	if(StringUtils.isEmpty(role.getRoleName())) {
+    		return new JsonResult("角色名称不能为空");
+    	}
+    	if(StringUtils.isEmpty(role.getMenuIds()) || role.getMenuIds().length > 0) {
+    		return new JsonResult("菜单不能为空");
+    	}
     	int row = roleService.addRole(role);
     	if(row == 1) {
     		return new JsonResult("Add Succeed!", row); 		
@@ -71,6 +81,9 @@ public class RoleController {
     @RequestMapping("doFindRoleById")
 	@ResponseBody
 	public JsonResult doFindRoleById(Integer roleId){
+    	if(StringUtils.isEmpty(roleId)) {
+    		return new JsonResult("角色ID不能为空");
+    	}
     	Map<String, Object> map = roleService.findRoleById(roleId);
     	return new JsonResult(map);
     }
@@ -82,6 +95,18 @@ public class RoleController {
     @RequestMapping("doUpdateRole")
     @ResponseBody
     public JsonResult doUpdateRole(Role role) {
+    	if(role == null) {
+    		return new JsonResult("保存对象不能为空");
+    	}
+    	if(StringUtils.isEmpty(role.getRoleId())) {
+    		return new JsonResult("角色ID不能为空");
+    	}
+    	if(StringUtils.isEmpty(role.getRoleName())) {
+    		return new JsonResult("角色名称不能为空");
+    	}
+    	if(StringUtils.isEmpty(role.getMenuIds()) || role.getMenuIds().length > 0) {
+    		return new JsonResult("菜单不能为空");
+    	}
     	int row = roleService.updateRole(role);
     	if(row == 1) {
     		return new JsonResult("Update Succeed!", row); 		
@@ -96,6 +121,9 @@ public class RoleController {
     @RequestMapping("doDeleteRole")
 	@ResponseBody
 	public JsonResult doDeleteRole(Integer roleId){
+    	if(StringUtils.isEmpty(roleId)) {
+    		return new JsonResult("角色ID不能为空");
+    	}
 		String info = roleService.deleteRole(roleId);
 		if(info == null) {
 			if("Delete Failed!!".equals(info)) {

@@ -27,15 +27,14 @@ import com.dave.entity.User;
 public class ShiroUserRealm extends AuthorizingRealm {
 	@Autowired
 	private UserDao userDao;
+	
 	@Override
 	public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
 		HashedCredentialsMatcher cMatcher = new HashedCredentialsMatcher();
 		cMatcher.setHashAlgorithmName("MD5");
 		super.setCredentialsMatcher(cMatcher);
 	}
-	/**
-	 * 认证处理
-	 */
+	
 	@Override
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token)
 			throws AuthenticationException {

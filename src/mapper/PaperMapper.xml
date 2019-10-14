@@ -29,8 +29,11 @@
 		table_alias where table_alias.rowno > #{startIndex}
 	</select>
 	<update id="updatePaper" parameterType="com.dave.entity.Paper">
-		update su_paper set paper_name = #{paperName}, paper_language = #{paperLanguage}, paper_title = #{paperTitle}
-      	greet = #{greet}, thank = #{thank}, ques_sum = #{quesSum, jdbcType=NUMERIC}, modify_time = sysdate
+		update su_paper set 
+		paper_name = #{paperName}, paper_language = #{paperLanguage},
+		paper_title = #{paperTitle}, greet = #{greet},
+		thank = #{thank}, ques_sum = #{quesSum, jdbcType=NUMERIC},
+		modify_time = sysdate
 		where paper_id = #{paperId}
 	</update>
 </mapper>

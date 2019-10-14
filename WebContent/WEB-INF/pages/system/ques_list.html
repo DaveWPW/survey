@@ -30,7 +30,7 @@
 	    <table class="table table-hover text-center">
 	      <thead>
 		    <tr>
-		      <th><input type="checkbox" id="checkAllId">全选</th>
+		      <th style="text-align:left;"><input type="checkbox" id="checkAllId">全选</th>
 			  <th>编号</th>
 			  <th>问题名称</th>
 			  <th>问题类型</th>
@@ -73,7 +73,10 @@ function doQueryObjects(){
 function doGetObjects(){
 	var url = "ques/doFindQuesList.do";
 	var pageCurrent = $("#pageId").data("pageCurrent");
-	if(!pageCurrent)pageCurrent = 1;
+	if(!pageCurrent){
+		pageCurrent = 1;
+		$("#pageId").data("pageCurrent", 1);
+	}
 	var params = {"pageCurrent" : pageCurrent}
 	params.quesName = $("#searchNameId").val().trim();
 	$.getJSON(url, params, function(result){
@@ -116,7 +119,7 @@ function doCreateTds(data){
 		type = "简答题";
 	}
 	var tds=
-		"<td><input type='checkbox' name='quesId' class='quesId' value='"+data.quesId+"'><span class='numberClass'></span></td>"+
+		"<td style='text-align:left;'><input type='checkbox' name='quesId' class='quesId' value='"+data.quesId+"'><span class='numberClass'></span></td>"+
 		"<td>"+data.quesId+"</td>"+
 		"<td><input type='submit' style='width:500px;' value='"+data.quesName+"' onclick='doGetQuesOption("+data.quesId+")'></td>"+
 	    "<td>"+type+"</td>"+

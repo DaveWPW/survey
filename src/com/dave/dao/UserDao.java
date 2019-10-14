@@ -16,7 +16,7 @@ import com.dave.entity.User;
  */
 public interface UserDao {
 	
-	@Select("select * from su_user where status = 1 and username = #{username}")
+	@Select("select u.*, r.role_name from su_user u left join su_role r on u.role_id = r.role_id where u.status = 1 and u.username = #{username}")
 	User findUserByUserName(@Param("username")String username);
 	
 	@Select("select seq_user_id.nextval as rsid from dual")

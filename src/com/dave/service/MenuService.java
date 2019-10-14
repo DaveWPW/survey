@@ -8,4 +8,7 @@ import com.dave.common.vo.Node;
 public interface MenuService {
 	
 	List<Node> findMenuNodes();
+	
+	List<String> findRoleMenuLevelById(int roleId);
+	
 }

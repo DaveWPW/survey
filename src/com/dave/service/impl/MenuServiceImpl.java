@@ -20,4 +20,9 @@ public class MenuServiceImpl implements MenuService {
 		return menuDao.findMenuNodes();
 	}
 
+	@Override
+	public List<String> findRoleMenuLevelById(int roleId) {
+		return menuDao.findRoleMenuLevelById(roleId);
+	}
+
 }

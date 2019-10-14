@@ -34,8 +34,7 @@
     	<property name="FilterChainDefinitionMap">
        		<map>
 	       		<entry key="/bower_components/**" value="anon"/>
-	       		<!-- <entry key="/build/**" value="anon"/> -->
-	            <entry key="/dist/**" value="anon"/>
+	       		<entry key="/dist/**" value="anon"/>
 	            <entry key="/images/**" value="anon"/>
 	            <entry key="/plugins/**" value="anon"/>
 	            <entry key="/paper/doSelectQues.do" value="anon"/>
