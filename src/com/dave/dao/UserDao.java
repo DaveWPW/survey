@@ -37,6 +37,8 @@ public interface UserDao {
 	int updateUser(User user);
 	
 	@Update("update su_user set status = 0 where user_id = #{userId}")
-	int deleteUser(@Param("userId")Integer userId);
+	int deleteUser(@Param("userId")int userId);
 	
+	@Update("update su_user set password = #{password} where user_id = #{userId}")
+	int updatePassword(@Param("userId")int userId, @Param("password")String password);
 }

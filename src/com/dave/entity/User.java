@@ -37,9 +37,11 @@ public class User implements Serializable {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
 	private Date modifyTime;
 	/**用户状态 0：删除，1：使用， 9：禁用*/
-	private int status;
+	private Integer status;
 	/**角色名称*/
 	private String roleName;
+	/**重置密码0：不重置，1：重置*/
+	private Integer isRestPassword;
 	
 	public Integer getUserId() {
 		return userId;
@@ -107,10 +109,10 @@ public class User implements Serializable {
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
 	}
-	public int getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 	public String getRoleName() {
@@ -118,5 +120,11 @@ public class User implements Serializable {
 	}
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
+	}
+	public Integer getIsRestPassword() {
+		return isRestPassword;
+	}
+	public void setIsRestPassword(Integer isRestPassword) {
+		this.isRestPassword = isRestPassword;
 	}
 }

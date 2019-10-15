@@ -7,6 +7,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dave.common.util.ShiroUtil;
 import com.dave.common.vo.JsonResult;
 import com.dave.common.vo.PageObject;
 import com.dave.entity.User;
@@ -118,9 +119,6 @@ public class UserController {
     	if(StringUtils.isEmpty(user.getUsername())) {
     		return new JsonResult("用户名不能为空");
     	}
-    	if(StringUtils.isEmpty(user.getPassword())) {
-    		return new JsonResult("密码不能为空");
-    	}
     	if(StringUtils.isEmpty(user.getRealName())) {
     		return new JsonResult("真实名不能为空");
     	}
@@ -130,13 +128,17 @@ public class UserController {
     	if(StringUtils.isEmpty(user.getRoleId())) {
     		return new JsonResult("角色ID不能为空");
     	}
-    	int rows = userService.updateUser(user);
-    	if(rows != 1) {
-    		return new JsonResult("修改失败！！");
+    	int row = userService.updateUser(user);
+    	if(row == 1) {
+    		User currentUser = ShiroUtil.getCurrentUser();
+    		String username = currentUser.getUsername();
+    		if(username.equals(user.getUsername()) && user.getIsRestPassword() == 1) {
+    			return new JsonResult("Update Succeed!", 2);
+    		}
+    		return new JsonResult("Update Succeed!", row);
     	}
-    	return new JsonResult("Update OK!", rows);
+    	return new JsonResult("Update Failed!!");
     }
-    
     
     @RequestMapping("doDeleteUser")
     @ResponseBody
@@ -149,7 +151,9 @@ public class UserController {
     		return new JsonResult("不能删除自身用户");
     	}
     	int rows = userService.deleteUser(userId);
-		if(rows != 1)return new JsonResult("删除失败");
+		if(rows != 1) {
+			return new JsonResult("删除失败");
+		}
 		return new JsonResult("Delete OK!", rows);
     }
     

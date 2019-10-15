@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public User findUserById(Integer userId) {
+	public User findUserById(int userId) {
 		User user = userDao.findObjectById(userId);
 		return user;
 	}
@@ -76,11 +76,10 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public int updateUser(User user) {
 		int rows = 0;
-		User userData = userDao.findUserByUserName(user.getUsername());
-		String passwordData = userData.getPassword();		
-		if(!passwordData.equals(user.getPassword())){
-			String salt = userData.getPasswordSalt();
-			SimpleHash sHash = new SimpleHash("MD5", user.getPassword(), salt);
+		User userData = userDao.findUserByUserName(user.getUsername());	
+		if(user.getIsRestPassword() == 1){
+			String password = "12345678";
+			SimpleHash sHash = new SimpleHash("MD5", password, userData.getPasswordSalt());
 			user.setPassword(sHash.toHex());
 		}
 		User updateUser = ShiroUtil.getCurrentUser();
@@ -91,9 +90,14 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public int deleteUser(Integer userId) {
+	public int deleteUser(int userId) {
 		int rows = userDao.deleteUser(userId);
 		return rows;
+	}
+
+	@Override
+	public int updatePassword(int userId, String password) {
+		return userDao.updatePassword(userId, password);
 	}
 	
 }

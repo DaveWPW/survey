@@ -24,9 +24,14 @@
 	</select>
     <update id="updateUser" parameterType="com.dave.entity.User">
     	update su_user set 
-      	real_name = #{realName}, role_id = #{roleId},
-     	password = #{password}, staff_id = #{staffId},
-        modify_user = #{modifyUser}, modify_time = #{modifyTime}
+      	real_name = #{realName},
+      	role_id = #{roleId},
+      	<if test="password != null and '' != password">
+     		password = #{password},
+     	</if>
+     	staff_id = #{staffId},
+        modify_user = #{modifyUser},
+        modify_time = #{modifyTime}
         where user_id = #{userId}
     </update>
 </mapper>

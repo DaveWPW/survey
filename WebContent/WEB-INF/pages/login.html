@@ -21,15 +21,12 @@
   <div class="login-box-body" style="margin-left:10%; margin-right:10%;">
     <p class="login-box-msg">登录</p>
     <form method="post">
-      <div class="form-group has-feedback">
+      <div class="form-group">
         <input type="text" id="usernameId" name="username" class="form-control" placeholder="用户名">
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
       </div>
-      <div class="form-group has-feedback">
+      <div class="form-group">
         <input type="password" id="passwordId" name="password" class="form-control" placeholder="密码">
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
-      
       <div class="row">
         <div class="col-xs-4" style="width:100%">
           <button type="button" class="btn btn-primary btn-block btn-flat btn-login">登录</button>
@@ -49,29 +46,29 @@
 <!-- iCheck -->
 <script src="plugins/iCheck/icheck.min.js"></script>
 <script>
-  $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' // optional
+$(function(){
+	$('input').iCheck({
+    	checkboxClass: 'icheckbox_square-blue',
+    	radioClass: 'iradio_square-blue',
+    	increaseArea: '20%' // optional
     });
     $(".btn").click(doLogin);
-  });
-  function doLogin(){
-	  var params={
-		 username:$("#usernameId").val(),
-		 password:$("#passwordId").val(),
-	  }
-	  var url="doLogin.do";
-	  $.post(url, params ,function(result){
-		  if(result.state==1){
-			location.href="doIndexUI.do";
-		  }else{
+});
+function doLogin(){
+	var params = {
+		username : $("#usernameId").val(),
+		password : $("#passwordId").val(),
+	}
+	var url="doLogin.do";
+	$.post(url, params ,function(result){
+		if(result.state == 1){
+			location.href = "doIndexUI.do";
+		}else{
 			$(".login-box-msg").html(result.message);
-		  }
-		  return false;
-	  });
-  }
+		}
+		return false;
+	});
+}
 </script>
 </body>
 </html>

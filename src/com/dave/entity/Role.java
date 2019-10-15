@@ -1,5 +1,6 @@
 package com.dave.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -9,7 +10,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @author Dave20191012
  *
  */
-public class Role {
+public class Role implements Serializable{
+	private static final long serialVersionUID = 4321440581678484361L;
 	/**角色ID*/
 	private Integer roleId;
 	/**角色名称*/

@@ -15,10 +15,12 @@ public interface UserService {
 	
 	PageObject<User> findUserList(Integer pageCurrent, String username, String staffId);
 	
-	User findUserById(Integer userId);
+	User findUserById(int userId);
 	
 	int updateUser(User user);
 	
-	int deleteUser(Integer userId);
+	int deleteUser(int userId);
+	
+	int updatePassword(int userId, String password);
 	
 }

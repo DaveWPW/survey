@@ -96,6 +96,6 @@ public class PageController {
 	
 	@RequestMapping("doUpdatePasswordUI")
 	public String doUpdatePasswordUI() {
-		return "system/user_update_password";
+		return "system/update_password";
 	}
 }
