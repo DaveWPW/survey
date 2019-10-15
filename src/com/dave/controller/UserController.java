@@ -13,7 +13,7 @@ import com.dave.common.vo.PageObject;
 import com.dave.entity.User;
 import com.dave.service.UserService;
 /**
- * 用户Controller
+ * User控制层
  * 
  * @author Dave20191011
  * 
@@ -23,6 +23,7 @@ import com.dave.service.UserService;
 public class UserController {
 	@Autowired
 	private UserService userService;
+	
 	/**
 	 * 用户管理页面
 	 * 
@@ -32,6 +33,7 @@ public class UserController {
 	public String doUserListUI(){
 		return "system/user_list";
 	}
+    
     /**
      * 用户编辑页面
      * 
@@ -41,6 +43,7 @@ public class UserController {
 	public String doUserEditUI(){
 		return "system/user_edit";
 	}
+    
     /**
      * 添加用户
      * 
@@ -74,14 +77,17 @@ public class UserController {
     	}
     	int rows = userService.addUser(user);
     	if(rows != 1) {
-    		return new JsonResult("添加失败！！");
+    		return new JsonResult("Add Failed!!");
     	}
-    	return new JsonResult("Save OK!", rows);
+    	return new JsonResult("Add Succeed!", rows);
     }
+    
     /**
      * 查找查询所有用户
      * 
      * @param pageCurrent
+     * @param username
+     * @param staffId
      * @return
      */
     @RequestMapping("doFindUserList")
@@ -103,10 +109,19 @@ public class UserController {
     @RequestMapping("doFindUserById")
 	@ResponseBody
     public JsonResult doFindUserById(Integer userId){
+    	if(StringUtils.isEmpty(userId)) {
+    		return new JsonResult("用户ID不能为空");
+    	}
     	User user = userService.findUserById(userId);
     	return new JsonResult(user);
     }
-    /** 修改更新用户 */
+    
+    /**
+     * 修改用户
+     * 
+     * @param user
+     * @return
+     */
     @RequestMapping("doUpdateUser")
     @ResponseBody
     public JsonResult doUpdateUser(User user){
@@ -140,6 +155,12 @@ public class UserController {
     	return new JsonResult("Update Failed!!");
     }
     
+    /**
+     * 删除用户
+     * 
+     * @param userId
+     * @return
+     */
     @RequestMapping("doDeleteUser")
     @ResponseBody
     public JsonResult doDeleteUser(Integer userId){
@@ -152,9 +173,9 @@ public class UserController {
     	}
     	int rows = userService.deleteUser(userId);
 		if(rows != 1) {
-			return new JsonResult("删除失败");
+			return new JsonResult("Delete Failed!!");
 		}
-		return new JsonResult("Delete OK!", rows);
+		return new JsonResult("Delete Succeed!", rows);
     }
     
 }

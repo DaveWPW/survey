@@ -3,14 +3,16 @@ package com.dave.common.vo;
 import java.io.Serializable;
 
 /**
- * Node :Value Object
- * 借助此对象封装zTree对应的树节点信息
+ * Node值对象
+ * 
+ * @author Dave20191012
+ * 
  */
 public class Node implements Serializable {
 	private static final long serialVersionUID = 4351174414771192644L;
 	/**主键ID*/
 	private Integer id;
-	/**上级Id*/
+	/**上级ID*/
 	private Integer parentId;
 	/**名称*/
 	private String name;

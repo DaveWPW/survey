@@ -18,7 +18,7 @@ import com.dave.service.MenuService;
 import com.dave.service.SurveyService;
 
 /**
- * 匿名页面Controller
+ * Page控制层
  * 
  * @author Dave20190823
  * 
@@ -30,14 +30,16 @@ public class PageController {
     private SurveyService surveyService;
 	@Autowired
     private MenuService menuService;
+	
 	/**
 	 * 登录页面
-	 * @return
+	 * @return login
 	 */
 	@RequestMapping("doLoginUI")
 	public String doLoginUI(){
 		return "login";
 	}
+	
 	/**
 	 * 主页
 	 * @return index
@@ -94,8 +96,14 @@ public class PageController {
 		return "404";	
 	}
 	
+	/**
+	 * 修改用户密码页面
+	 * 
+	 * @return system/update_password
+	 */
 	@RequestMapping("doUpdatePasswordUI")
 	public String doUpdatePasswordUI() {
 		return "system/update_password";
 	}
+	
 }

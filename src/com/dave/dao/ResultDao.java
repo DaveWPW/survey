@@ -31,7 +31,6 @@ public interface ResultDao {
 			@Param("paperName")String paperName, @Param("startDate")String startDate, 
 			@Param("endDate")String endDate);
 	
-//	@Delete("delete from su_result where result_id = #{resultId}")
 	@Update("update su_result set status = 0, modify_time = sysdate where result_id = #{resultId}")
 	int deleteResult(@Param("resultId")int resultId);
 	

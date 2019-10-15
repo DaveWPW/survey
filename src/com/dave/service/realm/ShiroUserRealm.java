@@ -41,7 +41,7 @@ public class ShiroUserRealm extends AuthorizingRealm {
 		String username = (String)token.getPrincipal();
 		User user = userDao.findUserByUserName(username);
 		if(user == null) {
-			throw new UnknownAccountException();//用户不存在
+			throw new UnknownAccountException();
 		}
 		ByteSource credentialsSalt = ByteSource.Util.bytes(user.getPasswordSalt());
 		SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(

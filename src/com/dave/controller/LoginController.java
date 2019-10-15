@@ -18,7 +18,7 @@ import com.dave.common.vo.JsonResult;
 import com.dave.entity.User;
 import com.dave.service.UserService;
 /**
- * 登录Controller
+ * Login控制层
  * 
  * @author Dave20191010
  * 
@@ -28,11 +28,12 @@ import com.dave.service.UserService;
 public class LoginController {
 	@Autowired
 	private UserService userService;
+	
 	/**
 	 * 登录
+	 * 
 	 * @param username
 	 * @param password
-	 * @param isRememberMe
 	 * @return
 	 */
 	@RequestMapping("doLogin")
@@ -48,7 +49,7 @@ public class LoginController {
 		Subject currentUser = SecurityUtils.getSubject();
 		try {
 			currentUser.login(token);
-			return new JsonResult("Login OK!", 1);
+			return new JsonResult("Login Succeed!", 1);
 		} catch (UnknownAccountException e) {
 			return new JsonResult("此用户不存在");
 		} catch (IncorrectCredentialsException e) {
@@ -60,31 +61,38 @@ public class LoginController {
 		}
 	}
 	
-	 @RequestMapping("doUpdatePassword")
-	    @ResponseBody
-	    public JsonResult doUpdatePassword(String oldPassword, String newPassword){
-			if(StringUtils.isEmpty(oldPassword)) {
-				return new JsonResult("旧密码不能为空");
-			}
-			if(StringUtils.isEmpty(newPassword)) {
-				return new JsonResult("新密码不能为空");
-			}
-			User user = ShiroUtil.getCurrentUser();
-			SimpleHash oldHash = new SimpleHash("MD5", oldPassword, user.getPasswordSalt());
-			String oldHex = oldHash.toHex();
-			if(!oldHex.equals(user.getPassword())) {
-				return new JsonResult("旧密码错误！！");
-			}
-			SimpleHash newHash = new SimpleHash("MD5", newPassword, user.getPasswordSalt());
-			String newHex = newHash.toHex();
-			if(newHex.equals(user.getPassword())) {
-				return new JsonResult("新密码和旧密码不能相同！！");
-			}
-			int row = userService.updatePassword(user.getUserId(), newHex);
-			if(row == 1) {
-				return new JsonResult("Update Succeed!", row);
-			}
-			return new JsonResult("Update Failed!!");
-	    }
+	/**
+	 * 修改用户密码
+	 * 
+	 * @param oldPassword
+	 * @param newPassword
+	 * @return
+	 */
+	@RequestMapping("doUpdatePassword")
+    @ResponseBody
+    public JsonResult doUpdatePassword(String oldPassword, String newPassword){
+		if(StringUtils.isEmpty(oldPassword)) {
+			return new JsonResult("旧密码不能为空");
+		}
+		if(StringUtils.isEmpty(newPassword)) {
+			return new JsonResult("新密码不能为空");
+		}
+		User user = ShiroUtil.getCurrentUser();
+		SimpleHash oldHash = new SimpleHash("MD5", oldPassword, user.getPasswordSalt());
+		String oldHex = oldHash.toHex();
+		if(!oldHex.equals(user.getPassword())) {
+			return new JsonResult("旧密码错误！！");
+		}
+		SimpleHash newHash = new SimpleHash("MD5", newPassword, user.getPasswordSalt());
+		String newHex = newHash.toHex();
+		if(newHex.equals(user.getPassword())) {
+			return new JsonResult("新密码和旧密码不能相同！！");
+		}
+		int row = userService.updatePassword(user.getUserId(), newHex);
+		if(row == 1) {
+			return new JsonResult("Update Succeed!", row);
+		}
+		return new JsonResult("Update Failed!!");
+    }
 	
 }

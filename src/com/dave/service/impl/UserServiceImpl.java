@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dave.common.util.ShiroUtil;
 import com.dave.common.vo.PageObject;
@@ -19,6 +20,7 @@ import com.dave.service.UserService;
  * 
  * @author Dave20191011
  */
+@Transactional(rollbackFor=Throwable.class)
 @Service
 public class UserServiceImpl implements UserService{
 	@Autowired

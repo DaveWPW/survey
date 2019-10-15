@@ -15,7 +15,7 @@ import com.dave.entity.Role;
 import com.dave.service.RoleService;
 
 /**
- * 角色Controller
+ * Role控制层
  * 
  * @author Dave20191012
  *
@@ -25,24 +25,30 @@ import com.dave.service.RoleService;
 public class RoleController {
 	@Autowired
     private RoleService roleService;
+	
 	/**
 	 * 角色管理页面
+	 * 
 	 * @return system/role_list
 	 */
 	@RequestMapping("doRoleListUI")
 	public String doRoleListUI() {
 		return "system/role_list";
 	}
+	
 	/**
      * 角色编辑页面
+     * 
      * @return system/role_edit
      */
     @RequestMapping("doRoleEditUI")
 	public String doRoleEditUI(){
 		return "system/role_edit";
 	}
+    
     /**
      * 添加角色
+     * 
      * @param role
      * @return
      */
@@ -55,7 +61,7 @@ public class RoleController {
     	if(StringUtils.isEmpty(role.getRoleName())) {
     		return new JsonResult("角色名称不能为空");
     	}
-    	if(StringUtils.isEmpty(role.getMenuIds()) || role.getMenuIds().length > 0) {
+    	if(StringUtils.isEmpty(role.getMenuIds()) || role.getMenuIds().length <= 0) {
     		return new JsonResult("菜单不能为空");
     	}
     	int row = roleService.addRole(role);
@@ -64,17 +70,24 @@ public class RoleController {
     	}
     	return new JsonResult("Add Failed!!");
     }
+    
     /**
-     * 查找所有角色
+     * 查找查询所有角色
+     * 
      * @return
      */
     @RequestMapping("doFindRoleList")
     @ResponseBody
     public JsonResult doFindRoleList(Integer pageCurrent, String roleName) {
+    	if(pageCurrent == null || pageCurrent <= 0) {
+    		return new JsonResult("当前页面数不能为空");
+    	}
     	return new JsonResult(roleService.findRoleList(pageCurrent, roleName));
     }
+    
     /**
      * 根据角色ID获取角色
+     * 
      * @param roleId
      * @return
      */
@@ -87,6 +100,7 @@ public class RoleController {
     	Map<String, Object> map = roleService.findRoleById(roleId);
     	return new JsonResult(map);
     }
+    
     /**
      * 修改角色
      * @param role
@@ -104,7 +118,7 @@ public class RoleController {
     	if(StringUtils.isEmpty(role.getRoleName())) {
     		return new JsonResult("角色名称不能为空");
     	}
-    	if(StringUtils.isEmpty(role.getMenuIds()) || role.getMenuIds().length > 0) {
+    	if(StringUtils.isEmpty(role.getMenuIds()) || role.getMenuIds().length <= 0) {
     		return new JsonResult("菜单不能为空");
     	}
     	int row = roleService.updateRole(role);
@@ -113,8 +127,10 @@ public class RoleController {
     	}
     	return new JsonResult("Update Failed!!");
     }
+    
     /**
-     * 根据角色ID删除角色
+     * 删除角色
+     * 
      * @param roleId
      * @return
      */
@@ -134,8 +150,10 @@ public class RoleController {
 		}
 		return new JsonResult("Delete Succeed!", 1);
 	}
+    
     /**
      * 获取所有角色
+     * 
      * @return
      */
     @RequestMapping("doFindRoles")
@@ -144,4 +162,5 @@ public class RoleController {
 		List<Map<String, Object>> list = roleService.findRoles();
 	    return new JsonResult(list);
 	}
+    
 }

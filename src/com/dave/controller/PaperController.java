@@ -17,7 +17,7 @@ import com.dave.entity.vo.QuesInfo;
 import com.dave.service.PaperService;
 
 /**
- * 调查问卷Controller
+ * Paper控制层
  * 
  * @author Dave20190828
  *
@@ -27,46 +27,56 @@ import com.dave.service.PaperService;
 public class PaperController {
 	@Autowired
     private PaperService paperService;
+	
 	/**
 	 * 问卷管理页面
+	 * 
 	 * @return system/paper_list
 	 */
     @RequestMapping("doPaperListUI")
 	public String doPaperListUI(){
 		return "system/paper_list";
 	}
+    
     /**
      * 问卷编辑页面
+     * 
      * @return system/paper_edit
      */
     @RequestMapping("doPaperEditUI")
 	public String doPaperEditUI(){
 		return "system/paper_edit";
 	}
+    
     /**
      * 选择问题页面
+     * 
      * @return system/paper_select_ques
      */
     @RequestMapping("doSelectQuesUI")
 	public String doSelectQuesUI(){
 		return "system/paper_select_ques";
 	}
+    
     /**
      * 提交选取问题
+     * 
      * @param paperIds
      * @return
      */
     @RequestMapping("doSelectQues")
     @ResponseBody
     public JsonResult doSelectQues(Integer... quesIds) {
-    	if(StringUtils.isEmpty(quesIds) || quesIds.length > 0) {
+    	if(StringUtils.isEmpty(quesIds) || quesIds.length <= 0) {
     		return new JsonResult("问题ID不能为空");
     	}
     	List<QuesInfo> list = paperService.selectQuesByIds(quesIds);
     	return new JsonResult(list);
     }
+    
     /**
      * 添加问卷
+     * 
      * @param paperInfo
      * @return
      */
@@ -94,10 +104,10 @@ public class PaperController {
     	if(StringUtils.isEmpty(paperInfo.getThank())) {
     		return new JsonResult("问卷感谢内容不能为空");
     	}
-    	if(StringUtils.isEmpty(paperInfo.getQuesIds()) || paperInfo.getQuesIds().length > 0) {
+    	if(StringUtils.isEmpty(paperInfo.getQuesIds()) || paperInfo.getQuesIds().length <= 0) {
     		return new JsonResult("问题ID集不能为空");
     	}
-    	if(StringUtils.isEmpty(paperInfo.getQuesNum()) || paperInfo.getQuesNum().length > 0) {
+    	if(StringUtils.isEmpty(paperInfo.getQuesNum()) || paperInfo.getQuesNum().length <= 0) {
     		return new JsonResult("问题序号不能为空");
     	}
     	int rowName = paperService.checkoutPaperName(paperInfo.getPaperName(), paperInfo.getPaperLanguage(), paperInfo.getPaperId());
@@ -108,11 +118,14 @@ public class PaperController {
     	if(row == 1) {
     		return new JsonResult("Add Succeed!", row);
     	}
-    	return new JsonResult("Add Failed!");
+    	return new JsonResult("Add Failed!！");
     }
+    
     /**
      * 查找问卷数据
-     * @param pageCurrent, paperName
+     * 
+     * @param pageCurrent
+     * @param paperName
      * @return
      */
     @RequestMapping("doFindPaperList")
@@ -124,8 +137,10 @@ public class PaperController {
     	PageObject<Paper> paperList = paperService.findPaperList(pageCurrent, paperName);
     	return new JsonResult(paperList);
     }
+    
     /**
      * 删除问卷
+     * 
      * @param paperIds
      * @return
      */
@@ -139,10 +154,12 @@ public class PaperController {
     	if(row > 0) {
     		return new JsonResult("Delete Succeed!", row); 		
     	}
-    	return new JsonResult("Delete Failed!");
+    	return new JsonResult("Delete Failed!！");
     }
+    
     /**
      * 更改问卷状态
+     * 
      * @param paper
      * @return
      */
@@ -159,11 +176,13 @@ public class PaperController {
     	if(row > 0) {
     		return new JsonResult("Update Succeed!", row); 		
     	}
-    	return new JsonResult("Update Failed!");
+    	return new JsonResult("Update Failed!！");
     }
+    
     /**
-     * 根据问卷获取问题
-     * @param quesId
+     * 根据问卷ID获取问题
+     * 
+     * @param paperId
      * @return
      */
     @RequestMapping("doGetPaperQues")
@@ -175,9 +194,11 @@ public class PaperController {
     	PaperInfo paperInfo = paperService.getPaperQues(paperId);
     	return new JsonResult(paperInfo);
     }
+    
     /**
-     * 根据问卷获取问题
-     * @param quesId
+     *  根据问卷ID获取问题
+     * 
+     * @param paperId
      * @return
      */
     @RequestMapping("doGetPaperQuesOption")
@@ -189,7 +210,9 @@ public class PaperController {
     	List<PaperQuesOption> list = paperService.getPaperQuesOption(paperId);
     	return new JsonResult(list);
     }
+    
     /**
+     * 修改问卷
      * 
      * @param paperInfo
      * @return
@@ -221,10 +244,10 @@ public class PaperController {
     	if(StringUtils.isEmpty(paperInfo.getThank())) {
     		return new JsonResult("问卷感谢内容不能为空");
     	}
-    	if(StringUtils.isEmpty(paperInfo.getQuesIds()) || paperInfo.getQuesIds().length > 0) {
+    	if(StringUtils.isEmpty(paperInfo.getQuesIds()) || paperInfo.getQuesIds().length <= 0) {
     		return new JsonResult("问题ID集不能为空");
     	}
-    	if(StringUtils.isEmpty(paperInfo.getQuesNum()) || paperInfo.getQuesNum().length > 0) {
+    	if(StringUtils.isEmpty(paperInfo.getQuesNum()) || paperInfo.getQuesNum().length <= 0) {
     		return new JsonResult("问题序号不能为空");
     	}
     	int rowName = paperService.checkoutPaperName(paperInfo.getPaperName(), paperInfo.getPaperLanguage(), paperInfo.getPaperId());
@@ -235,6 +258,6 @@ public class PaperController {
     	if(row == 1) {
     		return new JsonResult("Update Succeed!", row); 		
     	}
-    	return new JsonResult("Update Failed");
+    	return new JsonResult("Update Failed！！");
     }
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dave.common.util.ShiroUtil;
 //import com.dave.common.vo.CheckBox;
@@ -22,6 +23,7 @@ import com.dave.service.RoleService;
  * 
  * @author Dave20191012
  */
+@Transactional(rollbackFor=Throwable.class)
 @Service
 public class RoleServiceImpl implements RoleService {
 	@Autowired

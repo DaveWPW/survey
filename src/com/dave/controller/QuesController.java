@@ -17,7 +17,7 @@ import com.dave.entity.vo.QuesInfo;
 import com.dave.service.QuesService;
 
 /**
- * 调查问题Controller
+ * Ques控制层
  * 
  * @author Dave20190826
  *
@@ -27,24 +27,32 @@ import com.dave.service.QuesService;
 public class QuesController {
 	@Autowired
     private QuesService quesService;
+	
 	/**
 	 * 问题管理页面
+	 * 
 	 * @return system/ques_list
 	 */
     @RequestMapping("doQuesListUI")
 	public String doQuesListUI(){
 		return "system/ques_list";
 	}
+    
     /**
      * 问题编辑页面
+     * 
      * @return system/ques_edit
      */
     @RequestMapping("doQuesEditUI")
 	public String doQuesEditUI(){
 		return "system/ques_edit";
 	}
+    
     /**
-     * 查找问题数据
+     * 查找查询所有问题
+     * 
+     * @param pageCurrent
+     * @param quesName
      * @return
      */
     @RequestMapping("doFindQuesList")
@@ -55,9 +63,11 @@ public class QuesController {
     	}
     	return new JsonResult(quesService.findQuesList(pageCurrent, quesName));
     }
+    
     /**
      * 添加问题
-     * @param ques
+     * 
+     * @param quesInfo
      * @return
      */
     @RequestMapping("doAddQues")
@@ -78,15 +88,17 @@ public class QuesController {
     	}
     	return new JsonResult("Add Failed!!");
     }
+    
     /**
      * 删除问题
+     * 
      * @param quesIds
      * @return
      */
     @RequestMapping("doDeleteQues")
     @ResponseBody
     public JsonResult doDeleteQues(Integer... quesIds) {
-    	if(StringUtils.isEmpty(quesIds) || quesIds.length > 0) {
+    	if(StringUtils.isEmpty(quesIds) || quesIds.length <= 0) {
     		return new JsonResult("问题ID集不能为空");
     	}
     	String resultInfo = quesService.deleteQues(quesIds);
@@ -95,8 +107,10 @@ public class QuesController {
     	}
     	return new JsonResult(resultInfo);
     }
+    
     /**
-     * 根据问题获取选项
+     * 根据问题ID获取问题选项
+     * 
      * @param quesId
      * @return
      */
@@ -109,9 +123,11 @@ public class QuesController {
     	QuesInfo quesInfo = quesService.getQuesOption(quesId);
     	return new JsonResult(quesInfo);
     }
+    
     /**
      * 修改问题
-     * @param ques
+     * 
+     * @param quesInfo
      * @return
      */
     @RequestMapping("doUpdateQues")
@@ -136,6 +152,12 @@ public class QuesController {
     	return new JsonResult(resultInfo);
     }
     
+    /**
+     * 跟进Excel报表导入问题
+     * 
+     * @param request
+     * @return
+     */
     @RequestMapping("doImportQues")
 	@ResponseBody
 	public JsonResult doImportQues(HttpServletRequest request) {
@@ -158,4 +180,5 @@ public class QuesController {
 		}
 		return new JsonResult("Import Succeed!", 1);
 	}
+    
 }

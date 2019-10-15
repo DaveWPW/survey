@@ -9,7 +9,7 @@ import com.dave.common.vo.JsonResult;
 import com.dave.service.MenuService;
 
 /**
- * 菜单Controller
+ * Menu控制层
  * 
  * @author Dave20191012
  *
@@ -19,6 +19,7 @@ import com.dave.service.MenuService;
 public class MenuController {
 	@Autowired
 	private MenuService menuService;
+	
 	/**
      * 查询菜单的节点信息
      * 
@@ -29,4 +30,5 @@ public class MenuController {
 	public JsonResult doFindMenuNodes(){
 		 return new JsonResult(menuService.findMenuNodes());
 	}
+    
 }

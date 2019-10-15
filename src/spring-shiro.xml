@@ -37,7 +37,6 @@
 	       		<entry key="/dist/**" value="anon"/>
 	            <entry key="/images/**" value="anon"/>
 	            <entry key="/plugins/**" value="anon"/>
-	            <entry key="/paper/doSelectQues.do" value="anon"/>
 	            <entry key="/doSurveyUI.do" value="anon"/>
 	            <entry key="/survey/*.do" value="anon"/>
 	            <entry key="/doLogin.do" value="anon"/>
