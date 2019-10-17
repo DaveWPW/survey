@@ -3,7 +3,6 @@ package com.dave.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,10 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.dave.common.util.ShiroUtil;
-import com.dave.entity.User;
 import com.dave.entity.vo.PaperInfo;
-import com.dave.service.MenuService;
 import com.dave.service.SurveyService;
 
 /**
@@ -28,8 +24,6 @@ import com.dave.service.SurveyService;
 public class PageController {
 	@Autowired
     private SurveyService surveyService;
-	@Autowired
-    private MenuService menuService;
 	
 	/**
 	 * 登录页面
