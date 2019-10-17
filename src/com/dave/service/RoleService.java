@@ -15,6 +15,8 @@ import com.dave.entity.Role;
  */
 public interface RoleService {
 	
+	int findRoleIdByName(String roleName);
+	
 	int addRole(Role role);
 	
 	PageObject<Role> findRoleList(int pageCurrent, String roleName);

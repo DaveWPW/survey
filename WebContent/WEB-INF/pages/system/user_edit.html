@@ -15,9 +15,8 @@
           </div>
           <div class="form-group">
             <label for="passwordId" class="col-sm-2 control-label">密码：</label>
-            <div class="col-sm-10 checkbox icheck">
+            <div id="passwordId" class="col-sm-10 checkbox icheck">
               &nbsp;&nbsp;&nbsp;&nbsp;
-              <input type="checkbox" name="isRestPassword" value="1">重置密码为 12345678
             </div>
           </div>
           <div class="form-group" >
@@ -51,7 +50,7 @@
 <script type="text/javascript" src="bower_components/layer/layer.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	doLoadRoles();
+	doLoadInitPage();
 	doInitFormData();
 	$(".box-footer")
 		.on("click", ".btn-cancel", doCancel)
@@ -104,7 +103,16 @@ function doInitFormData(){
 	$("#staffId").val(data.staffId);
 	$("#roleId").val(data.roleId);
 }
-function doLoadRoles(){
+function doLoadInitPage(){
+	var div = $("#passwordId");
+	var input;
+	if($(".box-title").html() === "添加用户"){
+		input = "<input type='checkbox' name='isRestPassword' value='1'  onclick='return false;' checked='checked'>初始密码为 12345678";
+		div.append(input);
+	}else if($(".box-title").html() === "修改用户"){
+		input = "<input type='checkbox' name='isRestPassword' value='1'>重置密码为 12345678";
+		div.append(input);
+	}
 	var url="role/doFindRoles.do"
 	$.getJSON(url, function(result){
 		if(result.state == 1){

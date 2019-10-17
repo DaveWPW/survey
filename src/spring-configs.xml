@@ -35,5 +35,4 @@
        	<property name="dataSource" ref="druidDataSource"></property>
     </bean>
     <tx:annotation-driven transaction-manager="txManager"/>
-    
 </beans>

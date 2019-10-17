@@ -18,7 +18,6 @@
 	  </div>
 	  <!-- /.box-header -->
 	  <div class="box-body table-responsive no-padding">
-	    <form>
 		  <table class="table table-hover text-center">
 			<thead>
 			  <tr>
@@ -32,7 +31,6 @@
 			</thead>
 		    <tbody id="tbodyId"></tbody>
 		  </table>
-		</form>
 	  </div>
 	  <!-- /.box-body -->
 	  <div id="pageId" class="box-footer clearfix"></div>
@@ -100,8 +98,6 @@ function doHandleResponseResult(result){
 		doSetTableBodyRows(result.data.records);
 		doSetPagination(result.data);
 		autoAddNumber();//自增序列号
-	}else{
-		doSetTableBodyErrors(result.message);
 	}
 }
 function doSetTableBodyRows(records){
@@ -141,17 +137,6 @@ function autoAddNumber(){
     	}
 	}
 	number();
-}
-function doSetTableBodyErrors(message){
-	   var tBody = $("#tbodyId");
-	   tBody.empty();
-	   var tr = $("<tr></tr>");
-	   var length = $("table th").length;
-	   var td = $("<td></td>");
-	   td.prop("colspan", length);
-	   td.append(message);
-	   tr.append(td);
-	   tBody.append(tr);
 }
 function doQueryRole(){
 	$("#pageId").data("pageCurrent", 1);

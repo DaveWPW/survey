@@ -36,7 +36,8 @@ public class UserServiceImpl implements UserService{
 	public int addUser(User user) {
 		int rows = 0;
 		String salt = UUID.randomUUID().toString();
-		SimpleHash sHash = new SimpleHash("MD5", user.getPassword(), salt);
+		String password = "12345678";
+		SimpleHash sHash = new SimpleHash("MD5", password, salt);
 		User createUser = ShiroUtil.getCurrentUser();
 		user.setPassword(sHash.toHex());
 		user.setPasswordSalt(salt);
@@ -83,6 +84,8 @@ public class UserServiceImpl implements UserService{
 			String password = "12345678";
 			SimpleHash sHash = new SimpleHash("MD5", password, userData.getPasswordSalt());
 			user.setPassword(sHash.toHex());
+		} else {
+			user.setPassword(null);
 		}
 		User updateUser = ShiroUtil.getCurrentUser();
 		user.setModifyUser(updateUser.getUsername());

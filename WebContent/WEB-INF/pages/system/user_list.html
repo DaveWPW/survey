@@ -84,8 +84,6 @@ function doHandleResponseResult(result){
 	if(result.state == 1){
 		doSetTableBodyRows(result.data.records);
 		autoAddNumber();//自增序列号
-	}else{
-		alert(result.message);
 	}
 }
 function doSetTableBodyRows(data){

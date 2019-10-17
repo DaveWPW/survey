@@ -93,7 +93,7 @@ public class PageController {
 		model.addAttribute("language", language);
 		model.addAttribute("chMessage", "抱歉，此連結已經無效！");
 		model.addAttribute("engMessage", "Sorry , this link is no longer valid!");
-		return "404";	
+		return "paper404";
 	}
 	
 	/**

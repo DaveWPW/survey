@@ -32,6 +32,11 @@ public class RoleServiceImpl implements RoleService {
     private RoleMenuDao roleMenuDao;
 	
 	@Override
+	public int findRoleIdByName(String roleName) {
+		return roleDao.findRoleIdByName(roleName);
+	}
+	
+	@Override
 	public int addRole(Role role) {
 		int roleId = roleDao.getRoleId();
 		role.setRoleId(roleId);

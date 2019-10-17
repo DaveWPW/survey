@@ -25,7 +25,7 @@
     <update id="updateUser" parameterType="com.dave.entity.User">
     	update su_user set 
       	real_name = #{realName},
-      	role_id = #{roleId},
+     	role_id = #{roleId},
       	<if test="password != null and '' != password">
      		password = #{password},
      	</if>

@@ -18,6 +18,9 @@ import com.dave.entity.Role;
  */
 public interface RoleDao {
 	
+	@Select("select count(*) from su_role where status=1 and role_name=#{roleName}")
+	int findRoleIdByName(@Param("roleName")String roleName);
+	
 	@Select("select seq_role_id.nextval as rsid from dual")
 	int getRoleId();
 	

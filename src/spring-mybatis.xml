@@ -36,6 +36,7 @@
 		<property name="Username" value="#{jdbc.Username}"/>
 		<property name="Password" value="#{jdbc.Password}"/>
 	</bean>
+	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="druidDataSource"/>
 		<property name="MapperLocations" value="classpath*:mapper/*Mapper.xml"/>
@@ -45,8 +46,10 @@
             </bean>
         </property>
 	</bean>
+	
 	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="BasePackage" value="com.**.dao"></property>
 		<property name="SqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
 	</bean>
+	
 </beans>
