@@ -45,13 +45,7 @@ public class PageController {
 	 * @return index
 	 */
 	@RequestMapping("doIndexUI")
-	public String doIndexUI(Model model){
-		User currentUser = ShiroUtil.getCurrentUser();
-		List<String> level = menuService.findRoleMenuLevelById(currentUser.getRoleId());
-		model.addAttribute("level", level);
-		model.addAttribute("username", currentUser.getUsername());
-		model.addAttribute("staffId", currentUser.getStaffId());
-		model.addAttribute("roleName", currentUser.getRoleName());
+	public String doIndexUI(){
 		return "index";
 	}
 	/**
