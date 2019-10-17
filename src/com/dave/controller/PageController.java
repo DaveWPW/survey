@@ -50,8 +50,8 @@ public class PageController {
 		List<String> level = menuService.findRoleMenuLevelById(currentUser.getRoleId());
 		model.addAttribute("level", level);
 		model.addAttribute("username", currentUser.getUsername());
-		model.addAttribute("roleName", currentUser.getRoleName());
 		model.addAttribute("staffId", currentUser.getStaffId());
+		model.addAttribute("roleName", currentUser.getRoleName());
 		return "index";
 	}
 	/**
