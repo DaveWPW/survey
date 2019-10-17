@@ -98,9 +98,6 @@ public class ResultServiceImpl implements ResultService {
 		cell = row.createCell(3);
 		cell.setCellStyle(style);
 		cell.setCellValue("Agent ID");
-//		cell = row.createCell(4);
-//		cell.setCellStyle(style);
-//		cell.setCellValue("P Type");
 		cell = row.createCell(4);
 		cell.setCellStyle(style);
 		cell.setCellValue("Language");
@@ -126,12 +123,6 @@ public class ResultServiceImpl implements ResultService {
 			row.createCell(1).setCellValue(info.getMobileNum());
 			row.createCell(2).setCellValue(info.getCli());
 			row.createCell(3).setCellValue(info.getAgentId());
-//			if("01".equals(info.getPaperType())) {
-//				info.setPaperType("单张");
-//			}else if("02".equals(info.getPaperType())) {
-//				info.setPaperType("分支");
-//			}
-//			row.createCell(4).setCellValue(info.getPaperType());
 			if("ch".equals(info.getPaperLanguage())) {
 				info.setPaperLanguage("中文");
 			}else if("eng".equals(info.getPaperLanguage())) {
