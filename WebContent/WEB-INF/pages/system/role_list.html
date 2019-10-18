@@ -146,7 +146,7 @@ function doDeleteRole(){
 	if(window.confirm("您确定要删除吗？")){
 		var roleId = $(this).parents("tr").data("roleId");
 		var params = {"roleId" : roleId};
-		var url="role/doDeleteRole.do"
+		var url = "role/doDeleteRole.do"
 		$.post(url, params, function(result){
 			if(result.state == 1){
 				doGetObjects();
@@ -156,4 +156,7 @@ function doDeleteRole(){
 		});	
 	}
 }
+//console.log();
+//alert();
+//debugger;
 </script>

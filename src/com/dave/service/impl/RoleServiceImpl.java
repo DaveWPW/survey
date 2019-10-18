@@ -108,7 +108,8 @@ public class RoleServiceImpl implements RoleService {
 			}
 			roleMenuDao.deleteRoleMenu(roleId);
 		} else {
-			return users.toString();
+			String info = users.toString();
+			return info;
 		}
 		return null;
 	}
