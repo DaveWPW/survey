@@ -102,6 +102,11 @@ public class LoginController {
 		return new JsonResult("Update Failed!!");
     }
 	
+	/**
+	 * 获取页面显示级别标识
+	 * 
+	 * @return
+	 */
 	@RequestMapping("doShowUI")
 	@ResponseBody
     private JsonResult doShowUI(){

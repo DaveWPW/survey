@@ -38,4 +38,7 @@ public interface ResultDao {
 			@Param("paperName")String paperName, @Param("startDate")String startDate,
 			@Param("endDate")String endDate);
 	
+	@Select("select count(*) from su_result where MOBILE_NUM = #{mobile} and PAPER_NAME = #{paperName}")
+	int findIfRepeatAnswer(@Param("mobile")long mobile, @Param("paperName")String paperName);
+	
 }
