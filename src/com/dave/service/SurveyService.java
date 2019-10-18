@@ -11,7 +11,7 @@ import com.dave.entity.vo.ResultInfo;
  */
 public interface SurveyService {
 	
-	int findIfRepeatAnswer(long mobile, String paperName);
+	int findIfRepeatAnswer(String mobile, String paperName);
 	
 	PaperInfo findStartPaper(String paperName, String paperLanguage);
 	

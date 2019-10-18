@@ -76,7 +76,7 @@ public class PageController {
 	 */
 	@RequestMapping("doSurveyUI")
 	public String doSurveyUI(Model model, 
-			long mobile, String language, long cli, int agentId, String inviteTime, String paperName) {
+			String mobile, String language, String cli, String agentId, String inviteTime, String paperName) {
 		try {
 			System.out.println("/survey/doSurveyUI.do?mobile="+mobile+"&language="+language+"&cli="+cli+"&agentId="+agentId+"&inviteTime="+inviteTime+"&paperName="+paperName);
 			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");

@@ -40,7 +40,7 @@ public class SurveyServiceImpl implements SurveyService{
 	private ResultQuesDao resultQuesDao;
 	
 	@Override
-	public int findIfRepeatAnswer(long mobile, String paperName) {
+	public int findIfRepeatAnswer(String mobile, String paperName) {
 		return resultDao.findIfRepeatAnswer(mobile, paperName);
 	}
 	

@@ -14,9 +14,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Result implements Serializable{
 	private static final long serialVersionUID = 9160847575755093799L;
 	private Integer resultId;
-	private Long mobileNum;
-	private Long cli;
-	private Integer agentId;
+	private String mobileNum;
+	private String cli;
+	private String agentId;
 	private Integer paperId;
 	private String paperName;
 	private String paperType;
@@ -36,22 +36,22 @@ public class Result implements Serializable{
 	public void setResultId(Integer resultId) {
 		this.resultId = resultId;
 	}
-	public Long getMobileNum() {
+	public String getMobileNum() {
 		return mobileNum;
 	}
-	public void setMobileNum(Long mobileNum) {
+	public void setMobileNum(String mobileNum) {
 		this.mobileNum = mobileNum;
 	}
-	public Long getCli() {
+	public String getCli() {
 		return cli;
 	}
-	public void setCli(Long cli) {
+	public void setCli(String cli) {
 		this.cli = cli;
 	}
-	public Integer getAgentId() {
+	public String getAgentId() {
 		return agentId;
 	}
-	public void setAgentId(Integer agentId) {
+	public void setAgentId(String agentId) {
 		this.agentId = agentId;
 	}
 	public Integer getPaperId() {
