@@ -3,18 +3,13 @@
     <div class="box">
 	  <div class="box-header">
 	    <h3 class="box-title">调查结果管理</h3>
-	    <div class="box-button" style="float:right;">
-			<label>开始日期：</label>
+	    <div class="box-button" style="float:right; border:2px solid #007799;">
+			<label style="margin-left:5px;">开始日期:</label>
 			<input type="date" name="table_search" id="startDate">
-			<label>结束日期：</label>
+			<label>结束日期:</label>
 			<input type="date" name="table_search" id="endDate">
-			<label>问卷名称：</label>
-			<input type="text" name="table_search" id="searchNameId" placeholder="请输入问卷名称">
-			<button type="button" class="btn-search">
-	          <i class="fa fa-search"></i>
-			</button>
-			<button type="button" class="btn-export">导出</button>
-			<button type="button" class="btn-delete">删除</button>
+			<label>问卷名称:</label>
+			<input type="text" name="table_search" id="searchNameId" placeholder="请输入问卷名称"><button type="button" class="btn-search"><i class="fa fa-search"></i></button><button type="button" class="btn-export">导出</button><button type="button" class="btn-delete">删除</button>
 	    </div>
 	  </div>
 	  <!-- /.box-header -->
@@ -45,9 +40,7 @@
 <!-- /.row -->
 <script type="text/javascript">
 $(function(){
-	//加载分页组件
 	$("#pageId").load("doPageUI.do", function(){
-		//加载页面数据
 		doGetObjects();
 	});
 	$("#checkAllId").change(doChangeTBodyCheckBoxState);
@@ -93,11 +86,9 @@ function doHandleResponseResult(result){
 }
 //通过服务端返回的数据初始化页面
 function doSetTableBodyRows(data){
-	//1.获取tbody对象，并清空内容
 	var tBody = $("#tbodyId");
 	tBody.empty();
 	if(data.length > 0){
-		//2.迭代data内容将数据追加到tbody中
 		for(var i in data){
 			var tr = $("<tr></tr>");
 			tr.data("rowData", data[i]);

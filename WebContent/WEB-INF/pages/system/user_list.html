@@ -3,17 +3,8 @@
     <div class="box">
 	  <div class="box-header">
 	    <h3 class="box-title">用户管理</h3>
-	    <div class="box-tools">
-		  <div class="input-group input-group-sm" style="width: 300px;">
-		    <input type="text" name="table_search" id="searchNameId"
-				  class="form-control pull-right" placeholder="请输入用户名或员工号">
-			<div class="input-group-btn">
-			  <button type="button" class="btn btn-default btn-search">
-                <i class="fa fa-search"></i>
-			  </button>
-			  <button type="button" class="btn btn-default btn-add">添加</button>
-			</div>
-		  </div>
+	    <div class="box-button" style="float:right; border:2px solid #007799;">	
+        	<input type="text" name="table_search" id="searchNameId" placeholder="请输入用户名或员工号"><button type="button" class="btn-search"><i class="fa fa-search"></i></button><button type="button" class="btn-add">添加</button>
 	    </div>
 	  </div>
 	  <!-- /.box-header -->
@@ -47,7 +38,7 @@ $(function(){
 	$("#pageId").load("doPageUI.do", function(){
 		doGetObjects();
 	});
-	$(".input-group-btn")
+	$(".box-button")
 		.on("click",".btn-add", doLoadEditUI)
 		.on("click",".btn-search", doQueryUser);
 	$("#tbodyId")

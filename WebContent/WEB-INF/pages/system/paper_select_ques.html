@@ -42,9 +42,7 @@
 <!-- /.row -->
 <script type="text/javascript">
 $(function(){
-	//加载分页组件
 	$("#pageId").load("doPageUI.do", function(){
-		//加载页面数据
 		doGetObjects();
 	});
 	$("#checkAllId").change(doChangeTBodyCheckBoxState);
@@ -96,7 +94,6 @@ function doHandleResponseResult(result){
 		alert(result.message);
 	}
 }
-//返回数据初始化页面
 function doSetTableBodyRows(data){
 	var tBody = $("#tbodyId");
 	tBody.empty();

@@ -2,27 +2,12 @@
   <div class="col-xs-12">
     <div class="box">
 	  <div class="box-header">
-	    <h3 class="box-title">调查问题管理</h3>
-	    <div class="box-tools">
-		  <div style="float:right; border:2px solid #DDDDDD;">
-		    <form id="form_table" method="post" enctype="multipart/form-data">
+	  	<h3 class="box-title">调查问题管理</h3>
+	    <div class="box-button" style="float:right; border:2px solid #007799;">	
+        	<input type="text" name="table_search" id="searchNameId" placeholder="请输入问题名称"><button type="button" class="btn-search"><i class="fa fa-search"></i></button><button type="button" class="btn-delete">删除</button><button type="button" class="btn-import">导入</button><button type="button" class="btn-add-single">添加单选题</button><button type="button" class="btn-add-multiple">添加多选题</button><button type="button" class="btn-add-easy">添加简答题</button>
+			<form id="form_table" method="post" enctype="multipart/form-data" style="float:right;">
 		      <input style="width:175px;" id="file_excel" type="file" name="filename"accept=".xls,.xlsx"></input>
 		    </form>
-		  </div>
-		  <div class="input-group input-group-sm" style="width:650px; margin-right:190px;">
-		    <input type="text" name="table_search" id="searchNameId"
-				  class="form-control pull-right" placeholder="请输入问题名称">
-			<div class="input-group-btn">
-			  <button type="button" class="btn btn-default btn-search">
-                <i class="fa fa-search"></i>
-			  </button>
-			  <button type="button" class="btn btn-default btn-add-single">添加单选题</button>
-			  <button type="button" class="btn btn-default btn-add-multiple">添加多选题</button>
-			  <button type="button" class="btn btn-default btn-add-easy">添加简答题</button>
-			  <button type="button" class="btn btn-default btn-import">导入</button>
-			  <button type="button" class="btn btn-default btn-delete">删除</button>
-			</div>
-		  </div>
 	    </div>
 	  </div>
 	  <!-- /.box-header -->
@@ -30,11 +15,11 @@
 	    <table class="table table-hover text-center">
 	      <thead>
 		    <tr>
-		      <th style="text-align:left;"><input type="checkbox" id="checkAllId">全选</th>
-			  <th>编号</th>
+		      <th style="width:60px; text-align:left;"><input type="checkbox" id="checkAllId">全选</th>
+			  <th style="width:100px;">编号</th>
 			  <th>问题名称</th>
-			  <th>问题类型</th>
-			  <th>创建日期</th>
+			  <th style="width:100px;">问题类型</th>
+			  <th style="width:200px;">创建日期</th>
 		    </tr>
 		  </thead>
 		  <tbody id="tbodyId"></tbody>
@@ -57,7 +42,7 @@ $(function(){
 	});
 	$("#checkAllId").change(doChangeTBodyCheckBoxState);
 	$("#tbodyId").on("change", ".quesId", doChangeTHeadCheckBoxState);
-	$(".input-group-btn")
+	$(".box-button")
 		.on("click",".btn-search", doQueryObjects)
 		.on("click",".btn-add-single,.btn-add-multiple,.btn-add-easy", doLoadEditUI)
 		.on("click",".btn-delete", doDeleteQues)
@@ -95,11 +80,9 @@ function doHandleResponseResult(result){
 }
 //通过服务端返回的数据初始化页面
 function doSetTableBodyRows(data){
-	//1.获取tbody对象，并清空内容
 	var tBody = $("#tbodyId");
 	tBody.empty();
 	if(data.length > 0){
-		//2.迭代data内容将数据追加到tbody中
 		for(var i in data){
 			var tr = $("<tr></tr>");
 			tr.data("rowData", data[i]);
@@ -121,7 +104,7 @@ function doCreateTds(data){
 	var tds=
 		"<td style='text-align:left;'><input type='checkbox' name='quesId' class='quesId' value='"+data.quesId+"'><span class='numberClass'></span></td>"+
 		"<td>"+data.quesId+"</td>"+
-		"<td style='width:500px; text-align:left;'><a onclick='doGetQuesOption("+data.quesId+")'>"+data.quesName+"</a></td>"+
+		"<td style='text-align:left;'><a onclick='doGetQuesOption("+data.quesId+")'>"+data.quesName+"</a></td>"+
 	    "<td>"+type+"</td>"+
 	    "<td>"+new Date(data.createTime).toLocaleString()+"</td>";
     return tds;

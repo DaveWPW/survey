@@ -6,7 +6,7 @@
   <!-- /.box-header -->
   <!-- form start -->
   <form class="form-horizontal">
-    <div class="box-body" style="margin-left:26%;">
+    <div class="box-body">
       <div class="form-group">
         <label for="roleNameId" class="col-sm-2 control-label">名称：</label>
         <div class="col-sm-10" style="width:300px;">
@@ -37,8 +37,7 @@
 <script type="text/javascript" src="bower_components/ztree/jquery.ztree.all.min.js"></script>
 <script type="text/javascript">
 $(function(){
-	//异步加载菜单信息,初始化页面菜单
-	doLoadSysMenus();
+	doLoadMenu();
 	$(".box-footer")
 		.on("click", ".btn-save", doSaveOrUpdate)
     	.on("click", ".btn-cancel", doCancel);
@@ -59,7 +58,7 @@ var setting = {
    	}
 }
 //页面加载完成时初始化zTree
-function doLoadSysMenus(){
+function doLoadMenu(){
 	var url="menu/doFindMenuNodes.do"
 	$.getJSON(url, function(result){
 		if(result.state == 1){

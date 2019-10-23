@@ -10,25 +10,36 @@
   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="dist/css/skins/skin-black.min.css">
   <link rel="stylesheet" href="bower_components/layer/skin/default/layer.css">
   <link rel="stylesheet" href="bower_components/ztree/css/metroStyle/metroStyle.css"/>
   <link rel="stylesheet" href="bower_components/treegrid/jquery.treegrid.css"/>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-black sidebar-mini">
 <div class="wrapper">
   <header class="main-header">
-  	<div>
-  		<span style="color:white; margin:10px 0px 15px 5px; font-size:26px;" >Survey Syetem</span>
-	  	<div style="float:right; width:365px; color:white;">
-		    <span>Username:&nbsp;</span>
-		    <span id="usernameInfo"></span>&nbsp;&nbsp;&nbsp;&nbsp;
-			<span>Staff&nbsp;ID:&nbsp;</span>
-			<span id="staffIdInfo"></span>&nbsp;&nbsp;&nbsp;&nbsp;
-			<span>Role:&nbsp;</span>
-			<span id="roleNameInfo"></span>
-	  	</div>
-  	</div>
+    <a href="doIndexUI.do" class="logo">
+      <span class="logo-mini"><b>S</b></span>
+      <span class="logo-lg"><b>Survey System</b></span>
+    </a>
+    <nav class="navbar navbar-static-top" role="navigation">
+      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+        <span class="sr-only">Toggle navigation</span>
+      </a>
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <li class="dropdown user user-menu">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            	<span class="hidden-xs">
+            		Username: <span id="usernameInfo"></span>
+            		Staff ID: <span id="staffIdInfo"></span>
+            		Role: <span id="roleNameInfo"></span>
+            	</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
   </header>
   <aside class="main-sidebar">
     <!-- sidebar -->
@@ -59,8 +70,17 @@
             <li id="S4" style="display: none;"><a id="load-result-id">调查结果管理</a></li>
           </ul>
         </li>
-        <li><a onclick="doUpdatePassword()"><i class="fa fa-link"></i>修改密码</a></li>
-        <li><a href="doLogout.do"><i class="fa fa-link"></i>退出登录</a></li>
+        <li>
+        	<a onclick="doUpdatePassword()"><i class="fa fa-gear"></i>
+        		<span>修改密码</span>
+        	</a>
+        </li>
+        <li>
+        	<a href="doLogout.do" onClick="return confirm('确认退出登录？');">
+        		<i class="fa fa-remove"></i>
+        		<span>退出登录</span>
+        	</a>
+        </li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
