@@ -12,11 +12,11 @@
 	    <table class="table table-hover text-center">
 	      <thead>
 		    <tr>
-		      <th><input type="checkbox" id="checkAllId">全选</th>
-		      <th>编号</th>
-			  <th>问题类型</th>
+		      <th style="width:60px; text-align:left;"><input type="checkbox" id="checkAllId">全选</th>
+		      <th style="width:60px;">编号</th>
+			  <th style="width:100px;">问题类型</th>
 			  <th>问题名称</th>
-			  <th>创建日期</th>
+			  <th style="width:200px;">创建日期</th>
 		    </tr>
 		  </thead>
 		  <tbody id="tbodyId"></tbody>
@@ -111,10 +111,10 @@ function doCreateTds(data){
 		type = "简答题";
 	}
 	var tds=
-		"<td><input type='checkbox' name='quesId' class='quesId' value='"+data.quesId+"'><span class='numberClass'></span></td>"+
+		"<td style='text-align:left;'><input type='checkbox' name='quesId' class='quesId' value='"+data.quesId+"'><span class='numberClass'></span></td>"+
 		"<td>"+data.quesId+"</td>"+
 		"<td>"+type+"</td>"+
-	    "<td><input type='submit' style='width:600px;' value='"+data.quesName+"' onclick='doGetQuesOption("+data.quesId+")'></td>"+
+	    "<td style='text-align:left;'><a onclick='doGetQuesOption("+data.quesId+")'>"+data.quesName+"</a></td>"+
 	    "<td>"+data.createTime+"</td>";
     return tds;
 }
