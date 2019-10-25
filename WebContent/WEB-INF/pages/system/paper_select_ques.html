@@ -3,18 +3,8 @@
     <div class="box">
 	  <div class="box-header">
 	    <h3 class="box-title"></h3>
-	    <div class="box-tools">
-		  <div class="input-group input-group-sm" style="width: 500px;">
-		    <input type="text" name="table_search" id="searchNameId"
-				  class="form-control pull-right" placeholder="问题名称">
-			<div class="input-group-btn">
-			  <button type="button" class="btn btn-default btn-search">
-                <i class="fa fa-search"></i>
-			  </button>
-			  <button type="button" class="btn btn-default btn-submit">确认</button>
-			  <button type="button" class="btn btn-default btn-cancel">返回</button>
-			</div>
-		  </div>
+	    <div class="box-button" style="float:right; border:2px solid #007799;">	
+        	<input type="text" name="table_search" id="searchNameId" placeholder="问题名称"><button type="button" class="btn-search"><i class="fa fa-search"></i></button><button type="button" class="btn-submit">确认</button><button type="button" class="btn-cancel">返回</button>
 	    </div>
 	  </div>
 	  <!-- /.box-header -->
@@ -47,7 +37,7 @@ $(function(){
 	});
 	$("#checkAllId").change(doChangeTBodyCheckBoxState);
 	$("#tbodyId").on("change", ".quesId", doChangeTHeadCheckBoxState);
-	$(".input-group-btn")
+	$(".box-button")
 		.on("click",".btn-search", doQueryObjects)
 		.on("click",".btn-submit", doSelectQues)
 		.on("click",".btn-cancel", doCancel);

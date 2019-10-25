@@ -184,7 +184,7 @@ function doOpenDetails(){
 	var resultId = $(this).parents("tr").find("td").eq(0).find("input").val();
 	var paperName = $(this).parents("tr").find("td").eq(4).html();
 	var paperDate = $(this).parents("tr").find("td").eq(7).html();
-	var mobile = $(this).val();
+	var mobile = $(this).html();
 	var url = "result/doGetResultQues.do";
 	var params = {"resultId" : resultId}
 	$.getJSON(url, params, function(result){

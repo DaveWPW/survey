@@ -3,9 +3,9 @@
     <div class="box">
 	  <div class="box-header">
 	  	<div>
-	  		<span style="font-weight:bold">手机号码：</span><span class="mobile"></span>&nbsp;&nbsp;&nbsp;&nbsp;
-	  		<span style="font-weight:bold">问卷名称：</span><span class="paper-name"></span>&nbsp;&nbsp;&nbsp;&nbsp;
-	  		<span style="font-weight:bold">作答时间：</span><span class="paper-date"></span>
+	  		<span style="font-weight:bold">问卷名称：</span><span class="paper-name"></span><br>
+	  		<span style="font-weight:bold">手机号码：</span><span class="mobile"></span><br>
+	  		<span style="font-weight:bold">作答时间：</span><span class="paper-date"></span><br>
 	  	</div>
 	    <div class="box-tools">
 		  <div class="input-group input-group-sm" style="width: 25px;">
@@ -21,9 +21,9 @@
 	      <thead>
 		    <tr>
 			  <th>序号</th>
-			  <th>类型</th>
-			  <th>题目</th>
 			  <th>答案</th>
+			  <th>题目</th>
+			  <th>类型</th>
 		    </tr>
 		  </thead>
 		  <tbody id="tbodyId"></tbody>
@@ -76,9 +76,9 @@ function doCreateTds(data){
 	}
 	var tds=
 		"<td>"+data.quesNum+"</td>"+
-	    "<td>"+type+"</td>"+
+	    "<td>"+data.optionContent+"</td>"+
 	    "<td style='text-align:left;'>"+data.quesName+"</td>"+
-	    "<td>"+data.optionContent+"</td>";
+	    "<td>"+type+"</td>";
     return tds;
 }
 function doCancel(){
