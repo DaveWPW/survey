@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dave.common.annotation.DataSource;
 import com.dave.common.util.ShiroUtil;
 import com.dave.common.vo.PageObject;
 import com.dave.dao.UserDao;
@@ -21,7 +20,6 @@ import com.dave.service.UserService;
  * 
  * @author Dave20191011
  */
-@DataSource("cchrDataSource")
 @Transactional(rollbackFor=Throwable.class)
 @Service
 public class UserServiceImpl implements UserService{

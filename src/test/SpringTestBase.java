@@ -11,7 +11,8 @@ import com.dave.common.annotation.DataSource;
  * @author Dave2019
  *
  */
-@ContextConfiguration(locations = { "classpath*:spring-mybatis.xml" })
+//@ContextConfiguration(locations = { "classpath*:spring-mybatis.xml" })
+@ContextConfiguration(locations = { "classpath*:spring-configs.xml" })
 @DataSource("cchrDataSource")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SpringTestBase {

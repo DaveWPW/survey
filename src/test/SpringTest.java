@@ -6,8 +6,7 @@ import java.util.Map;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.dave.common.annotation.DataSource;
-import com.dave.dao.TestDao;
+import com.dave.service.TestService;
 
 
 /**
@@ -19,7 +18,7 @@ import com.dave.dao.TestDao;
 public class SpringTest extends SpringTestBase{
 	
 	@Autowired
-	private TestDao testDao;
+	private TestService testService;
 	
 	@Test
 	public void addQues(){
@@ -35,9 +34,8 @@ public class SpringTest extends SpringTestBase{
 	}
 	
 	@Test
-	@DataSource("cchrDataSource")
 	public void findCCHR(){
-	    List<Map<String, Object>> findAllData = testDao.findAllData();
+	    List<Map<String, Object>> findAllData = testService.findAllData();
 	    for (Map<String, Object> map : findAllData) {
 	    	System.out.println(map.toString());
 		}

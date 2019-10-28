@@ -2,6 +2,7 @@ package com.dave.common.annotation.aspect;
 
 import java.lang.reflect.Method;
 
+import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -24,7 +25,8 @@ import com.dave.common.mybatis.DataSourceContext;
 @Order(0) // <!-- 设置切换数据源的优先级 -->
 @Component // <!-- 确认是否配置了该路径下注释配置bean的自动扫描 -->
 public class DataSourceAspect {
-
+	private static Logger logger = Logger.getLogger(DataSourceAspect.class);
+	
 	// @within在类上设置
 	// @annotation在方法上进行设置
 	// 事务在service层 因此切换数据库的注解只能放在service层或之前
@@ -48,8 +50,8 @@ public class DataSourceAspect {
 
 	@After("pointcut()")
 	public void after(JoinPoint point) {
-		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		DataSourceContext.clearDataSource();
-		System.out.println("切换默认数据源成功！");
+		logger.info("切换指定数据源成功！！");
 	}
 }

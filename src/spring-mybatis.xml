@@ -27,9 +27,7 @@
        
 	<util:properties id="jdbc" location="classpath:jdbc.properties"/>
 	
-	<!-- <bean id="druidDataSource" class="com.alibaba.druid.pool.DruidDataSource"
-          init-method="init" destroy-method="close" lazy-init="false" scope="singleton"> -->
-	<bean id="surveyDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+	<bean id="druidDataSource" class="com.alibaba.druid.pool.DruidDataSource"
           init-method="init" destroy-method="close" lazy-init="false" scope="singleton">
 		<property name="DriverClassName" value="#{jdbc.DriverClassName}"/>
 		<property name="Url" value="#{jdbc.Url}"/>
@@ -37,7 +35,7 @@
 		<property name="Password" value="#{jdbc.Password}"/>
 	</bean>
 	
-	<bean id="cchrDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+	<bean id="druidDataSource2" class="com.alibaba.druid.pool.DruidDataSource"
           init-method="init" destroy-method="close" lazy-init="false" scope="singleton">
 		<property name="DriverClassName" value="#{jdbc.DriverClassName2}"/>
 		<property name="Url" value="#{jdbc.Url2}"/>
@@ -48,15 +46,14 @@
 	<bean id="dataSource" class="com.dave.common.mybatis.DynamicDataSource">
         <property name="targetDataSources">
             <map key-type="java.lang.String">
-                <entry key="surveyDataSource" value-ref="surveyDataSource"></entry>
-                <entry key="cchrDataSource" value-ref="cchrDataSource"></entry>
+                <entry key="survey" value-ref="druidDataSource"></entry>
+                <entry key="cchr" value-ref="druidDataSource2"></entry>
             </map>
         </property>
-        <property name="defaultTargetDataSource" ref="surveyDataSource"></property>
+        <property name="defaultTargetDataSource" ref="druidDataSource"></property>
     </bean>
 	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<!-- <property name="dataSource" ref="druidDataSource"/> -->
 		<property name="dataSource" ref="dataSource"/>
 		<property name="MapperLocations" value="classpath*:mapper/*Mapper.xml"/>
 		<property name="configuration">
