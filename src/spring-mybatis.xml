@@ -26,11 +26,9 @@
        http://www.springframework.org/schema/context/spring-context-4.3.xsd" >
        
 	<util:properties id="jdbc" location="classpath:jdbc.properties"/>
-	<bean id="druidDataSource" class="com.alibaba.druid.pool.DruidDataSource"
-          init-method="init"
-          destroy-method="close"
-          lazy-init="false"
-          scope="singleton">
+	
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          init-method="init" destroy-method="close" lazy-init="false" scope="singleton">
 		<property name="DriverClassName" value="#{jdbc.DriverClassName}"/>
 		<property name="Url" value="#{jdbc.Url}"/>
 		<property name="Username" value="#{jdbc.Username}"/>
@@ -38,7 +36,7 @@
 	</bean>
 	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="druidDataSource"/>
+		<property name="dataSource" ref="dataSource"/>
 		<property name="MapperLocations" value="classpath*:mapper/*Mapper.xml"/>
 		<property name="configuration">
             <bean class="org.apache.ibatis.session.Configuration">
@@ -47,9 +45,9 @@
         </property>
 	</bean>
 	
-	<bean id="mapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="BasePackage" value="com.**.dao"></property>
-		<property name="SqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="BasePackage" value="com.**.dao"/>
+		<property name="SqlSessionFactoryBeanName" value="sqlSessionFactory"/>
 	</bean>
 	
 </beans>

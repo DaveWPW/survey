@@ -53,7 +53,7 @@
     
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
-    	<property name="proxyTargetClass" value="true" />
+    	<property name="proxyTargetClass" value="true"/>
     </bean>
     
 </beans>

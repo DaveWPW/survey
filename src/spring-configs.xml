@@ -26,13 +26,15 @@
        http://www.springframework.org/schema/context/spring-context-4.3.xsd" >
       
 	<context:component-scan base-package="com.dave"/>
+	
 	<import resource="classpath:spring-mvc.xml"/>
 	<import resource="classpath:spring-mybatis.xml"/>
 	<import resource="classpath:spring-shiro.xml"/>
 	
 	<aop:aspectj-autoproxy/>
+	
     <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-       	<property name="dataSource" ref="druidDataSource"></property>
+       	<property name="dataSource" ref="dataSource"/>
     </bean>
     <tx:annotation-driven transaction-manager="txManager"/>
 </beans>
